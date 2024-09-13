@@ -1,4 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Bold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Semibold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Medium.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Regular.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Light.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-ExtraLight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Thin.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: nuckle;
+    src: url('/assets/fonts/Nuckle-Hairline.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
