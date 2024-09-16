@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagina-inicial',
@@ -20,6 +21,8 @@ export class PaginaInicialComponent {
     { data: "2022-01-01T00:00:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "APROVADA" }
   ]
 
+  constructor(private router: Router) {}
+
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
   
@@ -30,5 +33,9 @@ export class PaginaInicialComponent {
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
   
     return `${day}/${month}/${year} ${hours}h${minutes}`;
-  } 
+  }
+
+  onFazerSolicitacao() {
+    this.router.navigate(['solicitacao-manutencao']);
+  }
 }

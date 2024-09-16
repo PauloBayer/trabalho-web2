@@ -5,10 +5,9 @@ import { SolicitacaoManutencaoComponent } from './pages/solicitacao-manutencao/s
 import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.component';
 
 export const routes: Routes = [
-    { path: "", component: PaginaInicialComponent },
+    { path: '', component: PaginaInicialComponent },
     { path: 'solicitacao-manutencao', component: SolicitacaoManutencaoComponent },
     { path: 'login', component: LoginComponent },
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: "register", component: RegisterComponent },
-    { path: '**', redirectTo: '/login' },
+    { path: 'register', component: RegisterComponent },
+    { path: '**', redirectTo: '' },
 ];

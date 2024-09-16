@@ -41,8 +41,17 @@
       "
     />
     <a style="color: rgba(255, 94, 43, 1)" href="*">Criar conta</a>
-    <a class="btn" href="*" id="btn-login"> Entrar</a>
+    
+    <a 
+      class="btn" 
+      href="*" 
+      id="btn-login"
+      (click)="onLogin()"
+    >
+      Entrar
+    </a>
   </div>
+
   <div class="right">
     <img
       style="object-fit: cover; background-size: cover"

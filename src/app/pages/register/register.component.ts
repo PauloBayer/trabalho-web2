@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AsyncValidator
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
   senhaGerada: string | null = null;
   formSubmitted = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.autoCadastroForm = this.fb.group({
@@ -110,5 +111,9 @@ export class RegisterComponent implements OnInit {
         }
       );
     }
+  }
+
+  onCadastrar() {
+    this.router.navigate(['']);
   }
 }
