@@ -1,0 +1,109 @@
+<div class="min-h-screen bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B] flex items-center justify-center">
+  <div class="w-full max-w-2xl mx-auto mt-10 bg-black text-white p-8 shadow-lg rounded-lg">
+    <form [formGroup]="autoCadastroForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- CPF -->
+      <div>
+        <label for="cpf" class="block text-sm font-medium">CPF:</label>
+        <input type="text" id="cpf" formControlName="cpf"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('cpf')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['pattern']">CPF deve conter exatamente 11 números.</span>
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['validarCPF']">CPF inválido. Por favor, insira um CPF válido.</span>
+        </div>
+      </div>
+      
+      <!-- Nome -->
+      <div>
+        <label for="nome" class="block text-sm font-medium">Nome:</label>
+        <input type="text" id="nome" formControlName="nome"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('nome')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('nome')?.errors?.['required']">Nome é obrigatório.</span>
+        </div>
+      </div>
+      
+      <!-- E-mail -->
+      <div>
+        <label for="email" class="block text-sm font-medium">E-mail:</label>
+        <input type="email" id="email" formControlName="email"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('email')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('email')?.errors?.['required']">E-mail é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('email')?.errors?.['email']">Insira um e-mail válido.</span>
+        </div>
+      </div>
+      
+      <!-- CEP -->
+      <div>
+        <label for="cep" class="block text-sm font-medium">CEP:</label>
+        <input type="text" id="cep" formControlName="cep" (blur)="buscarEndereco()"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('cep')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('cep')?.errors?.['required']">CEP é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('cep')?.errors?.['pattern']">CEP deve conter 8 números.</span>
+            <span *ngIf="autoCadastroForm.get('cep')?.errors?.['validarCEP']">CEP inválido. Por favor, tente novamente.</span>
+          </div>
+      </div>
+      
+      <!-- Logradouro -->
+      <div>
+        <label for="logradouro" class="block text-sm font-medium">Logradouro:</label>
+        <input type="text" id="logradouro" formControlName="logradouro"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('logradouro')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('logradouro')?.errors?.['required']">Logradouro é obrigatório.</span>
+        </div>
+      </div>
+      
+      <!-- Bairro -->
+      <div>
+        <label for="bairro" class="block text-sm font-medium">Bairro:</label>
+        <input type="text" id="bairro" formControlName="bairro"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('bairro')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('bairro')?.errors?.['required']">Bairro é obrigatório.</span>
+        </div>
+      </div>
+      
+      <!-- Cidade -->
+      <div>
+        <label for="cidade" class="block text-sm font-medium">Cidade:</label>
+        <input type="text" id="cidade" formControlName="cidade"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('cidade')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('cidade')?.errors?.['required']">Cidade é obrigatória.</span>
+        </div>
+      </div>
+      
+      <!-- Estado -->
+      <div>
+        <label for="estado" class="block text-sm font-medium">Estado:</label>
+        <input type="text" id="estado" formControlName="estado"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('estado')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('estado')?.errors?.['required']">Estado é obrigatório.</span>
+        </div>
+      </div>
+      
+      <!-- Telefone -->
+      <div>
+        <label for="telefone" class="block text-sm font-medium">Telefone:</label>
+        <input type="text" id="telefone" formControlName="telefone"
+               class="mt-1 block w-full border border-gray-700 bg-gray-800 text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2">
+        <div *ngIf="formSubmitted && autoCadastroForm.get('telefone')?.invalid" class="text-red-400 text-sm mt-1">
+          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['required']">Telefone é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['minlength']">Telefone deve ter no mínimo 10 dígitos.</span>
+          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['maxlength']">Telefone deve ter no máximo 11 dígitos.</span>
+        </div>
+      </div>
+  
+      <!-- Botão de Enviar -->
+      <div>
+        <button type="submit" class="w-full bg-[#FF5E2B] text-white font-bold py-2 px-4 rounded-md hover:bg-[#FF4A1C]">Cadastrar</button>
+      </div>
+      
+    </form>
+  </div>
+</div>
