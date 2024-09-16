@@ -6,7 +6,7 @@ body {
   height: 100%;
 }
 
-.container {
+#container {
   display: flex;
   height: 100vh;
 }
@@ -37,10 +37,14 @@ body {
   flex: 0 0 60%;
   background-color: #d0d0d0;
   background: linear-gradient(
-    90deg,
-    rgba(255, 196, 43, 1) 0%,
-    rgba(255, 94, 43, 1) 100%
-  );
+      90deg,
+      rgba(255, 196, 43, 0.4) 0%,
+      rgba(255, 94, 43, 0.4) 100%
+    ),
+    url(/login.jpg);
+
+  object-fit: fill;
+  background-size: cover;
 }
 
 .btn {
