@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        nuckle: ["nuckle"]
+        nuckle: ["nuckle", ""]
       },
       colors: {
         'laranja': '#FF5E2B'
