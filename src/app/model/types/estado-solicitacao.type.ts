@@ -1,0 +1,1 @@
+export type EstadoSolicitacaoType = 'ORÇADA' | 'ARRUMADA' | 'REJEITADA' | 'APROVADA';
