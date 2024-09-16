@@ -20,7 +20,10 @@ interface Categorie {
   styleUrl: './solicitacao-manutencao.component.css',
 })
 export class SolicitacaoManutencaoComponent implements OnInit {
+  // Nome da pagina
   title = 'solicitacao-manutencao';
+
+  // Array de categorias, no futuro vai ser trocado com uma requisição no banco de dados
   categories: Categorie[] = [
     { value: 'notebook', view: 'Notebook' },
     { value: 'desktop', view: 'Desktop' },
@@ -29,6 +32,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
     { value: 'teclado', view: 'Teclado' },
   ];
 
+  // Setup para o forms
   solicitacaoForm: FormGroup = new FormGroup({});
   constructor(private fb: FormBuilder) {}
 
@@ -46,13 +50,6 @@ export class SolicitacaoManutencaoComponent implements OnInit {
   }
 
   submit = false;
-
-  // formSolicitacao = {
-  //   name: '',
-  //   description: '',
-  //   categorie: '',
-  //   problem: '',
-  // };
 
   submitForm(): void {
     this.submit = true;
