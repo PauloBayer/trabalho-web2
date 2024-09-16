@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       fontFamily: {
         nuckle: ["nuckle"]
+      },
+      colors: {
+        'laranja': '#FF5E2B'
       }
     },
   },
