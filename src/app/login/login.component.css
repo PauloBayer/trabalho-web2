@@ -1,0 +1,60 @@
+/* styles.css */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.border-gradient-input {
+  border-radius: 30px; /* Deve combinar com o contêiner */
+  padding: 8px;
+  width: 100%; /* Ajusta a largura do input */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+}
+
+.left,
+.right {
+  height: 100%;
+}
+
+.left {
+  flex: 0 0 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: white;
+}
+
+.right {
+  flex: 0 0 60%;
+  background-color: #d0d0d0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+}
+
+.btn {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  padding: 10px 80px;
+  border-radius: 60px;
+  color: white;
+  margin-top: 30px;
+}
+
+.register {
+  justify-content: end;
+}
