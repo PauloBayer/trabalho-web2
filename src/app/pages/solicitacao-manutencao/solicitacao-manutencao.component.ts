@@ -6,11 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
-interface Categorie {
-  value: string;
-  view: string;
-}
+import { SolicitacaoService } from '../../services/solicitacao.service';
+import { ICategoriaEquipamento } from '../../model/interfaces/categoria-equipamento.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitacao-manutencao',
@@ -20,23 +18,11 @@ interface Categorie {
   styleUrl: './solicitacao-manutencao.component.css',
 })
 export class SolicitacaoManutencaoComponent implements OnInit {
-  // Nome da pagina
-  title = 'solicitacao-manutencao';
-
-  // Array de categorias, no futuro vai ser trocado com uma requisição no banco de dados
-  categories: Categorie[] = [
-    { value: 'notebook', view: 'Notebook' },
-    { value: 'desktop', view: 'Desktop' },
-    { value: 'impressora', view: 'Impressora' },
-    { value: 'mouse', view: 'Mouse' },
-    { value: 'teclado', view: 'Teclado' },
-  ];
-
-  // Setup para o forms
+  categories: ICategoriaEquipamento[] = [];
+  submit = false;
   solicitacaoForm: FormGroup = new FormGroup({});
-  constructor(private fb: FormBuilder) {}
 
-  initializeForm() {
+  constructor(private fb: FormBuilder, private solicitacaoService: SolicitacaoService, private router: Router) {
     this.solicitacaoForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -46,17 +32,30 @@ export class SolicitacaoManutencaoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeForm();
+    this.solicitacaoService.getCategoriasEquipamento().subscribe({
+      next: (data: ICategoriaEquipamento[]) => {
+        this.categories = data;
+      },
+      error: (error) => console.error(error)
+    });
   }
-
-  submit = false;
 
   submitForm(): void {
     this.submit = true;
-    if (this.solicitacaoForm.valid) {
-      console.log(this.solicitacaoForm.value);
-    } else {
-      console.log('Validação invalida');
-    }
+  
+    if (!this.solicitacaoForm.valid) return;
+  
+    const { categorie, problem, name, description } = this.solicitacaoForm.value;
+  
+    this.solicitacaoService.criarSolicitacao(description, problem, categorie).subscribe({
+      next: (data) => {
+        this.router.navigate(['']);
+      },
+      error: (error) => {
+        // arrumar mensagem de erro
+        alert('something went wrong');
+        console.error(error);
+      }
+    });
   }
 }

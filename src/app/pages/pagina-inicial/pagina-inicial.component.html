@@ -1,4 +1,4 @@
-<div id="background" class="flex items-center justify-center py-16">
+<div id="background" class="flex items-center justify-center py-16 h-screen">
     <div class="bg-black w-10/12 rounded-2xl">
         <div class="flex justify-between">
             <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
@@ -22,7 +22,7 @@
                         {{ formatDate(solicitacao.data) }}
                     </p>
                     <p class="font-nuckle font-light text-white mb-3">
-                        {{ solicitacao.descricao }}
+                        Defeito: {{ solicitacao.descricaoDefeito }}
                     </p>
                     <p class="font-nuckle font-light text-white mb-4">
                         Estado: {{ solicitacao.estado  }}
