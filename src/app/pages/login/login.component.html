@@ -16,6 +16,7 @@
       Seja bem vindo
     </div>
     <div></div>
+
     <input
       id="username"
       type="text"
@@ -27,7 +28,9 @@
         border-radius: 30px;
         padding: 8px;
       "
+      [formControl]="loginForm.controls.username"
     />
+    
     <input
       id="user-password"
       type="password"
@@ -39,7 +42,9 @@
         border-radius: 30px;
         padding: 8px;
       "
+      [formControl]="loginForm.controls.password"
     />
+
     <a style="color: rgba(255, 94, 43, 1)" href="*">Criar conta</a>
 
     <a class="btn" href="*" id="btn-login" (click)="onLogin()"> Entrar </a>
