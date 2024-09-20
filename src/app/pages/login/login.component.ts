@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUserLogin } from '../../model/interfaces/user-login.interface';
 import { ILoginResponse } from '../../model/interfaces/login-response.interface';
+import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
     password: FormControl<string>; 
   }>;
   
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private solicitacaoService: SolicitacaoService) {
     this.loginForm = new FormGroup({
       username: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
       password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit {
     const user: IUserLogin = this.loginForm.getRawValue();
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
+        this.solicitacaoService.seed();
         this.authService.setToken(data.token);
         this.router.navigate(['']);
       },
