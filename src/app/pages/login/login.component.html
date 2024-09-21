@@ -1,4 +1,4 @@
-<div class="container">
+<div id="container">
   <div class="left">
     <div
       style="
@@ -16,6 +16,7 @@
       Seja bem vindo
     </div>
     <div></div>
+
     <input
       id="username"
       type="text"
@@ -27,7 +28,9 @@
         border-radius: 30px;
         padding: 8px;
       "
+      [formControl]="loginForm.controls.username"
     />
+    
     <input
       id="user-password"
       type="password"
@@ -39,23 +42,13 @@
         border-radius: 30px;
         padding: 8px;
       "
+      [formControl]="loginForm.controls.password"
     />
+
     <a style="color: rgba(255, 94, 43, 1)" href="*">Criar conta</a>
-    
-    <a 
-      class="btn" 
-      href="*" 
-      id="btn-login"
-      (click)="onLogin()"
-    >
-      Entrar
-    </a>
+
+    <a class="btn" href="*" id="btn-login" (click)="onLogin()"> Entrar </a>
   </div>
 
-  <div class="right">
-    <img
-      style="object-fit: cover; background-size: cover"
-      src="https://dsinfor.com.br/wp-content/uploads/2022/11/Quanto-tempo-o-Notebook-fica-na-Assistencia-Tecnica.jpg"
-    />
-  </div>
+  <div class="right"></div>
 </div>
