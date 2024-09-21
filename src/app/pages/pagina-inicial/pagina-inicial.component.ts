@@ -38,4 +38,8 @@ export class PaginaInicialComponent {
   onFazerSolicitacao() {
     this.router.navigate(['solicitacao-manutencao']);
   }
+
+  checkOrcamento() {
+    this.router.navigate(['orcamentos']);
+  }
 }

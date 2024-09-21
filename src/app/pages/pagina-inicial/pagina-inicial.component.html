@@ -5,10 +5,8 @@
                 Solicitações
             </h1>
 
-            <button
-                (click)="onFazerSolicitacao()" 
-                class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4"
-            >
+            <button (click)="onFazerSolicitacao()"
+                class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4">
                 Fazer solicitação
             </button>
         </div>
@@ -17,43 +15,44 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
             @for (solicitacao of solicitacoes; track $index) {
-                <div class="bg-[#423B3A] rounded-2xl p-5">
-                    <p class="font-nuckle font-light text-white mb-3">
-                        {{ formatDate(solicitacao.data) }}
-                    </p>
-                    <p class="font-nuckle font-light text-white mb-3">
-                        {{ solicitacao.descricao }}
-                    </p>
-                    <p class="font-nuckle font-light text-white mb-4">
-                        Estado: {{ solicitacao.estado  }}
-                    </p>
+            <div class="bg-[#423B3A] rounded-2xl p-5">
+                <p class="font-nuckle font-light text-white mb-3">
+                    {{ formatDate(solicitacao.data) }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    {{ solicitacao.descricao }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-4">
+                    Estado: {{ solicitacao.estado }}
+                </p>
 
-                    @if (solicitacao.estado === 'ORÇADA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
-                            Aprovar serviço
-                        </button>
-    
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
-                            Rejeitar serviço
-                        </button>
-                    }  
-                    
-                    @else if (solicitacao.estado === 'ARRUMADA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
-                            Pagar serviço
-                        </button>
-                    }
+                @if (solicitacao.estado === 'ORÇADA') {
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                    (click)="checkOrcamento()">
+                    Aprovar serviço
+                </button>
 
-                    @else if (solicitacao.estado === 'REJEITADA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
-                            Resgatar serviço
-                        </button>
-                    }
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
+                    Rejeitar serviço
+                </button>
+                }
 
-                    <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9">
-                        Visualizar a situação
-                    </button>
-                </div>
+                @else if (solicitacao.estado === 'ARRUMADA') {
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
+                    Pagar serviço
+                </button>
+                }
+
+                @else if (solicitacao.estado === 'REJEITADA') {
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
+                    Resgatar serviço
+                </button>
+                }
+
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9">
+                    Visualizar a situação
+                </button>
+            </div>
             }
         </div>
     </div>
