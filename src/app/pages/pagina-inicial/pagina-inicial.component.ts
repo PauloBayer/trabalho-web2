@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
 import { Router } from '@angular/router';
+import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
   selector: 'app-pagina-inicial',
@@ -9,19 +10,19 @@ import { Router } from '@angular/router';
   templateUrl: './pagina-inicial.component.html',
   styleUrl: './pagina-inicial.component.css'
 })
-export class PaginaInicialComponent {
-  solicitacoes: ISolicitacao[] = [
-    { data: "2024-09-13T14:30:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "ORÇADA" },
-    { data: "2023-07-21T09:15:45Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "ARRUMADA" },
-    { data: "2025-12-31T23:59:59Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "REJEITADA" },
-    { data: "2022-01-01T00:00:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "APROVADA" },
-    { data: "2024-09-13T14:30:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "ORÇADA" },
-    { data: "2024-09-13T14:30:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "ORÇADA" },
-    { data: "2025-12-31T23:59:59Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "REJEITADA" },
-    { data: "2022-01-01T00:00:00Z", descricao: "lorem ipsum ergo sutum lorem ipsum", estado: "APROVADA" }
-  ]
+export class PaginaInicialComponent implements OnInit {
+  solicitacoes: ISolicitacao[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private solicitacaoService: SolicitacaoService) {}
+  
+  ngOnInit(): void {
+    this.solicitacaoService.findAllSolicitacoes().subscribe({
+      next: (data: ISolicitacao []) => {
+        this.solicitacoes = data;
+      },
+      error: (error) => console.error(error)
+    });
+  }
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
