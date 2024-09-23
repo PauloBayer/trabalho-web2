@@ -44,7 +44,10 @@
                 }
 
                 @else if (solicitacao.estado === 'REJEITADA') {
-                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
+                <button 
+                    class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                    (click)="resgatarSolicitacao(solicitacao)"
+                >
                     Resgatar serviço
                 </button>
                 }
