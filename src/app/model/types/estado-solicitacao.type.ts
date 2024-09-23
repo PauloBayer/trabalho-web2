@@ -1,6 +1,1 @@
-export type EstadoSolicitacaoType =
-  | 'ORÇADA'
-  | 'ARRUMADA'
-  | 'REJEITADA'
-  | 'APROVADA'
-  | 'CRIADA';
+export type EstadoSolicitacaoType = 'ORÇADA' | 'ARRUMADA' | 'REJEITADA' | 'APROVADA' | 'ABERTA';

@@ -1,0 +1,37 @@
+@if (!this.reasonInputed) {
+<div class="modal-container">
+    <div class="modal-header text-center">
+        <h2 class="modal-title">Serviço Rejeitado</h2>
+    </div>
+    <form [formGroup]="formGroup">
+        <div class="modal-content mt-5">
+            <p class="modal-message">
+                Para concluir a recusa do orçamento, escreva abaixo o motivo:
+            </p>
+            <mat-form-field class="form-100">
+                <textarea matInput formControlName="reason" placeholder="Motivo da recusa" rows="5"></textarea>
+                <small>{{ formGroup.value.reason?.length }} / 500</small>
+            </mat-form-field>
+        </div>
+    </form>
+    <div mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="inputReason()"
+            [disabled]="!this.formGroup.valid">Rejeitar</button>
+    </div>
+</div>
+}
+@else {
+<div class="modal-container">
+    <div class="modal-header text-center">
+        <h2 class="modal-title">Recusa Confirmada!</h2>
+    </div>
+    <div class="modal-content mt-5">
+        <p class="modal-message">
+            O prestador do serviço será notificado.
+        </p>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" mat-dialog-close (click)="closeDialog()">Ok</button>
+    </div>
+</div>
+}

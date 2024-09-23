@@ -11,137 +11,19 @@ import { IHistorico } from '../../model/interfaces/historico.interface';
   templateUrl: './pagina-inicial.component.html',
   styleUrl: './pagina-inicial.component.css',
 })
-export class PaginaInicialComponent {
-  solicitacoes: ISolicitacao[] = [
-    {
-      data: '2024-09-13T14:30:00Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'ORÇADA',
-      historico: [
-        {
-          data: '2024-09-12T14:30:00Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2024-09-13T14:30:00Z',
-          estado: 'ORÇADA',
-        },
-      ],
-    },
-    {
-      data: '2023-07-21T09:15:45Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'ARRUMADA',
-      historico: [
-        {
-          data: '2023-07-20T09:15:45Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2023-07-21T09:15:45Z',
-          estado: 'ARRUMADA',
-        },
-      ],
-    },
-    {
-      data: '2023-12-31T23:59:59Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'REJEITADA',
-      historico: [
-        {
-          data: '2023-12-30T23:59:59Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2023-12-31T23:59:59Z',
-          estado: 'REJEITADA',
-        },
-      ],
-    },
-    {
-      data: '2022-01-01T00:00:00Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'APROVADA',
-      historico: [
-        {
-          data: '2021-12-31T00:00:00Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2022-01-01T00:00:00Z',
-          estado: 'APROVADA',
-        },
-      ],
-    },
-    {
-      data: '2024-09-13T14:30:00Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'ORÇADA',
-      historico: [
-        {
-          data: '2024-09-12T14:30:00Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2024-09-13T14:30:00Z',
-          estado: 'ORÇADA',
-        },
-      ],
-    },
-    {
-      data: '2024-09-13T14:30:00Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'ORÇADA',
-      historico: [
-        {
-          data: '2024-09-12T14:30:00Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2024-09-13T14:30:00Z',
-          estado: 'ORÇADA',
-        },
-      ],
-    },
-    {
-      data: '2023-12-31T23:59:59Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'REJEITADA',
-      historico: [
-        {
-          data: '2023-12-30T23:59:59Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2023-12-31T23:59:59Z',
-          estado: 'REJEITADA',
-        },
-      ],
-    },
-    {
-      data: '2022-01-01T00:00:00Z',
-      descricao: 'lorem ipsum ergo sutum lorem ipsum',
-      estado: 'APROVADA',
-      historico: [
-        {
-          data: '2021-12-31T00:00:00Z',
-          estado: 'CRIADA',
-        },
-        {
-          data: '2022-01-01T00:00:00Z',
-          estado: 'APROVADA',
-        },
-      ],
-    },
-  ];
+export class PaginaInicialComponent implements OnInit {
+  solicitacoes: ISolicitacao[] = [];
 
-  get orderSolicitacoes(): ISolicitacao[] {
-    return this.solicitacoes.sort(
-      (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
-    );
+  constructor(private router: Router, private solicitacaoService: SolicitacaoService) {}
+  
+  ngOnInit(): void {
+    this.solicitacaoService.findAllSolicitacoes().subscribe({
+      next: (data: ISolicitacao []) => {
+        this.solicitacoes = data;
+      },
+      error: (error) => console.error(error)
+    });
   }
-
-  constructor(private router: Router) {}
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
@@ -171,5 +53,15 @@ export class PaginaInicialComponent {
 
   show(s: ISolicitacao) {
     console.log(s);
+  }
+
+  checkOrcamento() {
+    this.router.navigate(['orcamentos']);
+  }
+  
+  get orderSolicitacoes(): ISolicitacao[] {
+    return this.solicitacoes.sort(
+      (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
+    );
   }
 }

@@ -1,0 +1,85 @@
+<body>
+  <div class="black-box">
+    <h1 class="text-3xl font-bold px-5 pt-5">Pagamento</h1>
+    <hr class="my-3 h-0.5 border-t-0 bg-slate-800" />
+
+    <form class="pl-5 pb-5 flex flex-row">
+      <div class="relative flex flex-col w-80 mr-10">
+        <div>
+          <h1>ID</h1>
+          <h1>R$300,00</h1>
+        </div>
+        <label for="name" class=""> Numero do Cartão </label>
+        <input
+          id="name"
+          formControlName="name"
+          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+          type="text"
+          placeholder="XXXX XXXX XXXX XXXX"
+        />
+
+        <small
+          class="text-red-500 font-bold px-3"
+          *ngIf="
+            (submit && !solicitacaoForm.get('name')?.value) ||
+            (solicitacaoForm.get('name')?.touched &&
+              !solicitacaoForm.get('name')?.value)
+          "
+        >
+          Digite o Número do Cartão!
+        </small>
+        <label for="description" class="mt-4"> Validade </label>
+        <input
+          placeholder="00/00"
+          id="description"
+          formControlName="description"
+          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+        />
+        <small
+          class="text-red-500 font-bold px-3"
+          *ngIf="
+            (submit && !solicitacaoForm.get('description')?.value) ||
+            (solicitacaoForm.get('description')?.touched &&
+              !solicitacaoForm.get('description')?.value)
+          "
+        >
+          Digite o código de verificação!
+        </small>
+
+        <label for="problem" class="mt-4"> CVV </label>
+        <input
+          id="problem"
+          formControlName="problem"
+          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+        />
+        <small
+          class="text-red-500 font-bold px-3"
+          *ngIf="
+            (submit && !solicitacaoForm.get('problem')?.value) ||
+            (solicitacaoForm.get('problem')?.touched &&
+              !solicitacaoForm.get('problem')?.value)
+          "
+        >
+          Descrição do Defeito é obrigatório!
+        </small>
+      </div>
+
+      <div class="flex flex-col items-end">
+        <button
+          type="submit"
+          (click)="openDialogAccept()"
+          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
+        >
+          Confirmar
+        </button>
+        <button
+          type="submit"
+          (click)="openDialogDecline()"
+          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</body>
