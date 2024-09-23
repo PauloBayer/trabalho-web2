@@ -1,29 +1,38 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent} from './pages/register/register.component'; 
+import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SolicitacaoManutencaoComponent } from './pages/solicitacao-manutencao/solicitacao-manutencao.component';
 import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.component';
 import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-orcamentos.component';
+import { PagarComponent } from './pages/pagar/pagar.component';
 
 export const routes: Routes = [
-    { 
-        path: '', 
-        component: PaginaInicialComponent },
-    { 
-        path: 'solicitacao-manutencao', 
-        component: SolicitacaoManutencaoComponent },
-    { 
-        path: 'login', 
-        component: LoginComponent },
-    { 
-        path: 'register', 
-        component: RegisterComponent },
-    {
-        path: 'orcamentos',
-        component: MostrarOrcamentosComponent
-    },
-    { 
-        path: '**', 
-        redirectTo: '' 
-    },
+  {
+    path: '',
+    component: PaginaInicialComponent,
+  },
+  {
+    path: 'solicitacao-manutencao',
+    component: SolicitacaoManutencaoComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'orcamentos',
+    component: MostrarOrcamentosComponent,
+  },
+  {
+    path: 'pagar',
+    component: PagarComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
