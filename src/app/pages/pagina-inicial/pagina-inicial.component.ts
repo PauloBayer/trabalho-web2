@@ -1,8 +1,9 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
 import { Router } from '@angular/router';
 import { EstadoSolicitacaoType } from '../../model/types/estado-solicitacao.type';
 import { IHistorico } from '../../model/interfaces/historico.interface';
+import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
   selector: 'app-pagina-inicial',

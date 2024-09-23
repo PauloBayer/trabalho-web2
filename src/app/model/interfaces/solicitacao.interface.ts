@@ -8,5 +8,5 @@ export interface ISolicitacao {
     descricaoDefeito: string,
     categoriaEquipamento: string,
     estado: EstadoSolicitacaoType,
-    historico: IHistorico[],   
+    historico: IHistorico[]
 }
