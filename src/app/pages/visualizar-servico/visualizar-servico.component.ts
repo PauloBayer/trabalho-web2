@@ -18,13 +18,13 @@ export class VisualizarServicoComponent implements OnInit {
     this.solicitacao = {
       id: '12345',
       servico: 'Formatação de Equipamento',
-      data: new Date('2024-09-20T13:40:00'),
+      data: new Date('2024-09-20T13:58:00'),
       status: 'ORÇADA', 
       descricao: 'Solicitação de formatação e reinstalação do sistema operacional.',
       passos: [
         { data: new Date('2024-09-20T13:35:00'), funcionario: 'João Silva', acao: 'Solicitação Realizada' },
         { data: new Date('2024-09-20T13:45:00'), funcionario: 'João Silva', acao: 'Orçamento Aprovado' },
-        { data: new Date('2024-09-20T13:40:00'), funcionario: 'João Silva', acao: 'Aguardando Pagamento' },
+        { data: new Date('2024-09-20T13:58:00'), funcionario: 'João Silva', acao: 'Aguardando Pagamento' },
       ]
     };
   }
