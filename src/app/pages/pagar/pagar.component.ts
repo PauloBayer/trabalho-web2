@@ -10,53 +10,34 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-pagar',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatButtonModule
+  ],
   templateUrl: './pagar.component.html',
   styleUrl: './pagar.component.css',
 })
 export class PagarComponent {
   constructor(public dialog: MatDialog) {}
-  openDialogAccept() {
-    const dialogRef = this.dialog.open(DialogContentAccept);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openDialogDecline() {
-    const dialogRef = this.dialog.open(DialogContentDecline);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-}
-export class DialogContentAccept {}
-export class DialogContentDecline {
-  constructor(public dialogRef: MatDialogRef<DialogContentDecline>) {}
-
-  formGroup = new FormGroup({
-    reason: new FormControl('', [
+  formPagar: FormGroup = new FormGroup({
+    number: new FormControl('', [
       Validators.required,
-      Validators.maxLength(500),
-      Validators.minLength(1),
+      Validators.maxLength(16),
+      Validators.minLength(16),
     ]),
-  });
-
-  reasonInputed: boolean = false;
-
-  closeDialog() {
-    if (this.formGroup.valid) {
-      this.dialogRef.close(this.formGroup.value.reason);
-    }
-  }
-
-  inputReason() {
-    this.reasonInputed = true;
-  }
+    vality: new FormControl(null, [
+      Validators.required
+    ]),
+    cvv: new FormControl(null, [
+      Validators.required
+    ])
+  })
 }
