@@ -1,7 +1,10 @@
 package com.web2.healboard.controllers;
 
 import com.web2.healboard.dtos.mapper.UserMapper;
+import com.web2.healboard.dtos.request.LoginRequestDto;
 import com.web2.healboard.dtos.request.RegistrarRequestDto;
+import com.web2.healboard.dtos.response.LoginResponseDto;
+import com.web2.healboard.dtos.response.RefreshBearerTokenResponseDto;
 import com.web2.healboard.models.user.User;
 import com.web2.healboard.services.JwtService;
 import com.web2.healboard.services.UserService;
@@ -24,16 +27,16 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto) {
-//        User user = this.userService.findUserByUsernameAndPassword(dto.getUsername(), dto.getPassword());
-//        String token = this.jwtService.createToken(user);
-//        return ResponseEntity.ok(new LoginResponseDto(token));
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto) {
+        User user = this.userService.findUserByEmailAndSenha(dto.getEmail(), dto.getSenha());
+        String token = this.jwtService.createToken(user);
+        return ResponseEntity.ok(new LoginResponseDto(token));
+    }
 
-//    @GetMapping("/refresh")
-//    public ResponseEntity<RefreshBearerTokenResponseDto> refreshBearerToken(@RequestHeader("Authorization") String bearerToken) {
-//        String newBearerToken = this.jwtService.refreshToken(bearerToken);
-//        return ResponseEntity.ok(new RefreshBearerTokenResponseDto(newBearerToken));
-//    }
+    @GetMapping("/refresh")
+    public ResponseEntity<RefreshBearerTokenResponseDto> refreshBearerToken(@RequestHeader("Authorization") String bearerToken) {
+        String newBearerToken = this.jwtService.refreshToken(bearerToken);
+        return ResponseEntity.ok(new RefreshBearerTokenResponseDto(newBearerToken));
+    }
 }

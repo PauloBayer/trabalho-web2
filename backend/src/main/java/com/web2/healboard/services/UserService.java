@@ -26,8 +26,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findUserByUsernameAndPassword(String username, String password) {
-        User user = this.findUserByEmail(username);
+    public User findUserByEmailAndSenha(String email, String password) {
+        User user = this.findUserByEmail(email);
         if (!this.passwordEncoder.matches(password, user.getSenha()))
             throw new SenhaInvalidaException("senha inválida");
         return user;
