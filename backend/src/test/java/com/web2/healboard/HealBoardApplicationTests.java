@@ -1,10 +1,10 @@
-package com.web2.demo;
+package com.web2.healboard;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class HealBoardApplicationTests {
 
 	@Test
 	void contextLoads() {

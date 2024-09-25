@@ -1,13 +1,13 @@
-package com.web2.demo;
+package com.web2.healboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class HealBoardApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(HealBoardApplication.class, args);
 	}
 
 }

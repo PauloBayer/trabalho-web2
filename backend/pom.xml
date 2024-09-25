@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.web2</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>healboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>healboard</name>
 	<description>TADS - Desenvolvimento Web 2 (2024/2)</description>
 	<url/>
 	<licenses>
