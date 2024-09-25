@@ -40,7 +40,8 @@ public class UserService {
         if (this.userRepository.existsByCpf(user.getCpf()))
             throw new CpfJaRegistradoException("o CPF já está sendo usado");
 
-        user.setSenha(this.passwordEncoder.encode(user.getSenha()));
+        String senha = "mockedpassword";
+        user.setSenha(this.passwordEncoder.encode(senha));
 
         return userRepository.save(user);
     }
