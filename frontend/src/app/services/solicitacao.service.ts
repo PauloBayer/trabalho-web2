@@ -42,7 +42,8 @@ export class SolicitacaoService {
       descricaoDefeito: descricaoDefeito,
       descricaoEquipameto: descricaoEquipamento,
       data: new Date().toISOString(),
-      estado: 'ABERTA'
+      estado: 'ABERTA',
+      historico: []
     });
 
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));

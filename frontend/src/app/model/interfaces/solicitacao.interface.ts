@@ -1,4 +1,5 @@
-import { EstadoSolicitacaoType } from "../types/estado-solicitacao.type";
+import { EstadoSolicitacaoType } from '../types/estado-solicitacao.type';
+import { IHistorico } from './historico.interface';
 
 export interface ISolicitacao {
     id: string,
@@ -6,5 +7,6 @@ export interface ISolicitacao {
     descricaoEquipameto: string,
     descricaoDefeito: string,
     categoriaEquipamento: string,
-    estado: EstadoSolicitacaoType
+    estado: EstadoSolicitacaoType,
+    historico: IHistorico[]
 }
