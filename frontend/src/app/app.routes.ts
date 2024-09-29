@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent } from '@app/../../frontend/src/app/pages/register/register.component';
-import { LoginComponent } from '@app/../../frontend/src/app/pages/login/login.component';
-import { SolicitacaoManutencaoComponent } from '@app/../../frontend/src/app/pages/solicitacao-manutencao/solicitacao-manutencao.component';
-import { PaginaInicialComponent } from '@app/../../frontend/src/app/pages/pagina-inicial/pagina-inicial.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
+import { SolicitacaoManutencaoComponent } from './pages/solicitacao-manutencao/solicitacao-manutencao.component';
+import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.component';
 import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-orcamentos.component';
 import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { PagarComponent } from './pages/pagar/pagar.component';

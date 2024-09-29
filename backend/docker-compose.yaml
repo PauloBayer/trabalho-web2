@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:16.4
+    container_name: db
+    ports:
+      - '13000:5432'
+    environment:
+      POSTGRES_PASSWORD: 123mudar
+      POSTGRES_USER: 123mudar
+      POSTGRES_DB: dbtadswebdois
