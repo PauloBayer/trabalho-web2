@@ -6,6 +6,7 @@ import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.co
 import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-orcamentos.component';
 import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { PagarComponent } from './pages/pagar/pagar.component';
+import { SolicitacoesFuncionarioComponent } from './pages/solicitacoes-funcionario/solicitacoes-funcionario.component';
 
 export const routes: Routes = [
   {
@@ -34,7 +35,11 @@ export const routes: Routes = [
   },
   {
     path: 'servico',
-    component: VisualizarServicoComponent
+    component: VisualizarServicoComponent,
+  },
+  {
+    path: 'solicitacoes',
+    component: SolicitacoesFuncionarioComponent,
   },
   {
     path: '**',

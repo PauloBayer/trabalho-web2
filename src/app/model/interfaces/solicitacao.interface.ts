@@ -4,9 +4,21 @@ import { IHistorico } from './historico.interface';
 export interface ISolicitacao {
     id: string,
     data: string,
-    descricaoEquipameto: string,
-    descricaoDefeito: string,
-    categoriaEquipamento: string,
+    cliente: string,
+    descricaoEquipamento?: string,
+    descricaoDefeito?: string,
+    categoriaEquipamento?: string,
     estado: EstadoSolicitacaoType,
-    historico: IHistorico[]
+    historico?: IHistorico[]
+}
+
+export class Solicitacao implements ISolicitacao {
+    id: string = '';
+    data: string = '';
+    cliente: string = '';
+    descricaoEquipamento?: string;
+    descricaoDefeito?: string;
+    categoriaEquipamento?: string;
+    estado: EstadoSolicitacaoType = 'ABERTA';
+    historico?: IHistorico[];
 }
