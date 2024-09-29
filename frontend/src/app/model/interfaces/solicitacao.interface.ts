@@ -4,7 +4,8 @@ import { IHistorico } from './historico.interface';
 export interface ISolicitacao {
     id: string,
     data: string,
-    descricaoEquipameto: string,
+    cliente: string,
+    descricaoEquipamento?: string,
     descricaoDefeito: string,
     categoriaEquipamento: string,
     estado: EstadoSolicitacaoType,
