@@ -5,14 +5,14 @@
 
     <form class="pl-5 pb-5 flex flex-row">
       <div class="relative flex flex-col w-80 mr-10">
-        <div>
-          <h1>ID</h1>
-          <h1>R$300,00</h1>
+        <div class="flex justify-between">
+          <div>ID</div>
+          <div class="valor" style="color: darkorange">R$300,00</div>
         </div>
-        <label for="name" class=""> Numero do Cartão </label>
+        <label for="numero" class=""> Número do Cartão </label>
         <input
-          id="name"
-          formControlName="name"
+          id="numero"
+          formControlName="numero"
           class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
           type="text"
           placeholder="XXXX XXXX XXXX XXXX"
@@ -21,53 +21,58 @@
         <small
           class="text-red-500 font-bold px-3"
           *ngIf="
-            (submit && !solicitacaoForm.get('name')?.value) ||
-            (solicitacaoForm.get('name')?.touched &&
-              !solicitacaoForm.get('name')?.value)
+            (submit && !solicitacaoForm.get('numero')?.value) ||
+            (solicitacaoForm.get('numero')?.touched &&
+              !solicitacaoForm.get('numero')?.value)
           "
         >
           Digite o Número do Cartão!
         </small>
-        <label for="description" class="mt-4"> Validade </label>
-        <input
-          placeholder="00/00"
-          id="description"
-          formControlName="description"
-          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-        />
-        <small
-          class="text-red-500 font-bold px-3"
-          *ngIf="
-            (submit && !solicitacaoForm.get('description')?.value) ||
-            (solicitacaoForm.get('description')?.touched &&
-              !solicitacaoForm.get('description')?.value)
-          "
-        >
-          Digite o código de verificação!
-        </small>
-
-        <label for="problem" class="mt-4"> CVV </label>
-        <input
-          id="problem"
-          formControlName="problem"
-          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-        />
-        <small
-          class="text-red-500 font-bold px-3"
-          *ngIf="
-            (submit && !solicitacaoForm.get('problem')?.value) ||
-            (solicitacaoForm.get('problem')?.touched &&
-              !solicitacaoForm.get('problem')?.value)
-          "
-        >
-          Descrição do Defeito é obrigatório!
-        </small>
+        <div class="card-validators" style="margin-top: 10px">
+          <div>
+            <label for="validade" class="mt-4"> Validade </label>
+            <input
+              placeholder="00/00"
+              id="validade"
+              formControlName="validade"
+              style="width: 100px"
+              class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+            />
+            <small
+              class="text-red-500 font-bold px-3"
+              *ngIf="
+                (submit && !solicitacaoForm.get('validade')?.value) ||
+                solicitacaoForm.get('validade')?.touched
+              "
+            >
+              Digite o código de verificação!
+            </small>
+          </div>
+          <div>
+            <label for="cvv" class="mt-4"> CVV </label>
+            <input
+              id="cvv"
+              formControlName="cvv"
+              class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+            />
+            <small
+              class="text-red-500 font-bold px-3"
+              *ngIf="
+                (submit && !solicitacaoForm.get('cvv')?.value) ||
+                (solicitacaoForm.get('cvv')?.touched &&
+                  !solicitacaoForm.get('cvv')?.value)
+              "
+            >
+              Digite o código de verificação
+            </small>
+          </div>
+        </div>
       </div>
 
       <div class="flex flex-col items-end">
         <button
           type="submit"
-          (click)="openDialogAccept()"
+          (click)="openDialogDecline()"
           class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
         >
           Confirmar
@@ -75,6 +80,7 @@
         <button
           type="submit"
           (click)="openDialogDecline()"
+          style="margin-top: 10px"
           class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
         >
           Cancelar

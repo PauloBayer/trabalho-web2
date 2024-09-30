@@ -20,6 +20,7 @@ import {
 })
 export class PagarComponent {
   constructor(public dialog: MatDialog) {}
+
   openDialogAccept() {
     const dialogRef = this.dialog.open(DialogContentAccept);
 

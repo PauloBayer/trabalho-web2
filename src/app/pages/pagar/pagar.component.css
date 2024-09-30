@@ -20,3 +20,9 @@ body {
   padding: 0px 100px;
   color: white;
 }
+.valor {
+  font-size: 25px;
+}
+.card-validators {
+  display: flex;
+}
