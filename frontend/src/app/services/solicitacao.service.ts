@@ -40,7 +40,7 @@ export class SolicitacaoService {
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
-      descricaoEquipameto: descricaoEquipamento,
+      descricaoEquipamento: descricaoEquipamento,
       data: new Date().toISOString(),
       estado: 'ABERTA',
       historico: []
