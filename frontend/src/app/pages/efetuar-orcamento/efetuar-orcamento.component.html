@@ -33,37 +33,26 @@
         <label for="number" class="" style="margin-top: 20px">
           Valor do Orçamento
         </label>
-        <input
-          id="number"
-          formControlName="number"
+        <input id="number" formControlName="number"
           class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-          type="text"
-          placeholder="R$"
-        />
+          type="text" placeholder="R$" />
 
-        <small
+        <!-- <small
           class="text-red-500 font-bold px-3"
           *ngIf="
             !formPagar.get('number')?.value && formPagar.get('number')?.touched
           "
         >
           Digite o valor do orçamento!
-        </small>
+        </small> -->
       </div>
 
       <div class="flex flex-col items-end">
-        <button
-          type="submit"
-          mat-button
-          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
-        >
+        <button type="submit" mat-button class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]">
           Enviar
         </button>
-        <button
-          type=" submit"
-          style="margin-top: 10px"
-          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
-        >
+        <button type=" submit" style="margin-top: 10px"
+          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]">
           Cancelar
         </button>
       </div>

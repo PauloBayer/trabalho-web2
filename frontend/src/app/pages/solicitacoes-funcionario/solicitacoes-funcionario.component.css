@@ -1,0 +1,65 @@
+body {
+    background: rgb(255, 196, 43);
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+table {
+    width: 100%;
+}
+
+td, th {
+    width: 20%;
+}
+
+hr {
+    background: white;
+    height: 2px;
+}
+
+.black-box {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    color: white;
+    width: 85%;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.orcamentos-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0 20px;
+}
+
+.orcamentos-subtitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 20px 0 20px;
+}
+
+::ng-deep div.mat-sort-header-container {
+    justify-content: center;
+}
+
+::ng-deep td.mat-mdc-cell {
+    text-align: center;
+}
+
+::ng-deep mat-icon.no-margin {
+    margin: 0 !important;
+}
+
+::ng-deep button.solicitacao-button {
+    height: 35px;
+    padding: 5px;
+}
