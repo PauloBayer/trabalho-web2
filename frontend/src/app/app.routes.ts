@@ -7,6 +7,7 @@ import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-o
 import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { PagarComponent } from './pages/pagar/pagar.component';
 import { ClienteLayoutComponent } from './layout/cliente-layout/cliente-layout.component';
+import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,10 @@ export const routes: Routes = [
       {
         path: 'servico',
         component: VisualizarServicoComponent,
+      },
+      {
+        path: 'efetuar',
+        component: EfetuarOrcamentoComponent,
       },
     ],
   },
