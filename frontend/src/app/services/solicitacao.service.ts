@@ -19,7 +19,7 @@ export class SolicitacaoService {
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
       categoriaEquipamento: 'Categoria ' + estado,
       descricaoDefeito: 'Defeito em estado ' + estado,
-      descricaoEquipamento: 'Equipamento ' + estado,
+      descricaoEquipameto: 'Equipamento ' + estado,
       data: new Date().toISOString(),
       estado: estado
     }));
@@ -38,10 +38,9 @@ export class SolicitacaoService {
     
     solicitacoes.push({
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-      cliente: 'Cliente Exemplo',
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
-      descricaoEquipamento: descricaoEquipamento,
+      descricaoEquipameto: descricaoEquipamento,
       data: new Date().toISOString(),
       estado: 'ABERTA',
       historico: []

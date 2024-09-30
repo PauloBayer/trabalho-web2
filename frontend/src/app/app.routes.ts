@@ -6,20 +6,39 @@ import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.co
 import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-orcamentos.component';
 import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { PagarComponent } from './pages/pagar/pagar.component';
+import { ClienteLayoutComponent } from './layout/cliente-layout/cliente-layout.component';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: PaginaInicialComponent,
-  },
-  {
-    path: 'efetuar',
-    component: EfetuarOrcamentoComponent,
-  },
-  {
-    path: 'solicitacao-manutencao',
-    component: SolicitacaoManutencaoComponent,
+    component: ClienteLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: PaginaInicialComponent,
+      },
+      {
+        path: 'solicitacao-manutencao',
+        component: SolicitacaoManutencaoComponent,
+      },
+      {
+        path: 'orcamentos',
+        component: MostrarOrcamentosComponent,
+      },
+      {
+        path: 'pagar',
+        component: PagarComponent,
+      },
+      {
+        path: 'servico',
+        component: VisualizarServicoComponent,
+      },
+      {
+        path: 'efetuar',
+        component: EfetuarOrcamentoComponent,
+      },
+    ],
   },
   {
     path: 'login',
@@ -28,18 +47,6 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-  },
-  {
-    path: 'orcamentos',
-    component: MostrarOrcamentosComponent,
-  },
-  {
-    path: 'pagar',
-    component: PagarComponent,
-  },
-  {
-    path: 'servico',
-    component: VisualizarServicoComponent,
   },
   {
     path: '**',

@@ -52,11 +52,11 @@
       </div>
 
       <div class="flex flex-col items-end">
-        <button type="submit" mat-button class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
-          [disabled]="!formPagar.valid">
+        <button type="submit" mat-button (click)="openDialogDecline()"
+          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]" [disabled]="!formPagar.valid">
           Confirmar
         </button>
-        <button type=" submit" style="margin-top: 10px"
+        <button type=" submit" (click)="openDialogDecline()" style="margin-top: 10px"
           class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]">
           Cancelar
         </button>
