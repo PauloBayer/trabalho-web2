@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cliente-layout',
@@ -8,4 +8,16 @@ import { RouterModule } from '@angular/router';
   templateUrl: './cliente-layout.component.html',
   styleUrl: './cliente-layout.component.css',
 })
-export class ClienteLayoutComponent {}
+export class ClienteLayoutComponent {
+
+  constructor(private router: Router) { }
+
+  goToSolicitacoes() {
+    this.router.navigate(['solicitacoes']);
+  }
+
+  goHome() {
+    this.router.navigate(['']);
+  }
+
+}

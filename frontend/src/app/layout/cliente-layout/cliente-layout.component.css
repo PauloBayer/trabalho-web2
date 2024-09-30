@@ -11,10 +11,12 @@
     background-color: black;
     color: white;
     border-radius: 0 0 40px 40px;
+    z-index: 1000;
 }
 
 .header .header-text {
     font-size: 20px;
+    cursor: pointer;
 }
 
 .header-left {
