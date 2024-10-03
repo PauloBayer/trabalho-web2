@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
@@ -8,4 +8,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  constructor(private router: Router) {}
+
+  goHome() {
+    this.router.navigate(['']);
+  }
+}

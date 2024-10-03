@@ -15,14 +15,17 @@ import { SolicitacaoService } from '../../services/solicitacao.service';
 export class PaginaInicialComponent implements OnInit {
   solicitacoes: ISolicitacao[] = [];
 
-  constructor(private router: Router, private solicitacaoService: SolicitacaoService) {}
-  
+  constructor(
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {}
+
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
-      next: (data: ISolicitacao []) => {
+      next: (data: ISolicitacao[]) => {
         this.solicitacoes = data;
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 
@@ -39,7 +42,7 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   onFazerSolicitacao() {
-    this.router.navigate(['solicitacao-manutencao']);
+    this.router.navigate(['client/solicitacao-manutencao']);
   }
 
   resgatarSolicitacao(s: ISolicitacao) {
@@ -57,9 +60,9 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   checkOrcamento() {
-    this.router.navigate(['orcamentos']);
+    this.router.navigate(['client/orcamentos']);
   }
-  
+
   get orderSolicitacoes(): ISolicitacao[] {
     return this.solicitacoes.sort(
       (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()

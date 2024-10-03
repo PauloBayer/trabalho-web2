@@ -1,0 +1,58 @@
+.header {
+    width: 100%;
+    padding: 40px 40px 0px 40px;
+    background-color: black;
+    color: white;
+    border-radius: 0 0 40px 40px;
+    overflow-x: hidden;
+}
+
+.h-border {
+    position: relative;
+    top: 20px;
+    border-radius: 0 0 40px 40px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+
+}
+
+.header-text {
+    font-family: 'nuckle';
+    font-weight: 600;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.small-text {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    font-size: 40px;
+}
+
+main {
+    overflow: hidden;
+}
+
+footer {
+    background-color: black;
+    color: white;
+}
+
+.f-border {
+    position: relative;
+    top: -20px;
+    border-radius: 40px 40px 0px 0px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+
+}
