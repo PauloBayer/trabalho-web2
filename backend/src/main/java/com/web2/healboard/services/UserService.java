@@ -11,12 +11,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Random;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public User findUserByEmail(String username) {
@@ -40,8 +43,10 @@ public class UserService {
         if (this.userRepository.existsByCpf(user.getCpf()))
             throw new CpfJaRegistradoException("o CPF já está sendo usado");
 
-        String senha = "mockedpassword";
+        String senha = String.format("%04d", new Random().nextInt(10000));
         user.setSenha(this.passwordEncoder.encode(senha));
+
+        this.emailService.sendEmail(user.getEmail(), "Cadastro na plataforma HealBoard", senha);
 
         return userRepository.save(user);
     }
