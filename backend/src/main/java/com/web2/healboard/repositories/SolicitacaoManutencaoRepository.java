@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface SolicitacaoManutencaoRepository extends JpaRepository<SolicitacaoManutencao, UUID> {
     Optional<SolicitacaoManutencao> findByDescricaoEquipamento(String descricaoEquipamento);
     List<SolicitacaoManutencao> findByClienteId(Long clienteId);
+    Optional<SolicitacaoManutencao> findByIdAndClienteId(UUID id, Long clienteId);
 }

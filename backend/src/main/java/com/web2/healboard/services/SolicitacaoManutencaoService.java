@@ -3,10 +3,13 @@ package com.web2.healboard.services;
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.user.User;
 import com.web2.healboard.repositories.SolicitacaoManutencaoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,25 +34,38 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacao);
     }
 
-    public List<SolicitacaoManutencao> obterSolicitacoes() {
-        return solicitacaoManutencaoRepository.findAll();
-    }
-
     public SolicitacaoManutencao obterSolicitacaoPorId(UUID id) {
-        return solicitacaoManutencaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Solicitação não encontrada"));
+        return solicitacaoManutencaoRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Solicitação não encontrada")
+        );
     }
 
-    public void atualizarSolicitacao(UUID id, SolicitacaoManutencao novaSolicitacao) {
+    public SolicitacaoManutencao obterSolicitacaoPorIdEUser(UUID id, User user) {
+        return solicitacaoManutencaoRepository.findByIdAndClienteId(id, user.getId()).orElseThrow(
+                () -> new IllegalArgumentException("Solicitação não encontrada")
+        );
+    }
+
+    public void atualizarSolicitacao(UUID id, SolicitacaoManutencao novaSolicitacao, User user) {
         SolicitacaoManutencao solicitacaoExistente = obterSolicitacaoPorId(id);
+
+        if (!Objects.equals(solicitacaoExistente.getCliente().getId(), user.getId()))
+            throw new AccessDeniedException("Solicitação não encontrada");
+
         solicitacaoExistente.setDescricaoEquipamento(novaSolicitacao.getDescricaoEquipamento());
         solicitacaoExistente.setCategoriaEquipamento(novaSolicitacao.getCategoriaEquipamento());
         solicitacaoExistente.setDescricaoDefeito(novaSolicitacao.getDescricaoDefeito());
-        solicitacaoManutencaoRepository.save(solicitacaoExistente);
+
+        this.solicitacaoManutencaoRepository.save(solicitacaoExistente);
     }
 
-    public void excluirSolicitacao(UUID id) {
-        SolicitacaoManutencao solicitacao = obterSolicitacaoPorId(id);
-        solicitacaoManutencaoRepository.delete(solicitacao);
+    public void excluirSolicitacao(UUID id, User user) {
+        SolicitacaoManutencao solicitacao = this.obterSolicitacaoPorId(id);
+
+        if (!Objects.equals(solicitacao.getCliente().getId(), user.getId()))
+            throw new AccessDeniedException("Solicitação não encontrada");
+
+        this.solicitacaoManutencaoRepository.delete(solicitacao);
     }
 
     public List<SolicitacaoManutencao> obterSolicitacoesPorClienteId(Long clienteId) {
