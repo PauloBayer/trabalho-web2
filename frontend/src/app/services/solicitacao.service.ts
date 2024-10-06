@@ -53,11 +53,11 @@ export class SolicitacaoService {
 
   getCategoriasEquipamento(): Observable<ICategoriaEquipamento []> {
     return of([
-      { value: 'notebook', view: 'Notebook' },
-      { value: 'desktop', view: 'Desktop' },
-      { value: 'impressora', view: 'Impressora' },
-      { value: 'mouse', view: 'Mouse' },
-      { value: 'teclado', view: 'Teclado' },
+      { name: 'notebook', description: 'Notebook' },
+      { name: 'desktop', description: 'Desktop' },
+      { name: 'impressora', description: 'Impressora' },
+      { name: 'mouse', description: 'Mouse' },
+      { name: 'teclado', description: 'Teclado' },
     ]);
   }
 
