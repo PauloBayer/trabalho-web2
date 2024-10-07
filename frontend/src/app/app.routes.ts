@@ -10,6 +10,8 @@ import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orc
 import { SolicitacoesFuncionarioComponent } from './pages/solicitacoes-funcionario/solicitacoes-funcionario.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { CategoriasComponent } from './pages/categorias/categorias.component';
+import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 
 export const routes: Routes = [
   {
@@ -50,6 +52,14 @@ export const routes: Routes = [
         path: 'solicitacoes',
         component: SolicitacoesFuncionarioComponent,
       },
+      {
+        path: 'categorias',
+        component: CategoriasComponent,
+      },
+      {
+        path: 'manutencao',
+        component: ManutencaoComponent,
+      }
     ],
   },
   {

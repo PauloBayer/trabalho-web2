@@ -1,8 +1,11 @@
 package com.web2.healboard.config.security;
 
-import com.web2.healboard.models.user.User;
+import com.web2.healboard.exceptions.TokenJwtInvalidoException;
+import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.models.funcionario.Funcionario;
 import com.web2.healboard.models.user.UserDetailsImpl;
 import com.web2.healboard.services.JwtService;
+import com.web2.healboard.services.ClienteService;
 import com.web2.healboard.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,11 +37,23 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (token != null) {
             String email = this.jwtService.getTokenSubject(token);
-            User user = this.userService.findUserByEmail(email);
-            UserDetailsImpl userDetailsImpl = new UserDetailsImpl(user);
+            Object user = this.userService.findByEmail(email);
 
-            var authentication = new UsernamePasswordAuthenticationToken(userDetailsImpl, null, userDetailsImpl.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetailsImpl userDetailsImpl = null;
+
+            if (user instanceof Cliente)
+                userDetailsImpl = UserDetailsImpl.fromCliente((Cliente) user);
+            else if (user instanceof Funcionario)
+                userDetailsImpl = UserDetailsImpl.fromFuncionario((Funcionario) user);
+
+            if (userDetailsImpl != null) {
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        userDetailsImpl,
+                        null,
+                        userDetailsImpl.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(request, response);

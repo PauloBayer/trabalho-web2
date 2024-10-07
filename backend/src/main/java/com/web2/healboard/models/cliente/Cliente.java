@@ -1,4 +1,4 @@
-package com.web2.healboard.models.user;
+package com.web2.healboard.models.cliente;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "tb_users")
-public class User {
+@Table(name = "tb_clientes")
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +38,6 @@ public class User {
 
     @Column(name = "senha", nullable = false)
     private String senha;
-
-    @Column(name = "role", nullable = false)
-    private UserRoleEnum role;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)

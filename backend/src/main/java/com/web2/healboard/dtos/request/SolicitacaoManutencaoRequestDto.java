@@ -20,6 +20,6 @@ public class SolicitacaoManutencaoRequestDto {
     @Size(max = 500, message = "Descrição do defeito deve ter no máximo 500 caracteres")
     private String descricaoDefeito;
 
-    @Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$", message = "Formato da data deve ser dd/MM/yyyy")
-    private String dataDefeito;
+//    @Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$", message = "Formato da data deve ser dd/MM/yyyy")
+//    private String dataDefeito;
 }

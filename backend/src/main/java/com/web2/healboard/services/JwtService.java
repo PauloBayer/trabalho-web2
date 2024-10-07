@@ -1,7 +1,8 @@
 package com.web2.healboard.services;
 
 import com.web2.healboard.exceptions.TokenJwtInvalidoException;
-import com.web2.healboard.models.user.User;
+import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.models.funcionario.Funcionario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -29,13 +30,29 @@ public class JwtService {
     private final long EXPIRE_MINUTES = 30;
     private final UserService userService;
 
-    public String createToken(User user) {
+    public String createToken(Funcionario funcionario) {
         Date issuedAt = new Date();
         Date limit = this.generateToExpireDate(issuedAt);
 
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(user.getEmail())
+                .setSubject(funcionario.getEmail())
+                .setIssuedAt(issuedAt)
+                .setExpiration(limit)
+                .signWith(
+                        Keys.hmacShaKeyFor(this.SECRET_KEY.getBytes(StandardCharsets.UTF_8)),
+                        SignatureAlgorithm.HS256
+                )
+                .compact();
+    }
+
+    public String createToken(Cliente cliente) {
+        Date issuedAt = new Date();
+        Date limit = this.generateToExpireDate(issuedAt);
+
+        return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setSubject(cliente.getEmail())
                 .setIssuedAt(issuedAt)
                 .setExpiration(limit)
                 .signWith(
@@ -62,9 +79,14 @@ public class JwtService {
         try {
             this.validateToken(oldToken);
             String username = this.getTokenSubject(oldToken);
-            User user = this.userService.findUserByEmail(username);
+            Object user = this.userService.findByEmail(username);
 
-            return this.createToken(user);
+            if (user instanceof Cliente)
+                return this.createToken((Cliente) user);
+            else if (user instanceof Funcionario)
+                return this.createToken((Funcionario) user);
+            else
+                throw new TokenJwtInvalidoException("bearer token antigo é invalido ou expirado");
         } catch (Exception e) {
             throw new TokenJwtInvalidoException("bearer token antigo é invalido ou expirado");
         }
