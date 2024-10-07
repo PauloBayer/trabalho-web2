@@ -1,5 +1,6 @@
 package com.web2.healboard.controllers;
 
+import com.web2.healboard.dtos.mapper.FuncionarioMapper;
 import com.web2.healboard.dtos.mapper.SolicitacaoManutencaoMapper;
 import com.web2.healboard.dtos.request.SolicitacaoManutencaoRequestDto;
 import com.web2.healboard.dtos.response.SolicitacaoManutencaoResponseDto;
@@ -81,11 +82,7 @@ public class SolicitacaoManutencaoController {
             throw new NaoAutorizadoException("não autorizado");
 
         List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.obterSolicitacoesPorClienteId(cliente.getId());
-        List<SolicitacaoManutencaoResponseDto> response = solicitacoes
-                .stream()
-                .map(SolicitacaoManutencaoMapper::toDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -106,5 +103,17 @@ public class SolicitacaoManutencaoController {
         }
 
         throw new NaoAutorizadoException("não autorizado");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findAllSolicitacoes(
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Funcionario funcionario))
+            throw new NaoAutorizadoException("não autorizado");
+
+        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findAll();
+        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
     }
 }

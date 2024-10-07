@@ -66,6 +66,10 @@ public class SolicitacaoManutencaoService {
         return solicitacaoManutencaoRepository.findByClienteId(clienteId);
     }
 
+    public List<SolicitacaoManutencao> findAll() {
+        return this.solicitacaoManutencaoRepository.findAll();
+    }
+
     public void orcar() {
         // status deve ser ABERTA
         // solicitacao.setStatus(ORCADA)
