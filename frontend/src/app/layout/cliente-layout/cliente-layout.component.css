@@ -1,36 +1,32 @@
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px 40px;
+    padding: 40px 40px 0px 40px;
     background-color: black;
     color: white;
     border-radius: 0 0 40px 40px;
-    z-index: 1000;
+    overflow-x: hidden;
 }
 
-.header .header-text {
+.h-border {
+    position: relative;
+    top: 20px;
+    border-radius: 0 0 40px 40px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+
+}
+
+.header-text {
+    font-family: 'nuckle';
+    font-weight: 600;
     font-size: 20px;
     cursor: pointer;
 }
 
-.header-left {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    align-items: center;
-}
-
-.header-right {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 20px;
-    align-items: center;
+.small-text {
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .material-symbols-outlined {
@@ -42,9 +38,21 @@
     font-size: 40px;
 }
 
+main {
+    overflow: hidden;
+}
+
 footer {
-    position: relative;
-    padding: 40px 40px;
     background-color: black;
     color: white;
+}
+
+.f-border {
+    position: relative;
+    top: -20px;
+    border-radius: 40px 40px 0px 0px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+
 }

@@ -22,7 +22,11 @@ export class SolicitacaoManutencaoComponent implements OnInit {
   submit = false;
   solicitacaoForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private solicitacaoService: SolicitacaoService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private solicitacaoService: SolicitacaoService,
+    private router: Router
+  ) {
     this.solicitacaoForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -36,26 +40,29 @@ export class SolicitacaoManutencaoComponent implements OnInit {
       next: (data: ICategoriaEquipamento[]) => {
         this.categories = data;
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 
   submitForm(): void {
     this.submit = true;
-  
+
     if (!this.solicitacaoForm.valid) return;
-  
-    const { categorie, problem, name, description } = this.solicitacaoForm.value;
-  
-    this.solicitacaoService.criarSolicitacao(description, problem, categorie).subscribe({
-      next: (data) => {
-        this.router.navigate(['']);
-      },
-      error: (error) => {
-        // arrumar mensagem de erro
-        alert('something went wrong');
-        console.error(error);
-      }
-    });
+
+    const { categorie, problem, name, description } =
+      this.solicitacaoForm.value;
+
+    this.solicitacaoService
+      .criarSolicitacao(description, problem, categorie)
+      .subscribe({
+        next: (data) => {
+          this.router.navigate(['client']);
+        },
+        error: (error) => {
+          // arrumar mensagem de erro
+          alert('something went wrong');
+          console.error(error);
+        },
+      });
   }
 }

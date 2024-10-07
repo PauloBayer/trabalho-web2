@@ -1,7 +1,6 @@
 <div id="container">
   <div class="left">
-    <div
-      style="
+    <div style="
         background: linear-gradient(
           90deg,
           rgba(255, 196, 43, 1) 0%,
@@ -11,41 +10,26 @@
         -webkit-text-fill-color: transparent;
         font-size: 40px;
         margin-bottom: 40px;
-      "
-    >
+      ">
       Seja bem vindo
     </div>
     <div></div>
 
-    <input
-      id="username"
-      type="text"
-      placeholder="usuário"
-      onchange="updateButtonState()"
-      style="
+    <input id="username" type="text" placeholder="usuário" onchange="updateButtonState()" style="
         border: 2px solid rgba(255, 196, 43, 1);
 
         border-radius: 30px;
         padding: 8px;
-      "
-      [formControl]="loginForm.controls.username"
-    />
+      " [formControl]="loginForm.controls.username" />
 
-    <input
-      id="user-password"
-      type="password"
-      placeholder="senha"
-      onchange="updateButtonState()"
-      style="
+    <input id="user-password" type="password" placeholder="senha" onchange="updateButtonState()" style="
         margin-top: 10px;
         border: 2px solid rgba(255, 196, 43, 1);
         border-radius: 30px;
         padding: 8px;
-      "
-      [formControl]="loginForm.controls.password"
-    />
+      " [formControl]="loginForm.controls.password" />
 
-    <a style="color: rgba(255, 94, 43, 1)" href="*">Criar conta</a>
+    <a style="color: rgba(255, 94, 43, 1)" href="register">Criar conta</a>
 
     <a class="btn" href="*" id="btn-login" (click)="onLogin()"> Entrar </a>
   </div>
