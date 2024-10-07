@@ -14,4 +14,10 @@ export class MainLayoutComponent {
   goHome() {
     this.router.navigate(['']);
   }
+  goLogin() {
+    this.router.navigate(['login']);
+  }
+  goRegister() {
+    this.router.navigate(['register']);
+  }
 }

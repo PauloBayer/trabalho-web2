@@ -11,6 +11,7 @@ import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
 import { EstadoSolicitacaoType } from '../../model/types/estado-solicitacao.type';
 import { I } from '@angular/cdk/keycodes';
 import { Solicitacao } from '../../model/classes/Solicitacao';
+import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-solicitacoes-funcionario',
   standalone: true,
@@ -22,22 +23,26 @@ import { Solicitacao } from '../../model/classes/Solicitacao';
     MatPaginatorModule,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './solicitacoes-funcionario.component.html',
-  styleUrl: './solicitacoes-funcionario.component.css'
+  styleUrl: './solicitacoes-funcionario.component.css',
 })
 export class SolicitacoesFuncionarioComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'cliente', 'data', 'estado', 'button'];
+
   dataSource: MatTableDataSource<Solicitacao>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor() {
+  constructor(private router: Router) {
     // Cria 100 solicitações
-    const solicitacoes = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+    const solicitacoes = Array.from({ length: 100 }, (_, k) =>
+      createNewUser(k + 1)
+    );
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(solicitacoes);
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -49,6 +54,9 @@ export class SolicitacoesFuncionarioComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  onEfetuar() {
+    this.router.navigate(['efetuar']);
+  }
 }
 
 /** Builds and returns a new Solicitacao. */
@@ -58,12 +66,18 @@ function createNewUser(id: number): Solicitacao {
     ' ' +
     CLIENTES[Math.round(Math.random() * (CLIENTES.length - 1))].charAt(0) +
     '.';
-  const estados: EstadoSolicitacaoType[] = ['ORÇADA', 'ARRUMADA', 'REJEITADA', 'APROVADA', 'ABERTA'];
+  const estados: EstadoSolicitacaoType[] = [
+    'ORÇADA',
+    'ARRUMADA',
+    'REJEITADA',
+    'APROVADA',
+    'ABERTA',
+  ];
   let solicitacao: Solicitacao = {
     id: id.toString(),
     cliente: name,
     data: DATAS[Math.round(Math.random() * (DATAS.length - 1))].toString(),
-    estado: estados[Math.floor(Math.random() * estados.length)]
+    estado: estados[Math.floor(Math.random() * estados.length)],
   };
   return solicitacao;
 }
@@ -93,7 +107,7 @@ const CLIENTES: string[] = [
   'Daniel',
   'Thiago',
   'Diego',
-  'Vinícius'
+  'Vinícius',
 ];
 
 const DATAS: string[] = [
@@ -116,5 +130,5 @@ const DATAS: string[] = [
   '2023-09-01',
   '2023-09-15',
   '2023-10-01',
-  '2023-10-15'
-]
+  '2023-10-15',
+];
