@@ -1,6 +1,6 @@
 package com.web2.healboard.models.manutencao;
 
-import com.web2.healboard.models.user.User;
+import com.web2.healboard.models.cliente.Cliente;
 import lombok.Data;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +18,7 @@ public class SolicitacaoManutencao {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
-    private User cliente;
+    private Cliente cliente;
 
     @Column(nullable = false)
     private String descricaoEquipamento;

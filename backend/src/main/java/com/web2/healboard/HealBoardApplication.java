@@ -1,14 +1,16 @@
 package com.web2.healboard;
 
-import com.web2.healboard.models.user.User;
-import com.web2.healboard.models.user.UserRoleEnum;
-import com.web2.healboard.repositories.UserRepository;
+import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.models.funcionario.Funcionario;
+import com.web2.healboard.repositories.ClienteRepository;
+import com.web2.healboard.repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -19,14 +21,16 @@ public class HealBoardApplication implements CommandLineRunner {
 	}
 
 	@Autowired
-	private UserRepository userRepository;
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private FuncionarioRepository funcionarioRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (!this.userRepository.existsByEmail("cliente@email.com")) {
-			User user1 = new User(
+		if (!this.clienteRepository.existsByEmail("cliente@email.com")) {
+			Cliente cliente1 = new Cliente(
 					1L,
 					"1234",
 					"12345678901",
@@ -34,16 +38,15 @@ public class HealBoardApplication implements CommandLineRunner {
 					"21987654321",
 					"01001000",
 					this.passwordEncoder.encode("1234"),
-					UserRoleEnum.CLIENTE,
 					LocalDateTime.now(),
 					LocalDateTime.now()
 			);
 
-			userRepository.save(user1);
+			clienteRepository.save(cliente1);
 		}
 
-		if (!this.userRepository.existsByEmail("joao@example.com")) {
-			User user2 = new User(
+		if (!this.clienteRepository.existsByEmail("joao@example.com")) {
+			Cliente cliente2 = new Cliente(
 					2L,
 					"joao",
 					"10987654321",
@@ -51,29 +54,23 @@ public class HealBoardApplication implements CommandLineRunner {
 					"31987654321",
 					"02002000",
 					this.passwordEncoder.encode("1234"),
-					UserRoleEnum.CLIENTE,
 					LocalDateTime.now(),
 					LocalDateTime.now()
 			);
 
-			userRepository.save(user2);
+			clienteRepository.save(cliente2);
 		}
 
-		if (!this.userRepository.existsByEmail("funcionario@email.com")) {
-			User user3 = new User(
+		if (!this.funcionarioRepository.existsByEmail("funcionario@email.com")) {
+			Funcionario funcionario1 = new Funcionario(
 					3L,
 					"Funcionario 1234",
-					"98765432100",
 					"funcionario@email.com",
-					"11987654321",
-					"03003000",
 					this.passwordEncoder.encode("1234"),
-					UserRoleEnum.FUNCIONARIO,
-					LocalDateTime.now(),
-					LocalDateTime.now()
+					LocalDate.of(2000, 10, 21)
 			);
 
-			userRepository.save(user3);
+			funcionarioRepository.save(funcionario1);
 		}
 	}
 }

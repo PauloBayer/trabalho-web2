@@ -1,10 +1,7 @@
 package com.web2.healboard.controllers;
 
 import com.web2.healboard.dtos.response.ErrorResponseDto;
-import com.web2.healboard.exceptions.CpfJaRegistradoException;
-import com.web2.healboard.exceptions.EmailJaRegistradoException;
-import com.web2.healboard.exceptions.SenhaInvalidaException;
-import com.web2.healboard.exceptions.TokenJwtInvalidoException;
+import com.web2.healboard.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,6 +35,9 @@ public class RestExceptionHandler {
             RuntimeException e
     ) {
         log.info(String.valueOf(e.getCause()) + " | " + e.getMessage() + " | " + e.getClass());
+
+        if (e.getCause() == null)
+            e.printStackTrace();
 
         ErrorResponseDto restErrorDto = new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "something went wrong");
         return ResponseEntity
@@ -117,6 +117,28 @@ public class RestExceptionHandler {
             TokenJwtInvalidoException e
     ) {
         ErrorResponseDto restErrorDto = new ErrorResponseDto(HttpStatus.FORBIDDEN, "invalid bearer token");
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(restErrorDto);
+    }
+
+    @ExceptionHandler(NaoAutorizadoException.class)
+    private ResponseEntity<ErrorResponseDto> naoAutorizadoExceptionHandler(
+            NaoAutorizadoException e
+    ) {
+        ErrorResponseDto restErrorDto = new ErrorResponseDto(HttpStatus.UNAUTHORIZED, "não autorizado");
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(restErrorDto);
+    }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    private ResponseEntity<ErrorResponseDto> credenciaisInvalidasExceptionHandler(
+            CredenciaisInvalidasException e
+    ) {
+        ErrorResponseDto restErrorDto = new ErrorResponseDto(HttpStatus.FORBIDDEN, e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)

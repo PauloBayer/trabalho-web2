@@ -1,5 +1,7 @@
 package com.web2.healboard.models.user;
 
+import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.models.funcionario.Funcionario;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,22 +14,39 @@ import java.util.Collections;
 @Getter
 public class UserDetailsImpl implements org.springframework.security.core.userdetails.UserDetails {
 
-    private final User user;
+    private final String email;
+    private final String senha;
+    private final Collection<? extends GrantedAuthority> authorities;
+
+    public static UserDetailsImpl fromCliente(Cliente cliente) {
+        return new UserDetailsImpl(
+                cliente.getEmail(),
+                null,
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_CLIENTE"))
+        );
+    }
+
+    public static UserDetailsImpl fromFuncionario(Funcionario funcionario) {
+        return new UserDetailsImpl(
+                funcionario.getEmail(),
+                null,
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_FUNCIONARIO"))
+        );
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = user.getRole();
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return this.user.getSenha();
+        return this.senha;
     }
 
     @Override
     public String getUsername() {
-        return this.user.getEmail();
+        return this.email;
     }
 
     @Override
