@@ -59,7 +59,7 @@ export const routes: Routes = [
       {
         path: 'manutencao',
         component: ManutencaoComponent,
-      }
+      },
     ],
   },
   {
