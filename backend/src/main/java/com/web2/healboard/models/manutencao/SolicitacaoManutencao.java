@@ -2,7 +2,9 @@ package com.web2.healboard.models.manutencao;
 
 import com.web2.healboard.models.user.User;
 import lombok.Data;
-import jakarta.persistence.*; 
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,15 +29,11 @@ public class SolicitacaoManutencao {
     @Column(nullable = false)
     private String descricaoDefeito;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime dataHora;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusSolicitacao status;
-
-    public SolicitacaoManutencao() {
-        this.dataHora = LocalDateTime.now();
-        this.status = StatusSolicitacao.ABERTA;
-    }
 }

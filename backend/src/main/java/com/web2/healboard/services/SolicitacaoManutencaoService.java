@@ -1,6 +1,7 @@
 package com.web2.healboard.services;
 
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
+import com.web2.healboard.models.manutencao.StatusSolicitacao;
 import com.web2.healboard.models.user.User;
 import com.web2.healboard.repositories.SolicitacaoManutencaoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,14 +24,8 @@ public class SolicitacaoManutencaoService {
             SolicitacaoManutencao solicitacao,
             User user
     ) {
-        Optional<SolicitacaoManutencao> existente = this.solicitacaoManutencaoRepository.findByDescricaoEquipamento(
-                solicitacao.getDescricaoEquipamento()
-        );
-
-        if (existente.isPresent())
-            throw new IllegalArgumentException("Solicitação para esse equipamento já existe.");
-
         solicitacao.setCliente(user);
+        solicitacao.setStatus(StatusSolicitacao.ABERTA);
         this.solicitacaoManutencaoRepository.save(solicitacao);
     }
 

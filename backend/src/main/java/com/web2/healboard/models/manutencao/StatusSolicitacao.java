@@ -1,5 +1,5 @@
 package com.web2.healboard.models.manutencao;
 
 public enum StatusSolicitacao {
-    ABERTA, ORCAMENTO_ENVIADO, FINALIZADA
+    ABERTA, ORCADA, REJEITADA, APROVADA, REDIRECIONADA, AGUARDANDO_PAGAMENTO, PAGA, FINALIZADA
 }

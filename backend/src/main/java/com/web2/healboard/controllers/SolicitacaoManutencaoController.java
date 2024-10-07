@@ -69,7 +69,7 @@ public class SolicitacaoManutencaoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> obterSolicitacoesDoClienteAutenticado(
             Principal principal
     ) {
