@@ -1,4 +1,4 @@
 export interface ICategoriaEquipamento {
-    value: string;
-    view: string;
+    name: string;
+    description: string;
 }

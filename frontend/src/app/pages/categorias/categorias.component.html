@@ -1,0 +1,88 @@
+<div class="main-body">
+    <div class="black-box w-75 h-75 px-5 p-5">
+        <h1 class="categoria-title">Categorias de Equipamentos</h1>
+        <hr class="mt-2 mb-5">
+        <div class="mb-3 d-flex justify-content-end">
+            <button mat-raised-button (click)="openDialog()">Adicionar categoria</button>
+        </div>
+        <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Notebook" #input>
+        </mat-form-field>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="number">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
+                    <td mat-cell *matCellDef="let element; let i = renderIndex">
+                        {{ (paginator.pageIndex * paginator.pageSize) + i + 1 }}
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.name }}
+                    </td>
+                </ng-container>
+
+                <!-- Description Column (with ellipsis) -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descrição</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="ellipsis">
+                            {{ element.description }}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Ações</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button (click)="openEditDialog(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteCategory(element.name)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-icon-button aria-label="expand row"
+                            (click)="(expandedCategory = expandedCategory === element ? null : element); $event.stopPropagation()">
+                            @if (expandedCategory === element) {
+                            <mat-icon>keyboard_arrow_up</mat-icon>
+                            } @else {
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                            }
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                        <div class="example-element-detail"
+                            [@detailExpand]="element == expandedCategory ? 'expanded' : 'collapsed'">
+                            <div class="example-element-description">
+                                <span class="example-element-description-attribution"> Descrição: </span>
+                                {{element.description}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+                    [class.example-expanded-row]="expandedCategory === element"
+                    (click)="expandedCategory = expandedCategory === element ? null : element">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">Nenhum dado corresponde ao filtro "{{input.value}}"</td>
+                </tr>
+            </table>
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+
+</div>

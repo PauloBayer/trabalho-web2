@@ -8,6 +8,8 @@ import { VisualizarServicoComponent } from './pages/visualizar-servico/visualiza
 import { ClienteLayoutComponent } from './layout/cliente-layout/cliente-layout.component';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 import { SolicitacoesFuncionarioComponent } from './pages/solicitacoes-funcionario/solicitacoes-funcionario.component';
+import { CategoriasComponent } from './pages/categorias/categorias.component';
+import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,14 @@ export const routes: Routes = [
         path: 'solicitacoes',
         component: SolicitacoesFuncionarioComponent,
       },
+      {
+        path: 'categorias',
+        component: CategoriasComponent,
+      },
+      {
+        path: 'manutencao',
+        component: ManutencaoComponent,
+      }
     ],
   },
   {
