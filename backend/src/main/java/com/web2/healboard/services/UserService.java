@@ -1,53 +1,36 @@
 package com.web2.healboard.services;
 
-import com.web2.healboard.exceptions.CpfJaRegistradoException;
-import com.web2.healboard.exceptions.EmailJaRegistradoException;
-import com.web2.healboard.exceptions.SenhaInvalidaException;
-import com.web2.healboard.models.user.User;
-import com.web2.healboard.repositories.UserRepository;
+import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.models.funcionario.Funcionario;
+import com.web2.healboard.repositories.ClienteRepository;
+import com.web2.healboard.repositories.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    private final ClienteRepository clienteRepository;
+    private final FuncionarioRepository funcionarioRepository;
 
-    @Transactional(readOnly = true)
-    public User findUserByEmail(String username) {
-        return this.userRepository.findByEmail(username).orElseThrow(
-                () -> new EntityNotFoundException("usuario não encontrado")
-        );
+    public Object findByEmail(String email) {
+        Optional<Cliente> optionalCliente = this.clienteRepository.findByEmail(email);
+        if (optionalCliente.isPresent())
+            return optionalCliente.get();
+
+        Optional<Funcionario> optionalFuncionario = this.funcionarioRepository.findByEmail(email);
+        if (optionalFuncionario.isPresent())
+            return optionalFuncionario.get();
+
+        throw new EntityNotFoundException("user não encontrado");
     }
 
-    @Transactional(readOnly = true)
-    public User findUserByEmailAndSenha(String email, String password) {
-        User user = this.findUserByEmail(email);
-        if (!this.passwordEncoder.matches(password, user.getSenha()))
-            throw new SenhaInvalidaException("senha inválida");
-        return user;
-    }
-
-    public User createUser(User user) {
-        if (this.userRepository.existsByEmail(user.getEmail()))
-            throw new EmailJaRegistradoException("o email já está sendo usado");
-
-        if (this.userRepository.existsByCpf(user.getCpf()))
-            throw new CpfJaRegistradoException("o CPF já está sendo usado");
-
-        String senha = String.format("%04d", new Random().nextInt(10000));
-        user.setSenha(this.passwordEncoder.encode(senha));
-
-        this.emailService.sendEmail(user.getEmail(), "Cadastro na plataforma HealBoard", senha);
-
-        return userRepository.save(user);
+    public boolean existsByEmail(String email) {
+        return this.funcionarioRepository.existsByEmail(email)
+                || this.clienteRepository.existsByEmail(email);
     }
 }

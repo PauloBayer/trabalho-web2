@@ -1,15 +1,15 @@
 package com.web2.healboard.repositories;
 
-import com.web2.healboard.models.user.User;
+import com.web2.healboard.models.cliente.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     boolean existsByEmail(String email);
     boolean existsByCpf(String cpf);
-    Optional<User> findByEmail(String email);
-    Optional<User> findByEmailAndSenha(String email, String senha);
+    Optional<Cliente> findByEmail(String email);
+    Optional<Cliente> findByEmailAndSenha(String email, String senha);
 }
