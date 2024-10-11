@@ -17,13 +17,25 @@ public class SolicitacaoManutencaoMapper {
     }
 
     public static SolicitacaoManutencaoResponseDto toDto(SolicitacaoManutencao model) {
-        return new SolicitacaoManutencaoResponseDto(
-                model.getId(),
-                model.getDescricaoEquipamento(),
-                model.getCategoriaEquipamento(),
-                model.getDescricaoDefeito(),
-                model.getDataHora().format(DateTimeFormatter.ISO_DATE_TIME),
-                model.getStatus().toString()
+        SolicitacaoManutencaoResponseDto dto = new SolicitacaoManutencaoResponseDto();
+        dto.setId(model.getId());
+        dto.setCategoriaEquipamento(model.getCategoriaEquipamento());
+        dto.setNomeFuncionario(
+                model.getFuncionario() == null ? null : model.getFuncionario().getNome()
         );
+        dto.setStatus(model.getStatus().toString());
+        dto.setDataHoraCriacao(model.getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME));
+        dto.setDataHoraAtualizacao(model.getDataHoraAtualizacao().format(DateTimeFormatter.ISO_DATE_TIME));
+        dto.setDescricaoEquipamento(model.getDescricaoEquipamento());
+        dto.setDescricaoDefeito(model.getDescricaoDefeito());
+        dto.setValorOrcado(model.getValorOrcado());
+        dto.setMotivoRejeicao(model.getMotivoRejeicao());
+        dto.setDataHoraPagamento(
+                model.getDataHoraPagamento() == null ? null : model.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+        dto.setOrientacoesManutencao(model.getOrientacoesManutencao());
+        dto.setDescricaoManutencao(model.getDescricaoManutencao());
+
+        return dto;
     }
 }
