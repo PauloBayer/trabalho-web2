@@ -35,6 +35,10 @@ public class HistoricoSolicitacao {
     @Column(nullable = false)
     private StatusSolicitacao statusAtual;
 
+    @ManyToOne
+    @JoinColumn(name = "id_funcionario", nullable = true)
+    private Funcionario funcionario;
+
     @CreationTimestamp
     @Column(name = "data_hora", nullable = false)
     private LocalDateTime dataHora;

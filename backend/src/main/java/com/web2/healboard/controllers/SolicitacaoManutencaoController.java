@@ -2,6 +2,8 @@ package com.web2.healboard.controllers;
 
 import com.web2.healboard.dtos.mapper.FuncionarioMapper;
 import com.web2.healboard.dtos.mapper.SolicitacaoManutencaoMapper;
+import com.web2.healboard.dtos.request.EfetuarOrcamentoRequestDto;
+import com.web2.healboard.dtos.request.RejeitarServicoRequestDto;
 import com.web2.healboard.dtos.request.SolicitacaoManutencaoRequestDto;
 import com.web2.healboard.dtos.response.SolicitacaoComHistoricoResponseDto;
 import com.web2.healboard.dtos.response.SolicitacaoManutencaoResponseDto;
@@ -140,5 +142,46 @@ public class SolicitacaoManutencaoController {
 
         List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findAll();
         return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
+    }
+
+    @PutMapping("/{id}/orcamento")
+    public ResponseEntity<Void> efetuarOrcamento(
+            @PathVariable UUID id,
+            @RequestBody @Valid EfetuarOrcamentoRequestDto dto,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Funcionario funcionario))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.efetuarOrcamento(id, funcionario, dto.getValorOrcado());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/aprovar")
+    public ResponseEntity<Void> aprovarServico(
+            @PathVariable UUID id,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Cliente cliente))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.aprovarServico(id, cliente);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/rejeitar")
+    public ResponseEntity<Void> rejeitarServico(
+            @PathVariable UUID id,
+            @RequestBody @Valid RejeitarServicoRequestDto dto,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Cliente cliente))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.rejeitarServico(id, cliente, dto.getMotivoRejeicao());
+        return ResponseEntity.ok().build();
     }
 }
