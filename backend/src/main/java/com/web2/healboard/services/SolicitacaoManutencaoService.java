@@ -1,8 +1,10 @@
 package com.web2.healboard.services;
 
+import com.web2.healboard.models.historico.HistoricoSolicitacao;
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.manutencao.StatusSolicitacao;
 import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.repositories.HistoricoSolicitacaoRepository;
 import com.web2.healboard.repositories.SolicitacaoManutencaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SolicitacaoManutencaoService {
 
+    private final HistoricoSolicitacaoService historicoSolicitacaoService;
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
 
     public void registrarSolicitacao(
@@ -25,7 +28,11 @@ public class SolicitacaoManutencaoService {
     ) {
         solicitacao.setCliente(cliente);
         solicitacao.setStatus(StatusSolicitacao.ABERTA);
-        this.solicitacaoManutencaoRepository.save(solicitacao);
+
+        SolicitacaoManutencao newSolicitacao = this.solicitacaoManutencaoRepository.save(solicitacao);
+        this.historicoSolicitacaoService.setStatusAberta(
+                newSolicitacao, newSolicitacao.getDescricaoEquipamento(), newSolicitacao.getDescricaoDefeito()
+        );
     }
 
     public SolicitacaoManutencao obterSolicitacaoPorId(UUID id) {
