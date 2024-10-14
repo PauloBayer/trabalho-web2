@@ -3,8 +3,11 @@ package com.web2.healboard.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.web2.healboard.models.categoria.CategoriaEquipamento;
 import com.web2.healboard.repositories.CategoriaEquipamentoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+@Service
 public class CategoriaEquipamentoService {
     @Autowired
     private CategoriaEquipamentoRepository repository;
