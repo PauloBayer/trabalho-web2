@@ -1,8 +1,12 @@
 package com.web2.healboard.services;
 
+import com.web2.healboard.exceptions.AcaoNaoPermitidaException;
+import com.web2.healboard.models.funcionario.Funcionario;
+import com.web2.healboard.models.historico.HistoricoSolicitacao;
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.manutencao.StatusSolicitacao;
 import com.web2.healboard.models.cliente.Cliente;
+import com.web2.healboard.repositories.HistoricoSolicitacaoRepository;
 import com.web2.healboard.repositories.SolicitacaoManutencaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SolicitacaoManutencaoService {
 
+    private final HistoricoSolicitacaoService historicoSolicitacaoService;
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
 
     public void registrarSolicitacao(
@@ -25,7 +30,11 @@ public class SolicitacaoManutencaoService {
     ) {
         solicitacao.setCliente(cliente);
         solicitacao.setStatus(StatusSolicitacao.ABERTA);
-        this.solicitacaoManutencaoRepository.save(solicitacao);
+
+        SolicitacaoManutencao newSolicitacao = this.solicitacaoManutencaoRepository.save(solicitacao);
+        this.historicoSolicitacaoService.setStatusAberta(
+                newSolicitacao, newSolicitacao.getDescricaoEquipamento(), newSolicitacao.getDescricaoDefeito()
+        );
     }
 
     public SolicitacaoManutencao obterSolicitacaoPorId(UUID id) {
@@ -70,19 +79,40 @@ public class SolicitacaoManutencaoService {
         return this.solicitacaoManutencaoRepository.findAll();
     }
 
-    public void orcar() {
-        // status deve ser ABERTA
-        // solicitacao.setStatus(ORCADA)
+    public void efetuarOrcamento(UUID idSolicitacao, Funcionario funcionario, Float valorOrcado) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.ABERTA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser ABERTA");
+
+        this.historicoSolicitacaoService.setStatusOrcada(solicitacaoManutencao, valorOrcado, funcionario);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.ORCADA);
+        solicitacaoManutencao.setValorOrcado(valorOrcado);
+        solicitacaoManutencao.setFuncionario(funcionario);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void aprovarServico() {
-        // status deve ser ORCADA
-        // solicitacao.setStatus(APROVADA)
+    public void aprovarServico(UUID idSolicitacao, Cliente cliente) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.ORCADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser ORÇADA");
+
+        this.historicoSolicitacaoService.setStatusAprovada(solicitacaoManutencao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.APROVADA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void rejeitarServico() {
-        // status deve ser ORCADA
-        // solicitacao.setStatus(REJEITADA)
+    public void rejeitarServico(UUID idSolicitacao, Cliente cliente, String motivoRejeicao) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.ORCADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser ORÇADA");
+
+        this.historicoSolicitacaoService.setStatusRejeitada(solicitacaoManutencao, motivoRejeicao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.REJEITADA);
+        solicitacaoManutencao.setMotivoRejeicao(motivoRejeicao);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
     public void resgatarServico() {

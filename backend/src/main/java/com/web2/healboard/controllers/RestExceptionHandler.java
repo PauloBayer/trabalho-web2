@@ -144,4 +144,15 @@ public class RestExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(restErrorDto);
     }
+
+    @ExceptionHandler(AcaoNaoPermitidaException.class)
+    private ResponseEntity<ErrorResponseDto> acaoNaoPermitidaExceptionHandler(
+            AcaoNaoPermitidaException e
+    ) {
+        ErrorResponseDto restErrorDto = new ErrorResponseDto(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(restErrorDto);
+    }
 }
