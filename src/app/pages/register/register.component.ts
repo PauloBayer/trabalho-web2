@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AsyncValidatorFn } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  AsyncValidatorFn,
+} from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
@@ -10,18 +16,26 @@ import { Router } from '@angular/router';
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [ReactiveFormsModule, HttpClientModule, CommonModule]
+  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
 })
 export class RegisterComponent implements OnInit {
   autoCadastroForm!: FormGroup;
   senhaGerada: string | null = null;
   formSubmitted = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.autoCadastroForm = this.fb.group({
-      cpf: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')], [this.cpfAsyncValidator()]],
+      cpf: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]{11}$')],
+        [this.cpfAsyncValidator()],
+      ],
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cep: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
@@ -29,27 +43,38 @@ export class RegisterComponent implements OnInit {
       bairro: [''],
       cidade: [''],
       estado: [''],
-      telefone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
+      telefone: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(11),
+        ],
+      ],
     });
 
-    this.autoCadastroForm.get('cpf')?.valueChanges.subscribe(value => {
-      const numericValue = value.replace(/\D/g, '').slice(0, 11); 
-      this.autoCadastroForm.get('cpf')?.setValue(numericValue, { emitEvent: false });
+    this.autoCadastroForm.get('cpf')?.valueChanges.subscribe((value) => {
+      const numericValue = value.replace(/\D/g, '').slice(0, 11);
+      this.autoCadastroForm
+        .get('cpf')
+        ?.setValue(numericValue, { emitEvent: false });
     });
 
-    this.autoCadastroForm.get('cep')?.valueChanges.subscribe(value => {
+    this.autoCadastroForm.get('cep')?.valueChanges.subscribe((value) => {
       const numericValue = value.replace(/\D/g, '').slice(0, 8);
-      this.autoCadastroForm.get('cep')?.setValue(numericValue, { emitEvent: false });
+      this.autoCadastroForm
+        .get('cep')
+        ?.setValue(numericValue, { emitEvent: false });
     });
   }
 
   cpfAsyncValidator(): AsyncValidatorFn {
     return (control: any): Observable<any> => {
-      const cpf = control.value.replace(/\D/g, ''); 
+      const cpf = control.value.replace(/\D/g, '');
       if (cpf && this.validarCPF(cpf)) {
         return of(null);
       } else {
-        return of({ invalidCpf: true }); 
+        return of({ invalidCpf: true });
       }
     };
   }
@@ -64,10 +89,14 @@ export class RegisterComponent implements OnInit {
       return resto === 10 ? 0 : resto;
     };
 
-    const soma1 = cpfArray.slice(0, 9).reduce((acc, val, idx) => acc + val * (10 - idx), 0);
+    const soma1 = cpfArray
+      .slice(0, 9)
+      .reduce((acc, val, idx) => acc + val * (10 - idx), 0);
     const primeiroDigito = calcularDigito(soma1, []);
 
-    const soma2 = cpfArray.slice(0, 10).reduce((acc, val, idx) => acc + val * (11 - idx), 0);
+    const soma2 = cpfArray
+      .slice(0, 10)
+      .reduce((acc, val, idx) => acc + val * (11 - idx), 0);
     const segundoDigito = calcularDigito(soma2, []);
 
     return cpfArray[9] === primeiroDigito && cpfArray[10] === segundoDigito;
@@ -82,10 +111,15 @@ export class RegisterComponent implements OnInit {
     }
     if (this.autoCadastroForm.valid) {
       this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
-      localStorage.setItem('userData', JSON.stringify(this.autoCadastroForm.value));
+      localStorage.setItem(
+        'userData',
+        JSON.stringify(this.autoCadastroForm.value)
+      );
       console.log('Formulário enviado:', this.autoCadastroForm.value);
       console.log('Senha gerada:', this.senhaGerada);
-      alert(`Cadastro realizado com sucesso. A senha enviada para o e-mail é: ${this.senhaGerada}`);
+      alert(
+        `Cadastro realizado com sucesso. A senha enviada para o e-mail é: ${this.senhaGerada}`
+      );
     }
   }
 
@@ -101,7 +135,7 @@ export class RegisterComponent implements OnInit {
               logradouro: data.logradouro,
               bairro: data.bairro,
               cidade: data.localidade,
-              estado: data.uf
+              estado: data.uf,
             });
           }
         },
