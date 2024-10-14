@@ -1,0 +1,32 @@
+<div class="dialog-box bg-black text-white">
+    <span mat-dialog-title>{{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário' }}</span>
+    <div mat-dialog-content>
+        <form [formGroup]="form">
+            <mat-form-field>
+                <label>Nome</label>
+                <mat-label style="color: white;">Nome</mat-label>
+                <input matInput style="color: black;" formControlName="nome" />
+            </mat-form-field>
+            <mat-form-field>
+                <label>Email</label>
+                <mat-label>Email</mat-label>
+                <input style="color: black;" matInput formControlName="email" />
+            </mat-form-field>
+            <mat-form-field>
+                <label>Data de Nascimento</label>
+                <mat-label>Data de Nascimento</mat-label>
+                <input matInput style="color: black;" formControlName="data_nascimento" />
+            </mat-form-field>
+            <mat-form-field>
+                <label>Senha</label>
+                <mat-label>Senha</mat-label>
+                <input matInput style="color: black;" formControlName="senha" />
+            </mat-form-field>
+        </form>
+    </div>
+    <div mat-dialog-actions class="d-flex flex-row gap-3 justify-content-end">
+        <button mat-button (click)="onCancel()" class="cancelar">Cancelar</button>
+        <button mat-button (click)="onSubmit()" class="salvar" cdkFocusInitial>{{ data?.funcionario ? 'Salvar' : 'Criar'
+            }}</button>
+    </div>
+</div>

@@ -12,6 +12,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { CategoriasComponent } from './pages/categorias/categorias.component';
 import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
+import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 
 export const routes: Routes = [
   {
@@ -59,6 +60,10 @@ export const routes: Routes = [
       {
         path: 'manutencao',
         component: ManutencaoComponent,
+      },
+      {
+        path: 'funcionarios',
+        component: FuncionariosComponent,
       },
     ],
   },
