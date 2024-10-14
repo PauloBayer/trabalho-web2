@@ -10,6 +10,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -26,7 +27,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -148,6 +150,16 @@ export class RegisterComponent implements OnInit {
   }
 
   onCadastrar() {
-    this.router.navigate(['client']);
+    this.authService.doRegister(this.autoCadastroForm.value).subscribe(
+      () => {
+        alert('Cadastro realizado com sucesso!');
+        this.router.navigate(['client']);
+      },
+      (error) => {
+        console.error('Erro ao cadastrar:', error);
+        alert('Erro ao cadastrar. Tente novamente mais tarde.');
+      }
+    );
+    
   }
 }

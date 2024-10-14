@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {
   FormControl,
@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private solicitacaoService: SolicitacaoService
+    private solicitacaoService: SolicitacaoService,
+    private route: ActivatedRoute
   ) {
     this.loginForm = new FormGroup({
       username: new FormControl<string>('', {
@@ -42,7 +43,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) this.router.navigate(['']);
+    // Comentei a linha abaixo porque não estava deixando entrar nesta página de loggin
+    // if (this.authService.isLoggedIn()) this.router.navigate(['']);
   }
 
   onLogin() {
