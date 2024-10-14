@@ -1,0 +1,10 @@
+<div class="dialog-box bg-black text-white">
+    <h1 mat-dialog-title>Confirmar Exclusão</h1>
+    <div mat-dialog-content class="py-4">
+        <p>Tem certeza de que deseja excluir o funcionário {{ data.nome }}?</p>
+    </div>
+    <div mat-dialog-actions class="d-flex flex-row gap-3 justify-content-end">
+        <button mat-button class="cancelar" (click)="onCancel()">Cancelar</button>
+        <button mat-button class="salvar" (click)="onConfirm()">Excluir</button>
+    </div>
+</div>
