@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ISolicitacao } from '../model/interfaces/solicitacao.interface';
-import { ICategoriaEquipamento } from '../model/interfaces/categoria-equipamento.interface';
+import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
 import { Observable, of } from 'rxjs';
-import { EstadoSolicitacaoType } from '../model/types/estado-solicitacao.type';
+import { EstadoSolicitacaoType } from '../model/entities/estado-solicitacao.type';
+import { ISolicitacao } from '../model/entities/solicitacao.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SolicitacaoService {
 
   // apagar metodo depois que tiver a API
   seed() {
-    const estados: EstadoSolicitacaoType[] = ['ABERTA', 'ORÇADA', 'ARRUMADA', 'REJEITADA', 'APROVADA'];
+    const estados: EstadoSolicitacaoType[] = ['ABERTA', 'ORCADA', 'AGUARDANDO_PAGAMENTO', 'REJEITADA', 'APROVADA'];
     
     const solicitacoes = estados.map(estado => ({
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -41,8 +41,8 @@ export class SolicitacaoService {
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
       descricaoEquipamento: descricaoEquipamento,
-      data: new Date().toISOString(),
-      estado: 'ABERTA',
+      dataHoraCriacao: new Date().toISOString(),
+      status: 'ABERTA',
       historico: []
     });
 
@@ -89,5 +89,9 @@ export class SolicitacaoService {
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
   
     return of(null);
+  }
+
+  obterSolicitacoesPeloUsuario() {
+    
   }
 }

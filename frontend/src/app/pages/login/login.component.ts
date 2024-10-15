@@ -7,9 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUserLogin } from '../../model/interfaces/user-login.interface';
-import { ILoginResponse } from '../../model/interfaces/login-response.interface';
+import { IUserLogin } from '../../model/requests/user-login-request.interface';
+import { ILoginResponse } from '../../model/responses/login-response.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Comentei a linha abaixo porque não estava deixando entrar nesta página de loggin
-    // if (this.authService.isLoggedIn()) this.router.navigate(['']);
+    if (this.authService.isLoggedIn()) 
+      this.router.navigate(['']);
   }
 
   onLogin() {
@@ -58,7 +59,10 @@ export class LoginComponent implements OnInit {
         this.authService.setToken(data.token);
         this.router.navigate(['client']);
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        alert('erro ao fazer login')
+        console.error(error)
+      }
     });
   }
 }

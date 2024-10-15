@@ -4,7 +4,7 @@ import { AfterViewInit, Component, Inject, inject, OnDestroy, OnInit, ViewChild 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { ICategoriaEquipamento } from '../../model/interfaces/categoria-equipamento.interface';
+import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSort, MatSortModule } from '@angular/material/sort';

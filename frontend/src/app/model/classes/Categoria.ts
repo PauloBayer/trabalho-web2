@@ -1,4 +1,4 @@
-import { ICategoriaEquipamento } from "../interfaces/categoria-equipamento.interface";
+import { ICategoriaEquipamento } from "../entities/categoria-equipamento.interface";
 
 export class Categoria implements ICategoriaEquipamento {
     name: string = '';

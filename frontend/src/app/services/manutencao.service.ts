@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ISolicitacao } from '../model/interfaces/solicitacao.interface'; 
-import { IHistorico } from '../model/interfaces/historico.interface'; 
-import { EstadoSolicitacaoType } from '../model/types/estado-solicitacao.type'; 
+import { IHistorico } from '../model/entities/historico.interface'; 
+import { EstadoSolicitacaoType } from '../model/entities/estado-solicitacao.type'; 
+import { ISolicitacao } from '../model/entities/solicitacao.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +11,12 @@ export class ManutencaoService {
   solicitacoes: ISolicitacao[] = [
     {
       id: '1',
-      data: '2024-10-06',
+      dataHoraCriacao: '2024-10-06',
       cliente: 'Naruto Uzumaki',
       descricaoEquipamento: 'Descrição Equipamento',
       descricaoDefeito: 'Descrição Defeito',
       categoriaEquipamento: 'Notebook',
-      estado: 'ABERTA' as EstadoSolicitacaoType,
+      status: 'ABERTA' as EstadoSolicitacaoType,
       historico: []
     }
   ];
@@ -32,42 +32,42 @@ export class ManutencaoService {
     
     const solicitacao = this.getSolicitacaoById(id);
     if (solicitacao) {
-      solicitacao.estado = 'ARRUMADA' as EstadoSolicitacaoType;
-      solicitacao.historico?.push({
-        acao: 'Manutenção Efetuada',
-        descricaoManutencao,
-        orientacoesCliente,
-        funcionario,
-        data: new Date().toISOString(), 
-        estado: solicitacao.estado 
-      } as IHistorico);
+      solicitacao.status = 'ARRUMADA' as EstadoSolicitacaoType;
+      // solicitacao.historico?.push({
+      //   acao: 'Manutenção Efetuada',
+      //   descricaoManutencao,
+      //   orientacoesCliente,
+      //   funcionario,
+      //   data: new Date().toISOString(), 
+      //   estado: solicitacao.estado 
+      // } as IHistorico);
     }
   }
 
   redirecionarManutencao(id: string, funcionarioOrigem: string, funcionarioDestino: string) {
     const solicitacao = this.getSolicitacaoById(id);
-    if (solicitacao && solicitacao.estado !== undefined && solicitacao.estado !== 'REDIRECIONADA') {
-      solicitacao.estado = 'REDIRECIONADA' as EstadoSolicitacaoType;
-      solicitacao.historico?.push({
-        acao: 'Redirecionada',
-        funcionarioOrigem,
-        funcionarioDestino,
-        data: new Date().toISOString(), 
-        estado: solicitacao.estado 
-      } as IHistorico);
+    if (solicitacao && solicitacao.status !== undefined && solicitacao.status !== 'REDIRECIONADA') {
+      solicitacao.status = 'REDIRECIONADA' as EstadoSolicitacaoType;
+      // solicitacao.historico?.push({
+      //   acao: 'Redirecionada',
+      //   funcionarioOrigem,
+      //   funcionarioDestino,
+      //   data: new Date().toISOString(), 
+      //   estado: solicitacao.estado 
+      // } as IHistorico);
     }
   }
 
   finalizarSolicitacao(id: string, funcionario: string) {
     const solicitacao = this.getSolicitacaoById(id);
     if (solicitacao) {
-      solicitacao.estado = 'FINALIZADA' as EstadoSolicitacaoType;
-      solicitacao.historico?.push({
-        acao: 'Finalizada',
-        funcionario,
-        data: new Date().toISOString(), 
-        estado: solicitacao.estado 
-      } as IHistorico);
+      solicitacao.status = 'FINALIZADA' as EstadoSolicitacaoType;
+      // solicitacao.historico?.push({
+      //   acao: 'Finalizada',
+      //   funcionario,
+      //   data: new Date().toISOString(), 
+      //   estado: solicitacao.estado 
+      // } as IHistorico);
     }
   }
 }
