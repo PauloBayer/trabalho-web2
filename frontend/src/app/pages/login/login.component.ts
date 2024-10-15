@@ -10,6 +10,7 @@ import {
 import { IUserLogin } from '../../model/requests/user-login-request.interface';
 import { ILoginResponse } from '../../model/responses/login-response.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Comentei a linha abaixo porque não estava deixando entrar nesta página de loggin
-    // if (this.authService.isLoggedIn()) this.router.navigate(['']);
+    if (this.authService.isLoggedIn()) 
+      this.router.navigate(['']);
   }
 
   onLogin() {

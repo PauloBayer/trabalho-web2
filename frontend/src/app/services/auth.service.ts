@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { ILoginResponse } from '../model/responses/login-response.interface';
 import { IUserLogin } from '../model/requests/user-login-request.interface';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../env/environment';
 import { ICliente } from '../model/entities/cliente.interface';
 import { IRegistrarClienteRequest } from '../model/requests/registrar-cliente-request.interface';
+import { IFuncionario } from '../model/entities/funcionario.interface';
+import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../seeds/seed';
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +16,57 @@ export class AuthService {
 
   endpoint: string = environment.httpApiUrl;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
+
+  seedLocalStorage() {
+    console.log(clientesSeed);
+    console.log(funcionariosSeed);
+    console.log(solicitacoesSeed);
+
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
+    if (clientes.length === 0) 
+      localStorage.setItem('clientes', JSON.stringify([...clientes, ...clientesSeed]));
 
-    if (clientes.length === 0) {
-      clientes.push({ id: Math.random(), cpf: '123.456.789-00', nome: 'João Silva', email: 'joao.silva@email.com', endereco: 'Rua das Flores, 123', telefone: '(11) 91234-5678', cep: '01001-000', senha: '1234' });
-      clientes.push({ id: Math.random(), cpf: '987.654.321-00', nome: 'José Pereira', email: 'jose.pereira@email.com', endereco: 'Avenida Paulista, 456', telefone: '(11) 98765-4321', cep: '01310-100', senha: '1234' });
-      clientes.push({ id: Math.random(), cpf: '196.885.590-40', nome: 'cliente', email: 'cliente@email.com', endereco: 'Avenida Paulista, 456', telefone: '(11) 98765-4321', cep: '01310-100', senha: '1234' });
-      clientes.push({ id: Math.random(), cpf: '456.123.789-00', nome: 'Joana Souza', email: 'joana.souza@email.com', endereco: 'Rua das Palmeiras, 789', telefone: '(21) 91234-5678', cep: '20031-050', senha: '1234' });
-      clientes.push({ id: Math.random(), cpf: '321.654.987-00', nome: 'Joaquina Oliveira', email: 'joaquina.oliveira@email.com', endereco: 'Rua da Liberdade, 101', telefone: '(21) 98765-4321', cep: '20220-150', senha: '1234' });
-    }
+    let funcionariosString = localStorage.getItem('funcionarios');
+    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    if (funcionarios.length === 0)
+      localStorage.setItem('funcionarios', JSON.stringify([...funcionarios, ...funcionariosSeed]));
 
-    localStorage.setItem('clientes', JSON.stringify(clientes));
+    let solicitacoesString = localStorage.getItem('solicitacoes');
+    let solicitacoes: IFuncionario[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    if (solicitacoes.length === 0)
+      localStorage.setItem('solicitacoes', JSON.stringify([...solicitacoes, ...solicitacoesSeed]));
   }
 
   doLogin(data: IUserLogin): Observable<ILoginResponse> {
+    this.seedLocalStorage();
+
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
+    const clienteEncontrado = clientes.find(cliente => cliente.email === data.email && cliente.senha === data.senha);
 
-    const clienteEncontrado = clientes.find(cliente => 
-      cliente.email === data.email && cliente.senha === data.senha
-    );
+    if (clienteEncontrado) {
+      localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado))
+      return of({ token: 'fake-bearer-token' });
+    }
 
-    if (!clienteEncontrado)
-      return throwError(() => new Error('Email ou senha inválidos'));
+    let funcionariosString = localStorage.getItem('funcionarios');
+    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    const funcionarioEncontrado = funcionarios.find(funcionario => funcionario.email === data.email && funcionario.senha === data.senha);
 
-    return of({ token: 'fake-bearer-token' });
+    if (funcionarioEncontrado) {
+      localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado))
+      return of({ token: 'fake-bearer-token' });
+    }
+
+    return throwError(() => new Error('Email ou senha inválidos'));
     // return this.http.post<ILoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
   }
   
   doRegister(data: IRegistrarClienteRequest): Observable<null> {
+    this.seedLocalStorage()
+
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
 

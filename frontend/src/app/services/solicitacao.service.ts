@@ -90,4 +90,8 @@ export class SolicitacaoService {
   
     return of(null);
   }
+
+  obterSolicitacoesPeloUsuario() {
+    
+  }
 }

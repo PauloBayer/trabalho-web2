@@ -5,7 +5,7 @@ import { ISolicitacao } from "../entities/solicitacao.interface";
 export class Solicitacao implements ISolicitacao {
     funcionario?: string | undefined;
     status?: EstadoSolicitacaoType | undefined;
-    dataHoraCriacao?: string;
+    dataHoraCriacao: string;
     dataHoraAtualizacao?: string;
     valorOrcado?: number | undefined;
     motivoRejeicao?: string | undefined;
@@ -20,4 +20,8 @@ export class Solicitacao implements ISolicitacao {
     categoriaEquipamento?: string;
     estado: EstadoSolicitacaoType = 'ABERTA';
     historico?: IHistorico[];
+
+    constructor(dataHoraCriacao: string) {
+        this.dataHoraCriacao = dataHoraCriacao;
+    }
 }

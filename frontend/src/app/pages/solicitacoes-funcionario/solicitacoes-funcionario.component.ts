@@ -8,9 +8,9 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
-import { I } from '@angular/cdk/keycodes';
 import { Solicitacao } from '../../model/classes/Solicitacao';
 import { Router, RouterModule } from '@angular/router';
+import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 @Component({
   selector: 'app-solicitacoes-funcionario',
   standalone: true,
@@ -30,7 +30,7 @@ import { Router, RouterModule } from '@angular/router';
 export class SolicitacoesFuncionarioComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'cliente', 'data', 'estado', 'button'];
 
-  dataSource: MatTableDataSource<Solicitacao>;
+  dataSource: MatTableDataSource<ISolicitacao>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   constructor(private router: Router) {
@@ -59,7 +59,7 @@ export class SolicitacoesFuncionarioComponent implements AfterViewInit {
 }
 
 /** Builds and returns a new Solicitacao. */
-function createNewUser(id: number): Solicitacao {
+function createNewUser(id: number): ISolicitacao {
   const name =
     CLIENTES[Math.round(Math.random() * (CLIENTES.length - 1))] +
     ' ' +
@@ -72,11 +72,11 @@ function createNewUser(id: number): Solicitacao {
     'APROVADA',
     'ABERTA',
   ];
-  let solicitacao: Solicitacao = {
+  let solicitacao: ISolicitacao = {
     id: id.toString(),
     cliente: name,
-    data: DATAS[Math.round(Math.random() * (DATAS.length - 1))].toString(),
-    estado: estados[Math.floor(Math.random() * estados.length)],
+    dataHoraCriacao: DATAS[Math.round(Math.random() * (DATAS.length - 1))].toString(),
+    status: estados[Math.floor(Math.random() * estados.length)],
   };
   return solicitacao;
 }
