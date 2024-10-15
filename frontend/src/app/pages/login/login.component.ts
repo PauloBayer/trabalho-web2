@@ -20,8 +20,8 @@ import { SolicitacaoService } from '../../services/solicitacao.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup<{
-    username: FormControl<string>;
-    password: FormControl<string>;
+    email: FormControl<string>;
+    senha: FormControl<string>;
   }>;
 
   constructor(
@@ -31,11 +31,11 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.loginForm = new FormGroup({
-      username: new FormControl<string>('', {
+      email: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      password: new FormControl<string>('', {
+      senha: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
         this.solicitacaoService.seed();
+        console.log(data)
         this.authService.setToken(data.token);
         this.router.navigate(['client']);
       },
