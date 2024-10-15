@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { ICategoriaEquipamento } from '../../model/interfaces/categoria-equipamento.interface';
+import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { Router } from '@angular/router';
 
 @Component({

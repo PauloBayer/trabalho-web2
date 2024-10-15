@@ -1,0 +1,1 @@
+export type EstadoSolicitacaoType = 'ABERTA' | 'ORCADA' | 'REJEITADA' | 'APROVADA' | 'REDIRECIONADA' | 'AGUARDANDO_PAGAMENTO' | 'PAGA' | 'FINALIZADA';

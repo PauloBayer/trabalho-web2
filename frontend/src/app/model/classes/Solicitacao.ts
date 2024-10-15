@@ -1,8 +1,17 @@
-import { IHistorico } from "../interfaces/historico.interface";
-import { ISolicitacao } from "../interfaces/solicitacao.interface";
-import { EstadoSolicitacaoType } from "../types/estado-solicitacao.type";
+import { IHistorico } from "../entities/historico.interface";
+import { EstadoSolicitacaoType } from "../entities/estado-solicitacao.type";
+import { ISolicitacao } from "../entities/solicitacao.interface";
 
 export class Solicitacao implements ISolicitacao {
+    funcionario?: string | undefined;
+    status?: EstadoSolicitacaoType | undefined;
+    dataHoraCriacao?: string;
+    dataHoraAtualizacao?: string;
+    valorOrcado?: number | undefined;
+    motivoRejeicao?: string | undefined;
+    dataHoraPagamento?: string | undefined;
+    orientacoesManutencao?: string | undefined;
+    descricaoManutencao?: string | undefined;
     id: string = '';
     data: string = '';
     cliente: string = '';

@@ -7,8 +7,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
-import { EstadoSolicitacaoType } from '../../model/types/estado-solicitacao.type';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 import { I } from '@angular/cdk/keycodes';
 import { Solicitacao } from '../../model/classes/Solicitacao';
 import { Router, RouterModule } from '@angular/router';
@@ -67,8 +66,8 @@ function createNewUser(id: number): Solicitacao {
     CLIENTES[Math.round(Math.random() * (CLIENTES.length - 1))].charAt(0) +
     '.';
   const estados: EstadoSolicitacaoType[] = [
-    'ORÇADA',
-    'ARRUMADA',
+    'ORCADA',
+    'AGUARDANDO_PAGAMENTO',
     'REJEITADA',
     'APROVADA',
     'ABERTA',

@@ -13,6 +13,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { CategoriasComponent } from './pages/categorias/categorias.component';
 import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 
 export const routes: Routes = [
   {
@@ -74,6 +75,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
   },
   {
     path: '**',

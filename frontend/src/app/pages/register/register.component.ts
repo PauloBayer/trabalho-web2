@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { IRegistrarClienteRequest } from '../../model/requests/registrar-cliente-request.interface';
 
 @Component({
   selector: 'app-registration',
@@ -104,27 +105,6 @@ export class RegisterComponent implements OnInit {
     return cpfArray[9] === primeiroDigito && cpfArray[10] === segundoDigito;
   }
 
-  onSubmit(): void {
-    this.formSubmitted = true;
-    const cpf = this.autoCadastroForm.get('cpf')?.value.replace(/\D/g, '');
-    if (!this.validarCPF(cpf)) {
-      this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
-      return;
-    }
-    if (this.autoCadastroForm.valid) {
-      this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
-      localStorage.setItem(
-        'userData',
-        JSON.stringify(this.autoCadastroForm.value)
-      );
-      console.log('Formulário enviado:', this.autoCadastroForm.value);
-      console.log('Senha gerada:', this.senhaGerada);
-      alert(
-        `Cadastro realizado com sucesso. A senha enviada para o e-mail é: ${this.senhaGerada}`
-      );
-    }
-  }
-
   buscarEndereco(): void {
     const cep = this.autoCadastroForm.get('cep')?.value;
     if (cep) {
@@ -149,10 +129,24 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onCadastrar() {
-    this.authService.doRegister(this.autoCadastroForm.value).subscribe(
+  onSubmit(): void {
+    this.formSubmitted = true;
+    const cpf = this.autoCadastroForm.get('cpf')?.value.replace(/\D/g, '');
+    
+    if (!this.validarCPF(cpf)) {
+      this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
+      return;
+    }
+
+    if (!this.autoCadastroForm.valid)
+      return;
+
+    const data: IRegistrarClienteRequest = this.autoCadastroForm.value;
+    console.log('usuario cadastrado: ', data);
+
+    this.authService.doRegister(data).subscribe(
       () => {
-        alert('Cadastro realizado com sucesso!');
+        alert('usuario cadastrado com sucesso')
         this.router.navigate(['client']);
       },
       (error) => {
@@ -160,6 +154,5 @@ export class RegisterComponent implements OnInit {
         alert('Erro ao cadastrar. Tente novamente mais tarde.');
       }
     );
-    
   }
 }

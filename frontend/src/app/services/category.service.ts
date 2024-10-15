@@ -1,6 +1,6 @@
 // src/app/services/category.service.ts
 import { Injectable } from '@angular/core';
-import { ICategoriaEquipamento } from '../model/interfaces/categoria-equipamento.interface';
+import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
 import { Categoria } from '../model/classes/Categoria';
 
 @Injectable({

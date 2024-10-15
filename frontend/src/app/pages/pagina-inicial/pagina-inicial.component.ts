@@ -1,9 +1,9 @@
 import { Component, computed, OnInit } from '@angular/core';
-import { ISolicitacao } from '../../model/interfaces/solicitacao.interface';
 import { Router } from '@angular/router';
-import { EstadoSolicitacaoType } from '../../model/types/estado-solicitacao.type';
-import { IHistorico } from '../../model/interfaces/historico.interface';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
+import { IHistorico } from '../../model/entities/historico.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 
 @Component({
   selector: 'app-pagina-inicial',
@@ -46,11 +46,10 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   resgatarSolicitacao(s: ISolicitacao) {
-    s.data = new Date().toISOString();
-    s.estado = 'APROVADA';
     const historico: IHistorico = {
-      data: s.data,
-      estado: s.estado,
+      dataHora: new Date().toISOString(),
+      statusAtual: 'APROVADA',
+      id: '',
     };
     s.historico?.push(historico);
   }
@@ -64,8 +63,9 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   get orderSolicitacoes(): ISolicitacao[] {
-    return this.solicitacoes.sort(
-      (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
-    );
+    return this.solicitacoes;
+    // return this.solicitacoes.sort(
+    //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()
+    // );
   }
 }
