@@ -1,12 +1,13 @@
+import { ICategoriaEquipamento } from "../model/entities/categoria-equipamento.interface";
 import { ICliente } from "../model/entities/cliente.interface";
 import { IFuncionario } from "../model/entities/funcionario.interface";
 import { IHistorico } from "../model/entities/historico.interface";
 import { ISolicitacao } from "../model/entities/solicitacao.interface";
 
 
-const funcionario1: IFuncionario = { id: Math.random(), email: 'maria.santos@email.com', nome: 'Maria Santos', data_nascimento: '1985-07-15', senha: '1234' };
-const funcionario2: IFuncionario = { id: Math.random(), email: 'mario.souza@email.com', nome: 'Mário Souza', data_nascimento: '1990-03-20', senha: '1234' };
-const funcionario3: IFuncionario = { id: Math.random(), email: 'funcionario@email.com', nome: 'funcionario', data_nascimento: '2000-03-20', senha: '1234' };
+export const funcionario1: IFuncionario = { id: Math.random(), email: 'maria.santos@email.com', nome: 'Maria Santos', data_nascimento: '1985-07-15', senha: '1234' };
+export const funcionario2: IFuncionario = { id: Math.random(), email: 'mario.souza@email.com', nome: 'Mário Souza', data_nascimento: '1990-03-20', senha: '1234' };
+export const funcionario3: IFuncionario = { id: Math.random(), email: 'funcionario@email.com', nome: 'funcionario', data_nascimento: '2000-03-20', senha: '1234' };
 
 export const funcionariosSeed: IFuncionario [] = [ funcionario1, funcionario2, funcionario3 ];
 
@@ -17,6 +18,22 @@ const cliente4: ICliente = { id: Math.random(), cpf: '456.123.789-00', nome: 'Jo
 const cliente5: ICliente = { id: Math.random(), cpf: '321.654.987-00', nome: 'Joaquina Oliveira', email: 'joaquina.oliveira@email.com', endereco: 'Rua da Liberdade, 101', telefone: '(21) 98765-4321', cep: '20220-150', senha: '1234' };
 
 export const clientesSeed: ICliente[] = [cliente1, cliente2, cliente3, cliente4, cliente5];
+
+
+export const categoria1: ICategoriaEquipamento = { name: 'Computadores', description: 'Manutenção e configuração de computadores desktop e notebooks' };
+export const categoria2: ICategoriaEquipamento = { name: 'Impressoras', description: 'Reparos e manutenção de impressoras multifuncionais e laser' };
+export const categoria3: ICategoriaEquipamento = { name: 'Monitores', description: 'Serviços de reparo e calibração de monitores LED, LCD e OLED' };
+export const categoria4: ICategoriaEquipamento = { name: 'Smartphones', description: 'Reparo de telas, baterias e componentes internos de smartphones' };
+export const categoria5: ICategoriaEquipamento = { name: 'Redes', description: 'Configuração e manutenção de redes cabeadas e Wi-Fi' };
+export const categoria6: ICategoriaEquipamento = { name: 'Servidores', description: 'Manutenção preventiva e corretiva de servidores e storages' };
+export const categoria7: ICategoriaEquipamento = { name: 'Periféricos', description: 'Reparo de teclados, mouses, e outros periféricos de computador' };
+export const categoria8: ICategoriaEquipamento = { name: 'Audio e Vídeo', description: 'Instalação e reparo de equipamentos de áudio e vídeo' };
+export const categoria9: ICategoriaEquipamento = { name: 'Software', description: 'Suporte e instalação de software de sistema e aplicativos' };
+export const categoria10: ICategoriaEquipamento = { name: 'Eletrodomésticos', description: 'Reparos e manutenção de eletrodomésticos de pequeno porte' };
+
+export const categoriasSeed: ICategoriaEquipamento[] = [
+  categoria1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7, categoria8, categoria9, categoria10
+];
 
 
 // Solicitação 1 - ABERTA
@@ -63,13 +80,35 @@ const historico8_PAGA: IHistorico = { id: '8e', statusAnterior: 'AGUARDANDO_PAGA
 const historico8_FINALIZADA: IHistorico = { id: '8f', statusAnterior: 'PAGA', statusAtual: 'FINALIZADA', dataHora: '2023-09-20T08:35:50Z' };
 
 
-const solicitacao1: ISolicitacao = { id: '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7', dataHoraCriacao: '2023-09-01T12:45:30Z', cliente: cliente5, status: 'ABERTA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', historico: [ historico1_ABERTA ] };
-const solicitacao2: ISolicitacao = { id: 'e5d178e0-9203-4b8f-bf9a-c2fa5f5a3b85', dataHoraCriacao: '2023-09-04T14:22:18Z', cliente: cliente5, status: 'ORCADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, historico: [ historico2_ABERTA, historico2_ORCADA ] };
-const solicitacao3: ISolicitacao = { id: '3f3cb91b-b282-47ff-a1cb-50f4f8ff92d9', dataHoraCriacao: '2023-09-04T14:22:18Z', cliente: cliente5, status: 'APROVADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, historico: [ historico3_ABERTA, historico3_ORCADA, historico3_APROVADA ] };
-const solicitacao4: ISolicitacao = { id: '0987b004-53bc-4ef5-96f6-efb32a389071', dataHoraCriacao: '2023-09-09T07:25:15Z', cliente: cliente5, status: 'REJEITADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', historico: [ historico4_ABERTA, historico4_ORCADA, historico4_REJEITADA ] };
-const solicitacao5: ISolicitacao = { id: '5a17769b-280f-40bb-9b64-9e95b73925b4', dataHoraCriacao: '2023-09-08T13:40:30Z', cliente: cliente5, status: 'REDIRECIONADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario2, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', historico: [ historico5_ABERTA, historico5_ORCADA, historico5_REDIRECIONADA ] };
-const solicitacao6: ISolicitacao = { id: 'a65d6506-9925-4d6e-a479-bc3d5c647229', dataHoraCriacao: '2023-09-05T16:50:12Z', cliente: cliente5, status: 'AGUARDANDO_PAGAMENTO', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico6_ABERTA, historico6_ORCADA, historico6_APROVADA, historico6_AGUARDANDO_PAGAMENTO ] };
-const solicitacao7: ISolicitacao = { id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e', dataHoraCriacao: '2023-09-20T08:35:50Z', cliente: cliente5, status: 'PAGA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico7_ABERTA, historico7_ORCADA, historico7_APROVADA, historico7_AGUARDANDO_PAGAMENTO, historico7_PAGA ] };
-const solicitacao8: ISolicitacao = { id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e', dataHoraCriacao: '2023-09-20T08:35:50Z', cliente: cliente5, status: 'FINALIZADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario2, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico8_ABERTA, historico8_ORCADA, historico8_APROVADA, historico8_AGUARDANDO_PAGAMENTO, historico8_PAGA, historico8_FINALIZADA ] };
+const solicitacao1: ISolicitacao = { id: '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-01T12:45:30Z', cliente: cliente5, status: 'ABERTA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', historico: [ historico1_ABERTA ] };
+const solicitacao2: ISolicitacao = { id: 'e5d178e0-9203-4b8f-bf9a-c2fa5f5a3b85', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-04T14:22:18Z', cliente: cliente5, status: 'ORCADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, historico: [ historico2_ABERTA, historico2_ORCADA ] };
+const solicitacao3: ISolicitacao = { id: '3f3cb91b-b282-47ff-a1cb-50f4f8ff92d9', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-04T14:22:18Z', cliente: cliente5, status: 'APROVADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, historico: [ historico3_ABERTA, historico3_ORCADA, historico3_APROVADA ] };
+const solicitacao4: ISolicitacao = { id: '0987b004-53bc-4ef5-96f6-efb32a389071', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-09T07:25:15Z', cliente: cliente5, status: 'REJEITADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', historico: [ historico4_ABERTA, historico4_ORCADA, historico4_REJEITADA ] };
+const solicitacao5: ISolicitacao = { id: '5a17769b-280f-40bb-9b64-9e95b73925b4', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-08T13:40:30Z', cliente: cliente5, status: 'REDIRECIONADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario2, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', historico: [ historico5_ABERTA, historico5_ORCADA, historico5_REDIRECIONADA ] };
+const solicitacao6: ISolicitacao = { id: 'a65d6506-9925-4d6e-a479-bc3d5c647229', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-05T16:50:12Z', cliente: cliente5, status: 'AGUARDANDO_PAGAMENTO', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico6_ABERTA, historico6_ORCADA, historico6_APROVADA, historico6_AGUARDANDO_PAGAMENTO ] };
+const solicitacao7: ISolicitacao = { id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-20T08:35:50Z', cliente: cliente5, status: 'PAGA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico7_ABERTA, historico7_ORCADA, historico7_APROVADA, historico7_AGUARDANDO_PAGAMENTO, historico7_PAGA ] };
+const solicitacao8: ISolicitacao = { id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-20T08:35:50Z', cliente: cliente5, status: 'FINALIZADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario2, motivoRejeicao: 'motivoRejeicao lorem ipsum ergo sutum', descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum', historico: [ historico8_ABERTA, historico8_ORCADA, historico8_APROVADA, historico8_AGUARDANDO_PAGAMENTO, historico8_PAGA, historico8_FINALIZADA ] };
 
 export const solicitacoesSeed: ISolicitacao[] = [solicitacao1, solicitacao2, solicitacao3, solicitacao4, solicitacao5, solicitacao6, solicitacao7, solicitacao8];
+
+export function seedLocalStorage() {
+  let clientesString = localStorage.getItem('clientes');
+  let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
+  if (clientes.length === 0) 
+    localStorage.setItem('clientes', JSON.stringify([...clientes, ...clientesSeed]));
+
+  let funcionariosString = localStorage.getItem('funcionarios');
+  let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+  if (funcionarios.length === 0)
+    localStorage.setItem('funcionarios', JSON.stringify([...funcionarios, ...funcionariosSeed]));
+
+  let solicitacoesString = localStorage.getItem('solicitacoes');
+  let solicitacoes: IFuncionario[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+  if (solicitacoes.length === 0)
+    localStorage.setItem('solicitacoes', JSON.stringify([...solicitacoes, ...solicitacoesSeed]));
+
+  let categoriasString = localStorage.getItem('categorias');
+  let categorias: IFuncionario[] = categoriasString ? JSON.parse(categoriasString) : [];
+  if (categorias.length === 0)
+    localStorage.setItem('categorias', JSON.stringify([...categorias, ...categoriasSeed]));
+}

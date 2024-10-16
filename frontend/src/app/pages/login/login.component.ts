@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
     const user: IUserLogin = this.loginForm.getRawValue();
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
-        this.solicitacaoService.seed();
         console.log(data)
         this.authService.setToken(data.token);
         this.router.navigate(['client']);

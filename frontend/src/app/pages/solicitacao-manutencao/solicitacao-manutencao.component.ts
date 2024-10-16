@@ -9,6 +9,7 @@ import {
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { Router } from '@angular/router';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-solicitacao-manutencao',
@@ -25,7 +26,8 @@ export class SolicitacaoManutencaoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private solicitacaoService: SolicitacaoService,
-    private router: Router
+    private router: Router,
+    private categoryService: CategoryService
   ) {
     this.solicitacaoForm = this.fb.group({
       name: ['', Validators.required],
@@ -36,7 +38,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.solicitacaoService.getCategoriasEquipamento().subscribe({
+    this.categoryService.getCategories().subscribe({
       next: (data: ICategoriaEquipamento[]) => {
         this.categories = data;
       },

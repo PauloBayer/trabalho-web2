@@ -2,10 +2,11 @@ import { EstadoSolicitacaoType } from './estado-solicitacao.type';
 import { IHistorico } from '../entities/historico.interface';
 import { IFuncionario } from './funcionario.interface';
 import { ICliente } from './cliente.interface';
+import { ICategoriaEquipamento } from './categoria-equipamento.interface';
 
 export interface ISolicitacao {
-    id?: string,
-    categoriaEquipamento?: string,
+    id: string,
+    categoriaEquipamento: ICategoriaEquipamento,
     cliente?: string | ICliente,
     funcionario?: IFuncionario | string,
     status?: EstadoSolicitacaoType,

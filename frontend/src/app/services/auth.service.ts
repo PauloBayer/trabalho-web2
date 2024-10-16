@@ -7,7 +7,7 @@ import { environment } from '../env/environment';
 import { ICliente } from '../model/entities/cliente.interface';
 import { IRegistrarClienteRequest } from '../model/requests/registrar-cliente-request.interface';
 import { IFuncionario } from '../model/entities/funcionario.interface';
-import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../seeds/seed';
+import { seedLocalStorage } from '../seeds/seed';
 
 @Injectable({
   providedIn: 'root'
@@ -18,36 +18,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  seedLocalStorage() {
-    console.log(clientesSeed);
-    console.log(funcionariosSeed);
-    console.log(solicitacoesSeed);
-
-    let clientesString = localStorage.getItem('clientes');
-    let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
-    if (clientes.length === 0) 
-      localStorage.setItem('clientes', JSON.stringify([...clientes, ...clientesSeed]));
-
-    let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
-    if (funcionarios.length === 0)
-      localStorage.setItem('funcionarios', JSON.stringify([...funcionarios, ...funcionariosSeed]));
-
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: IFuncionario[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    if (solicitacoes.length === 0)
-      localStorage.setItem('solicitacoes', JSON.stringify([...solicitacoes, ...solicitacoesSeed]));
-  }
-
   doLogin(data: IUserLogin): Observable<ILoginResponse> {
-    this.seedLocalStorage();
+    seedLocalStorage();
 
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
     const clienteEncontrado = clientes.find(cliente => cliente.email === data.email && cliente.senha === data.senha);
 
     if (clienteEncontrado) {
-      localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado))
+      localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado));
+      localStorage.setItem('userRole', 'ROLE_CLIENTE');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -56,7 +36,8 @@ export class AuthService {
     const funcionarioEncontrado = funcionarios.find(funcionario => funcionario.email === data.email && funcionario.senha === data.senha);
 
     if (funcionarioEncontrado) {
-      localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado))
+      localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado));
+      localStorage.setItem('userRole', 'ROLE_FUNCIONARIO');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -65,8 +46,8 @@ export class AuthService {
   }
   
   doRegister(data: IRegistrarClienteRequest): Observable<null> {
-    this.seedLocalStorage()
-
+    seedLocalStorage();
+    
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
 
@@ -102,5 +83,9 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.getToken() ? true : false;
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('userRole');
   }
 }
