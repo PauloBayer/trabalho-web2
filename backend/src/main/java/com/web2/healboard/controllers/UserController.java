@@ -6,7 +6,6 @@ import com.web2.healboard.dtos.request.RegistrarRequestDto;
 import com.web2.healboard.dtos.response.LoginResponseDto;
 import com.web2.healboard.dtos.response.RefreshBearerTokenResponseDto;
 import com.web2.healboard.exceptions.CredenciaisInvalidasException;
-import com.web2.healboard.exceptions.TokenJwtInvalidoException;
 import com.web2.healboard.models.cliente.Cliente;
 import com.web2.healboard.models.funcionario.Funcionario;
 import com.web2.healboard.services.FuncionarioService;

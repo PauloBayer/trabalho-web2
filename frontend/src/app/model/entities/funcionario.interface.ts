@@ -1,7 +1,7 @@
 export interface IFuncionario {
-  id: string;
+  id: number;
   email: string;
   nome: string;
-  data_nascimento: string;
+  dataNascimento: string;
   senha?: string;
 }

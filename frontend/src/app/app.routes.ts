@@ -13,11 +13,14 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { CategoriasComponent } from './pages/categorias/categorias.component';
 import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
+import { LogoutComponent } from './pages/logout/logout.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -28,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'client',
     component: ClienteLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -74,6 +78,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
   },
   {
     path: '**',

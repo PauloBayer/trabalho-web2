@@ -7,9 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUserLogin } from '../../model/interfaces/user-login.interface';
-import { ILoginResponse } from '../../model/interfaces/login-response.interface';
+import { IUserLogin } from '../../model/requests/user-login-request.interface';
+import { ILoginResponse } from '../../model/responses/login-response.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +21,8 @@ import { SolicitacaoService } from '../../services/solicitacao.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup<{
-    username: FormControl<string>;
-    password: FormControl<string>;
+    email: FormControl<string>;
+    senha: FormControl<string>;
   }>;
 
   constructor(
@@ -31,11 +32,11 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.loginForm = new FormGroup({
-      username: new FormControl<string>('', {
+      email: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      password: new FormControl<string>('', {
+      senha: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -43,8 +44,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Comentei a linha abaixo porque não estava deixando entrar nesta página de loggin
-    // if (this.authService.isLoggedIn()) this.router.navigate(['']);
+    if (this.authService.isLoggedIn()) 
+      this.router.navigate(['']);
   }
 
   onLogin() {
@@ -53,11 +54,14 @@ export class LoginComponent implements OnInit {
     const user: IUserLogin = this.loginForm.getRawValue();
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
-        this.solicitacaoService.seed();
+        console.log(data)
         this.authService.setToken(data.token);
         this.router.navigate(['client']);
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        alert('erro ao fazer login')
+        console.error(error)
+      }
     });
   }
 }

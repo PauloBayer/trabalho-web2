@@ -1,7 +1,7 @@
 // src/app/services/category.service.ts
 import { Injectable } from '@angular/core';
-import { ICategoriaEquipamento } from '../model/interfaces/categoria-equipamento.interface';
-import { Categoria } from '../model/classes/Categoria';
+import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
+import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,38 +12,48 @@ export class CategoryService {
   constructor() {}
 
   /** Get all categories from localStorage */
-  getCategories(): Categoria[] {
+  getCategories(): Observable<ICategoriaEquipamento[]> {
     const categories = localStorage.getItem(this.localStorageKey);
-    return categories ? JSON.parse(categories) : [];
+    return of(categories ? JSON.parse(categories) : []);
   }
 
   /** Add a new category to localStorage */
-  addCategory(category: Categoria): void {
-    const categories = this.getCategories();
+  addCategory(category: ICategoriaEquipamento): Observable<null> {
+    const categoriesString = localStorage.getItem(this.localStorageKey);
+    const categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    
     // Check if the category name already exists to prevent duplicates
     const exists = categories.some((cat) => cat.name === category.name);
+
     if (!exists) {
       categories.push(category);
       localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
+      return of(null);
     } else {
-      alert('A category with this name already exists.');
+      return throwError(() => new Error('A category with this name already exists.'));
     }
   }
 
   /** Update an existing category in localStorage */
-  updateCategory(updatedCategory: Categoria): void {
-    let categories = this.getCategories();
+  updateCategory(updatedCategory: ICategoriaEquipamento): Observable<null> {
+    const categoriesString = localStorage.getItem(this.localStorageKey);
+    let categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    
     categories = categories.map((category) =>
       category.name === updatedCategory.name ? updatedCategory : category
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
+    return of(null);
   }
 
   /** Delete a category from localStorage */
-  deleteCategory(categoryName: string): void {
-    const categories = this.getCategories().filter(
+  deleteCategory(categoryName: string): Observable<null> {
+    const categoriesString = localStorage.getItem(this.localStorageKey);
+    let categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    categories = categories.filter(
       (category) => category.name !== categoryName
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
+    return of(null);
   }
 }

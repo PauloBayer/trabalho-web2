@@ -4,7 +4,7 @@ import { AfterViewInit, Component, Inject, inject, OnDestroy, OnInit, ViewChild 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { ICategoriaEquipamento } from '../../model/interfaces/categoria-equipamento.interface';
+import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -13,7 +13,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Categoria } from '../../model/classes/Categoria';
 import { CategoryService } from '../../services/category.service';
 
 @Component({
@@ -47,11 +46,17 @@ export class CategoriasComponent implements AfterViewInit {
 
   dataSource = new MatTableDataSource<ICategoriaEquipamento>([]);
   columnsToDisplay = ['number', 'name', 'description', 'actions'];
-  expandedCategory: Categoria | null = null;
+  expandedCategory: ICategoriaEquipamento | null = null;
 
   constructor(private categoryService: CategoryService, private dialog: MatDialog) {
-    this.dataSource.data = this.categoryService.getCategories();
+    this.categoryService.getCategories().subscribe({
+      next: (data: ICategoriaEquipamento[]) => {
+        this.dataSource.data = data;  // Atribui os dados corretamente
+      },
+      error: (data) => alert('ERROR: ' + data)
+    });
   }
+  
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -76,17 +81,24 @@ export class CategoriasComponent implements AfterViewInit {
       .afterClosed()
       .subscribe((data) => {
         if (data) {
-          const newCategory: Categoria = {
+          const newCategory: ICategoriaEquipamento = {
             name: data.name,
             description: data.description,
           };
-          this.categoryService.addCategory(newCategory);
-          this.dataSource.data = this.categoryService.getCategories();
+          this.categoryService.addCategory(newCategory).subscribe(() => {
+            this.categoryService.getCategories().subscribe({
+              next: (categories) => {
+                this.dataSource.data = categories;
+              },
+              error: (error) => alert('ERROR: ' + error)
+            });
+          });
         }
       });
   }
+  
 
-  openEditDialog(category: Categoria) {
+  openEditDialog(category: ICategoriaEquipamento) {
     this.dialog
       .open(CategoriaDialog, {
         minHeight: '250px',
@@ -96,24 +108,38 @@ export class CategoriasComponent implements AfterViewInit {
       .afterClosed()
       .subscribe((data) => {
         if (data) {
-          const updatedCategory: Categoria = {
+          const updatedCategory: ICategoriaEquipamento = {
             name: data.name,
             description: data.description,
           };
-          this.categoryService.updateCategory(updatedCategory);
-          this.dataSource.data = this.categoryService.getCategories();
+          this.categoryService.updateCategory(updatedCategory).subscribe(() => {
+            this.categoryService.getCategories().subscribe({
+              next: (categories) => {
+                this.dataSource.data = categories;
+              },
+              error: (error) => alert('ERROR: ' + error)
+            });
+          });
         }
       });
   }
+  
 
   deleteCategory(categoryName: string) {
     if (confirm('Are you sure you want to delete this category?')) {
-      this.categoryService.deleteCategory(categoryName);
-      this.dataSource.data = this.categoryService.getCategories();
+      this.categoryService.deleteCategory(categoryName).subscribe(() => {
+        this.categoryService.getCategories().subscribe({
+          next: (categories) => {
+            this.dataSource.data = categories;
+          },
+          error: (error) => alert('ERROR: ' + error)
+        });
+      });
     }
   }
+  
 
-  toggleExpand(element: Categoria) {
+  toggleExpand(element: ICategoriaEquipamento) {
     this.expandedCategory = this.expandedCategory === element ? null : element;
   }
 
@@ -141,7 +167,7 @@ export class CategoriaDialog implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CategoriaDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { category?: Categoria }
+    @Inject(MAT_DIALOG_DATA) public data: { category?: ICategoriaEquipamento }
   ) {
     this.categoriaForm = new FormGroup({
       name: new FormControl('', [

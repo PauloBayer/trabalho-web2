@@ -17,16 +17,16 @@
             @for (solicitacao of solicitacoes; track $index) {
             <div class="bg-[#423B3A] rounded-2xl p-5">
                 <p class="font-nuckle font-light text-white mb-3">
-                    {{ formatDate(solicitacao.data) }}
+                    {{ formatDate(solicitacao.dataHoraCriacao) }}
                 </p>
                 <p class="font-nuckle font-light text-white mb-3">
                     Defeito: {{ solicitacao.descricaoDefeito }}
                 </p>
                 <p class="font-nuckle font-light text-white mb-4">
-                    Estado: {{ solicitacao.estado }}
+                    Estado: {{ solicitacao.status }}
                 </p>
 
-                @if (solicitacao.estado === 'ORÇADA') {
+                @if (solicitacao.status === 'ORCADA') {
                 <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
                     (click)="checkOrcamento()">
                     Aprovar serviço
@@ -37,13 +37,13 @@
                 </button>
                 }
 
-                @else if (solicitacao.estado === 'ARRUMADA') {
+                @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
                 <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
                     Pagar serviço
                 </button>
                 }
 
-                @else if (solicitacao.estado === 'REJEITADA') {
+                @else if (solicitacao.status === 'REJEITADA') {
                 <button 
                     class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
                     (click)="resgatarSolicitacao(solicitacao)"
