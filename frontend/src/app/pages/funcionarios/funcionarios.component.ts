@@ -31,9 +31,9 @@ import { DeleteFuncComponent } from './delete-func/delete-func.component';
 export class FuncionariosComponent implements AfterViewInit {
   displayedColumns: string[] = [
     'id',
-    'Funcionario',
-    'Email',
-    'Dt. de Nasc.',
+    'nome',
+    'email',
+    'data_nascimento',
     'Ações',
   ];
   dataSource: MatTableDataSource<any>;
@@ -108,7 +108,7 @@ export class FuncionariosComponent implements AfterViewInit {
 
   deleteFunc(funcionario: any): void {
     const dialogRef = this.dialog.open(DeleteFuncComponent, {
-      width: '300px',
+      width: '500px',
       data: { nome: funcionario.nome },
     });
 
