@@ -15,6 +15,8 @@ import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
+import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
+import { FuncinarioMainPageComponent } from './pages/funcinario-main-page/funcinario-main-page.component';
 
 export const routes: Routes = [
   {
@@ -49,13 +51,24 @@ export const routes: Routes = [
         path: 'servico',
         component: VisualizarServicoComponent,
       },
+    ],
+  },
+  {
+    path: 'worker',
+    component: FuncionarioLayoutComponent,
+    // canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: FuncinarioMainPageComponent,
+      },
+      {
+        path: 'all-solicitacoes',
+        component: SolicitacoesFuncionarioComponent,
+      },
       {
         path: 'efetuar',
         component: EfetuarOrcamentoComponent,
-      },
-      {
-        path: 'solicitacoes',
-        component: SolicitacoesFuncionarioComponent,
       },
       {
         path: 'categorias',

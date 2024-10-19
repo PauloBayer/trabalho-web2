@@ -1,0 +1,47 @@
+.background {
+    background: rgb(255, 196, 43);
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+}
+
+.white-block {
+    padding: 40px 40px 20px 40px;
+    background-color: white;
+    border-radius: 0px 0px 40px 40px;
+}
+
+.cool-name {
+    background: linear-gradient(90deg,
+            rgba(255, 196, 43, 1) 0%,
+            rgba(255, 94, 43, 1) 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.main-block {
+    background: rgb(255, 196, 43);
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+    padding: 60px 20px 80px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.items-title {
+    font-size: 30px;
+    color: white;
+    font-weight: 600;
+}
+
+.items-button {
+    background-color: black;
+    border-radius: 20px;
+    padding: 10px 40px;
+    margin: 5px;
+    font-size: 20px;
+    color: white;
+    font-weight: 800;
+
+}

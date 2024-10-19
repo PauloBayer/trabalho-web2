@@ -10,10 +10,9 @@ import { IFuncionario } from '../model/entities/funcionario.interface';
 import { seedLocalStorage } from '../seeds/seed';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   endpoint: string = environment.httpApiUrl;
 
   constructor(private http: HttpClient) {}
@@ -23,7 +22,9 @@ export class AuthService {
 
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
-    const clienteEncontrado = clientes.find(cliente => cliente.email === data.email && cliente.senha === data.senha);
+    const clienteEncontrado = clientes.find(
+      (cliente) => cliente.email === data.email && cliente.senha === data.senha
+    );
 
     if (clienteEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado));
@@ -32,8 +33,13 @@ export class AuthService {
     }
 
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
-    const funcionarioEncontrado = funcionarios.find(funcionario => funcionario.email === data.email && funcionario.senha === data.senha);
+    let funcionarios: IFuncionario[] = funcionariosString
+      ? JSON.parse(funcionariosString)
+      : [];
+    const funcionarioEncontrado = funcionarios.find(
+      (funcionario) =>
+        funcionario.email === data.email && funcionario.senha === data.senha
+    );
 
     if (funcionarioEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado));
@@ -44,10 +50,10 @@ export class AuthService {
     return throwError(() => new Error('Email ou senha inválidos'));
     // return this.http.post<ILoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
   }
-  
+
   doRegister(data: IRegistrarClienteRequest): Observable<null> {
     seedLocalStorage();
-    
+
     let clientesString = localStorage.getItem('clientes');
     let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
 
@@ -59,7 +65,7 @@ export class AuthService {
       endereco: data.endereco,
       telefone: data.telefone,
       cep: data.cep,
-      senha: '1234'
+      senha: '1234',
     });
 
     localStorage.setItem('clientes', JSON.stringify(clientes));
@@ -74,6 +80,22 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getNome(): string | null {
+    const local: string | null = localStorage.getItem('userLogado');
+    if (local) {
+      try {
+        const obj = JSON.parse(local);
+
+        if (obj && typeof obj.nome === 'string') {
+          return obj.nome;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return null;
   }
 
   logout(): void {

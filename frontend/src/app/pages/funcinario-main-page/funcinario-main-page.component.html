@@ -1,0 +1,59 @@
+<div class="background">
+    <div class="white-block">
+        <div class="cool-name">
+            Seja bem vindo, {{nome}}
+        </div>
+    </div>
+    <div class="main-block">
+        <div class="bg-black w-10/12 rounded-2xl">
+            <div class="flex justify-between">
+                <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
+                    Solicitações
+                </h1>
+            </div>
+
+            <hr>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
+                @for (solicitacao of orderSolicitacoes; track $index) {
+                <div class="bg-[#423B3A] rounded-2xl p-5">
+                    <p class="font-nuckle font-light text-white mb-3">
+                        {{ formatDate(solicitacao.dataHoraCriacao) }}
+                    </p>
+                    <p class="font-nuckle font-light text-white mb-3">
+                        Defeito: {{ solicitacao.descricaoDefeito }}
+                    </p>
+                    <p class="font-nuckle font-light text-white mb-4">
+                        Estado: {{ solicitacao.status }}
+                    </p>
+
+                    @if (solicitacao.status === 'ABERTA') {
+                    <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                        (click)="efetuarOrcamento(solicitacao)">
+                        Efetuar Orçamento
+                    </button>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        <div class="row md:divide-x-2 divide-y-2 md:divide-y-0 divide-white py-4 w-75">
+            <div class="col-12 col-md-4 p-4 d-flex flex-column align-items-center">
+                <i class="bi bi-person-fill-gear" style="font-size: 40px; color: white;"></i>
+                <span class="items-title">Funcionarios</span>
+                <button class="items-button" (click)="goToFuncionarios()">Acessar</button>
+            </div>
+            <div class="col-12 col-md-4 p-4 d-flex flex-column align-items-center">
+                <i class="bi bi-tags-fill" style="font-size: 40px;color: white;"></i>
+                <span class="items-title">Categorias</span>
+                <button class="items-button" (click)="goToCategorias()">Acessar</button>
+            </div>
+            <div class="col-12 col-md-4 p-4 d-flex flex-column align-items-center">
+                <i class="bi bi-calculator-fill" style="font-size: 40px;color: white;"></i>
+                <span class="items-title">Relátorios</span>
+                <button class="items-button">Geral</button>
+                <button class="items-button">Por categoria </button>
+            </div>
+        </div>
+    </div>
+</div>

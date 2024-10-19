@@ -7,56 +7,88 @@ import { ICliente } from '../model/entities/cliente.interface';
 import { IFuncionario } from '../model/entities/funcionario.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SolicitacaoService {
-
   constructor() {}
 
-  findAllSolicitacoes(): Observable<ISolicitacao []> {
+  findAllSolicitacoes(): Observable<ISolicitacao[]> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let allSolicitacoes = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
 
     let usuarioLogadoString = localStorage.getItem('userLogado');
-    let usuarioLogado: ICliente | IFuncionario | null = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
+    let usuarioLogado: ICliente | IFuncionario | null = usuarioLogadoString
+      ? JSON.parse(usuarioLogadoString)
+      : null;
 
     if (usuarioLogado && (usuarioLogado as ICliente).cpf) {
-      let solicitacoesDoClienteLogado: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
-        solicitacao.cliente.cpf === (usuarioLogado as ICliente).cpf
-    );
-    return of(solicitacoesDoClienteLogado);
+      let solicitacoesDoClienteLogado: ISolicitacao[] = allSolicitacoes.filter(
+        (solicitacao: { cliente: { cpf: string } }) =>
+          solicitacao.cliente.cpf === (usuarioLogado as ICliente).cpf
+      );
+      return of(solicitacoesDoClienteLogado);
     } else {
       return of(allSolicitacoes);
     }
   }
 
-  getSolicitacaoById(id: string): Observable<ISolicitacao> {
+  findAllSolicitacoesAsWorker(): Observable<ISolicitacao[]> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes: ISolicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    const foundedSolicitacao = allSolicitacoes.find((solicitacao: ISolicitacao) => solicitacao.id === id);
-
-    return foundedSolicitacao ? of(foundedSolicitacao) : throwError(() => new Error(`solicitacao com o id ${id} nao encontrada`));
+    let allSolicitacoes = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
+    return of(allSolicitacoes);
   }
 
-  criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: ICategoriaEquipamento): Observable<null> {
+  getSolicitacaoById(id: string): Observable<ISolicitacao> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let allSolicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
+    const foundedSolicitacao = allSolicitacoes.find(
+      (solicitacao: ISolicitacao) => solicitacao.id === id
+    );
+
+    return foundedSolicitacao
+      ? of(foundedSolicitacao)
+      : throwError(
+          () => new Error(`solicitacao com o id ${id} nao encontrada`)
+        );
+  }
+
+  criarSolicitacao(
+    descricaoEquipamento: string,
+    descricaoDefeito: string,
+    categoriaEquipamento: ICategoriaEquipamento
+  ): Observable<null> {
+    let solicitacoesString = localStorage.getItem('solicitacoes');
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     const dataHora = new Date().toISOString();
-    
+
     solicitacoes.push({
-      id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      id:
+        Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15),
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
       descricaoEquipamento: descricaoEquipamento,
       dataHoraCriacao: dataHora,
       status: 'ABERTA',
-      historico: [{
-        id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-        dataHora: dataHora,
-        statusAtual: 'ABERTA',
-        descricaoDefeito: descricaoDefeito,
-        descricaoEquipamento: descricaoEquipamento,
-      }]
+      historico: [
+        {
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
+          dataHora: dataHora,
+          statusAtual: 'ABERTA',
+          descricaoDefeito: descricaoDefeito,
+          descricaoEquipamento: descricaoEquipamento,
+        },
+      ],
     });
 
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
@@ -64,281 +96,353 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  efetuarOrcamento(id: string, valorOrcado: number, funcionario: IFuncionario): Observable<null> {
+  efetuarOrcamento(
+    id: string,
+    valorOrcado: number,
+    funcionario: IFuncionario
+  ): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'ORCADA',
           valorOrcado: valorOrcado,
-          funcionario: funcionario
+          funcionario: funcionario,
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'ORCADA',
           historico: historicoAtualizado,
           valorOrcado: valorOrcado,
-          funcionario: funcionario
+          funcionario: funcionario,
         };
-  
+
         return updatedSolicitacao;
       }
 
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
   aprovarServico(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'APROVADA',
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'APROVADA' as EstadoSolicitacaoType,
-          historico: historicoAtualizado
+          historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
   rejeitarServico(id: string, motivoRejeicao: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'REJEITADA',
-          motivoRejeicao: motivoRejeicao
+          motivoRejeicao: motivoRejeicao,
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'APROVADA' as EstadoSolicitacaoType,
           motivoRejeicao: motivoRejeicao,
-          historico: historicoAtualizado
+          historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
-  redirecionarManutencao(id: string, funcionarioOrigem: IFuncionario, funcionarioDestino: IFuncionario): Observable<null> {
+  redirecionarManutencao(
+    id: string,
+    funcionarioOrigem: IFuncionario,
+    funcionarioDestino: IFuncionario
+  ): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'REDIRECIONADA',
           funcionarioOrigem: funcionarioOrigem,
           funcionarioDestino: funcionarioDestino,
-          funcionario: funcionarioOrigem
+          funcionario: funcionarioOrigem,
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'REDIRECIONADA',
           funcionario: funcionarioDestino,
-          historico: historicoAtualizado
+          historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
-  efetuarManutencao(id: string, descricaoManutencao: string, orientacoesManutencao: string, funcionario: IFuncionario): Observable<null> {
+  efetuarManutencao(
+    id: string,
+    descricaoManutencao: string,
+    orientacoesManutencao: string,
+    funcionario: IFuncionario
+  ): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'AGUARDANDO_PAGAMENTO',
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao,
-          funcionario: funcionario
+          funcionario: funcionario,
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'AGUARDANDO_PAGAMENTO',
           historico: historicoAtualizado,
           orientacoesManutencao: orientacoesManutencao,
-          descricaoManutencao: descricaoManutencao
+          descricaoManutencao: descricaoManutencao,
         };
-  
+
         return updatedSolicitacao;
       }
 
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
   pagarServico(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'PAGA'
+          statusAtual: 'PAGA',
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'PAGA' as EstadoSolicitacaoType,
-          historico: historicoAtualizado
+          historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
-  finalizarSolicitacao(id: string, funcionarioResponsavel: IFuncionario): Observable<null> {
+  finalizarSolicitacao(
+    id: string,
+    funcionarioResponsavel: IFuncionario
+  ): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: ISolicitacao[] = solicitacoesString
+      ? JSON.parse(solicitacoesString)
+      : [];
     let solicitacaoEncontrada = false;
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
+
+    solicitacoes = solicitacoes.map((solicitacao) => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
+        const historicoAtualizado = solicitacao.historico
+          ? [...solicitacao.historico]
+          : [];
+
         historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'FINALIZADA',
-          funcionario: funcionarioResponsavel
+          funcionario: funcionarioResponsavel,
         });
-  
-        const updatedSolicitacao: ISolicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: ISolicitacao = {
+          ...solicitacao,
           status: 'FINALIZADA',
           historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
 
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+      return throwError(
+        () => new Error(`Solicitação com ID ${id} não encontrada`)
+      );
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 }
