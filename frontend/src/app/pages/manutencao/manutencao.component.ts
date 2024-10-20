@@ -21,7 +21,6 @@ export class ManutencaoComponent {
   isRedirectModalOpen = false;
   funcionarioDestino = '';
   idSolicitacao = '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7'; // puxar do param da url
-  estadoSolicitacao = EstadoSolicitacaoType;
 
   funcionarioLogado: IFuncionario; // remover quando tiver a api
 

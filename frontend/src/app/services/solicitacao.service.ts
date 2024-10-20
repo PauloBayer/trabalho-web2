@@ -59,11 +59,11 @@ export class SolicitacaoService {
       descricaoEquipamento: descricaoEquipamento,
       dataHoraCriacao: dataHora,
       cliente: userLogado as ICliente,
-      status: EstadoSolicitacaoType.ABERTA,
+      status: 'ABERTA',
       historico: [{
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
         dataHora: dataHora,
-        statusAtual: EstadoSolicitacaoType.ABERTA,
+        statusAtual: 'ABERTA',
         descricaoDefeito: descricaoDefeito,
         descricaoEquipamento: descricaoEquipamento,
       }]
@@ -89,14 +89,14 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.ORCADA,
+          statusAtual: 'ORCADA',
           valorOrcado: valorOrcado,
           funcionario: funcionario
         });
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.ORCADA,
+          status: 'ORCADA',
           historico: historicoAtualizado,
           valorOrcado: valorOrcado,
           funcionario: funcionario
@@ -131,12 +131,12 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.APROVADA,
+          statusAtual: 'APROVADA',
         });
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.APROVADA,
+          status: 'APROVADA',
           historico: historicoAtualizado
         };
   
@@ -168,13 +168,13 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.REJEITADA,
+          statusAtual: 'REJEITADA',
           motivoRejeicao: motivoRejeicao
         });
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.APROVADA,
+          status: 'APROVADA',
           motivoRejeicao: motivoRejeicao,
           historico: historicoAtualizado
         };
@@ -207,7 +207,7 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.REDIRECIONADA,
+          statusAtual: 'REDIRECIONADA',
           funcionarioOrigem: funcionarioOrigem,
           funcionarioDestino: funcionarioDestino,
           funcionario: funcionarioOrigem
@@ -215,7 +215,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.REDIRECIONADA,
+          status: 'REDIRECIONADA',
           funcionario: funcionarioDestino,
           historico: historicoAtualizado
         };
@@ -248,7 +248,7 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
+          statusAtual: 'AGUARDANDO_PAGAMENTO',
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao,
           funcionario: funcionario
@@ -256,7 +256,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
+          status: 'AGUARDANDO_PAGAMENTO',
           historico: historicoAtualizado,
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao
@@ -291,12 +291,12 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.PAGA
+          statusAtual: 'PAGA'
         });
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.PAGA as EstadoSolicitacaoType,
+          status: 'PAGA',
           historico: historicoAtualizado
         };
   
@@ -328,13 +328,13 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.FINALIZADA,
+          statusAtual: 'FINALIZADA',
           funcionario: funcionarioResponsavel
         });
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: EstadoSolicitacaoType.FINALIZADA,
+          status: 'FINALIZADA',
           historico: historicoAtualizado,
         };
   

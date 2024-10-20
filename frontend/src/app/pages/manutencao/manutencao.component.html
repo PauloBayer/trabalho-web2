@@ -100,7 +100,7 @@
             </div>
         </div>
 
-        <div *ngIf="solicitacao.status === estadoSolicitacao.ARRUMADA" class="mt-6 flex justify-center">
+        <div *ngIf="solicitacao.status === 'AGUARDANDO_PAGAMENTO'" class="mt-6 flex justify-center">
             <button
                 class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
                 (click)="finalizarSolicitacao()">
