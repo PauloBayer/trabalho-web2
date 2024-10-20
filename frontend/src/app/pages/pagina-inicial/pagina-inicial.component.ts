@@ -54,14 +54,6 @@ export class PaginaInicialComponent implements OnInit {
     s.historico?.push(historico);
   }
 
-  show(s: ISolicitacao) {
-    console.log(s);
-  }
-
-  checkOrcamento() {
-    this.router.navigate(['client/orcamentos']);
-  }
-
   get orderSolicitacoes(): ISolicitacao[] {
     return this.solicitacoes;
     // return this.solicitacoes.sort(
@@ -75,5 +67,9 @@ export class PaginaInicialComponent implements OnInit {
 
   visualizarServico(idSolicitacao: string) {
     this.router.navigate([`client/servico/${idSolicitacao}`])
+  }
+
+  checkOrcamento(idSolicitacao: string) {
+    this.router.navigate([`client/orcamentos/${idSolicitacao}`])
   }
 }

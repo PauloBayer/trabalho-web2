@@ -1,7 +1,8 @@
 <body>
     <div class="black-box w-75 h-75 px-5 pb-5">
-        <div class="orcamentos-list text-center">
-            <p class="orcamentos-title my-3 lead">Número do pedido: #7001</p>
+        <div class="orcamentos-list">
+            <p class="orcamentos-title my-4 lead font-nuckle font-bold text-3xl">Aprovar/rejeitar serviço</p>
+            
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
@@ -11,48 +12,19 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="text-left">
-                        <p><strong>Nome do Equipamento:</strong> Laptop Dell Inspiron 15</p>
-                        <p><strong>Descrição do Equipamento:</strong> Notebook com processador Intel Core i7, 16GB RAM,
-                            512GB SSD</p>
-                        <p><strong>Categoria do Equipamento:</strong> Notebook</p>
-                        <p><strong>Descrição do Defeito:</strong> Tela não liga e o sistema não inicia, possivelmente
-                            devido a falha na placa-mãe</p>
+                        <p><strong>Categoria do equipamento:</strong> {{ solicitacao.categoriaEquipamento.name }}</p>
+                        <p><strong>Descrição do Equipamento:</strong> {{ solicitacao.descricaoEquipamento}}</p>
+                        <p><strong>Descrição do Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
                     </div>
                 </mat-expansion-panel>
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> Orçamento 08/12/24 </mat-panel-title>
-                        <mat-panel-description>Status: Aberta</mat-panel-description>
+                        <mat-panel-title> {{ formatDate(solicitacao.dataHoraAtualizacao ?? solicitacao.dataHoraCriacao) }} </mat-panel-title>
+                        <mat-panel-description>Status: ORÇADA</mat-panel-description>
                     </mat-expansion-panel-header>
+
                     <div class="text-left">
-                        <p><strong>Valor Estimado:</strong> R$ 1.200,00</p>
-                        <p><strong>Previsão de Entrega:</strong> 7 dias úteis </p>
-                        <p><strong>Detalhes:</strong> Após uma análise detalhada, identificamos que a placa-mãe do
-                            equipamento está danificada devido a um curto-circuito causado possivelmente por uma
-                            sobrecarga elétrica. Recomendamos a substituição da placa-mãe por um modelo original de
-                            fábrica compatível com seu notebook.
-
-                            Além disso, realizaremos os seguintes serviços:
-                        <ul>
-                            <li><strong>Limpeza interna completa:</strong> Remoção de poeira e detritos que possam estar
-                                comprometendo o funcionamento dos componentes internos.</li>
-                            <li><strong>Aplicação de pasta térmica nova:</strong> Garantir o resfriamento adequado do
-                                processador e prevenir superaquecimentos futuros.</li>
-                            <li><strong>Atualização de software:</strong> Atualização do BIOS, drivers e sistema
-                                operacional para as versões mais recentes, assegurando melhor desempenho e segurança.
-                            </li>
-                            <li><strong>Testes de hardware e software:</strong> Execução de testes extensivos para
-                                verificar a integridade de todos os componentes e garantir que o equipamento esteja
-                                operando perfeitamente.</li>
-                        </ul>
-
-                        <p>
-                            Informamos que todas as peças utilizadas são originais e possuem garantia de 6 meses. O
-                            tempo estimado para a conclusão do serviço é de 7 dias úteis, sujeito à disponibilidade das
-                            peças
-                            de reposição. Manteremos você atualizado sobre o progresso do reparo e entraremos em contato
-                            caso haja qualquer alteração no prazo ou no valor estimado.
-                        </p>
+                        <p><strong>Valor Estimado:</strong> {{ solicitacao.valorOrcado }} reais</p>
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>

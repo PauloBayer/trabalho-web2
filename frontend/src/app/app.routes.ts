@@ -46,7 +46,7 @@ export const routes: Routes = [
         component: SolicitacaoManutencaoComponent,
       },
       {
-        path: 'orcamentos',
+        path: 'orcamentos/:id',
         component: MostrarOrcamentosComponent,
       },
       {
