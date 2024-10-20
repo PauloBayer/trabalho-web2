@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { categoriasSeed } from '../../seeds/seed';
+import { CommonModule } from '@angular/common'; // Importando CommonModule
+import { FormsModule } from '@angular/forms'; // Importando FormsModule
 import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
-import { PrintService } from '../../services/print.service';
-import { Router } from '@angular/router';
-import { Receita } from '../../model/entities/receita';
+import { categoriasSeed } from '../../seeds/seed';
+
+interface Receita {
+  data: Date;
+  valor: number;
+}
 
 @Component({
   selector: 'app-relatorio',
@@ -15,26 +17,18 @@ import { Receita } from '../../model/entities/receita';
   styleUrls: ['./relatorio.component.css'], // Corrigido para styleUrls
 })
 export class RelatorioComponent {
-  categorias: ICategoriaEquipamento[] = [];
-  categoriaSelecionada: string = 'Todas as categorias';
-
-  ngOnInit(): void {
-    this.categorias = categoriasSeed;
-  }
+  categorias: ICategoriaEquipamento[] = categoriasSeed;
+ 
   receitas: Receita[] = [];
 
-  constructor(
-    private printService: PrintService,
-    private router: Router
-  ) {
-  // Gerando 50 registros de exemplo
-  for (let i = 0; i < 10; i++) {
-    const randomDate = new Date(2024, 9, Math.floor(Math.random() * 31) + 1); // Outubro de 2024
-    const randomValue = Math.floor(Math.random() * 5000) + 500; // Valor entre 500 e 5500
-    const categorias = JSON.parse(localStorage.getItem('categorias') || '[]');
-    const categoria = categorias[Math.floor(Math.random() * categorias.length)] || 'Categoria Exemplo';
-    this.receitas.push({ categoria: categoria.name, data: randomDate, valor: randomValue });
-    }
+  constructor() {
+    // Exemplo de dados de receita
+    this.receitas = [
+      { data: new Date('2024-10-01'), valor: 1500 },
+      { data: new Date('2024-10-01'), valor: 1000 },
+      { data: new Date('2024-10-02'), valor: 2000 },
+      { data: new Date('2024-10-03'), valor: 500 },
+    ];
   }
 
   onSubmit(dataInicial: string, dataFinal: string) {
@@ -56,14 +50,8 @@ export class RelatorioComponent {
     });
 
     this.receitas = Object.entries(receitasAgrupadas).map(([data, valor]) => ({
-      categoria: 'Agrupado',
       data: new Date(data),
       valor,
     }));
-  }
-
-  printReport() {
-    this.printService.setPrintData(this.receitas);
-    this.router.navigate(['/print']);
   }
 }
