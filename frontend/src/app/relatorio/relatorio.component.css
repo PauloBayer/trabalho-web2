@@ -1,0 +1,56 @@
+body {
+  background: rgb(255, 196, 43);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.black-box {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 25vh 500px;
+  border-collapse: collapse;
+}
+.relatorios {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-col {
+  text-align: left; /* Alinha à esquerda */
+}
+
+.valor-col {
+  text-align: right; /* Alinha à direita */
+}
+
+.nav-filter {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 10px 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  padding: 10px 30px;
+  border-radius: 60px;
+  color: white;
+}
