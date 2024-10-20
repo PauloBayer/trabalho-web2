@@ -79,10 +79,6 @@ export const routes: Routes = [
         component: CategoriasComponent,
       },
       {
-        path: 'manutencao',
-        component: ManutencaoComponent,
-      },
-      {
         path: 'funcionarios',
         component: FuncionariosComponent,
       },
@@ -93,6 +89,10 @@ export const routes: Routes = [
       {
         path: 'solicitacoes',
         component: SolicitacoesFuncionarioComponent,
+      },
+      {
+        path: 'manutencao/:id',
+        component: ManutencaoComponent,
       },
       {
         path: 'relatorio',

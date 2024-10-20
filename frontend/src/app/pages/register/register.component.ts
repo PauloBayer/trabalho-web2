@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { seedLocalStorage } from '../../seeds/seed';
 import {
   FormBuilder,
   FormGroup,
@@ -11,7 +12,6 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { IRegistrarClienteRequest } from '../../model/requests/registrar-cliente-request.interface';
 
 @Component({
   selector: 'app-registration',
@@ -33,9 +33,6 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // if (this.authService.isLoggedIn()) 
-    //   this.router.navigate(['']); Comentei pq estava impedindo de entrar nesta página
-
     this.autoCadastroForm = this.fb.group({
       cpf: [
         '',
@@ -59,6 +56,7 @@ export class RegisterComponent implements OnInit {
       ],
     });
 
+    // Formatar CPF e CEP
     this.autoCadastroForm.get('cpf')?.valueChanges.subscribe((value) => {
       const numericValue = value.replace(/\D/g, '').slice(0, 11);
       this.autoCadastroForm
@@ -108,6 +106,25 @@ export class RegisterComponent implements OnInit {
     return cpfArray[9] === primeiroDigito && cpfArray[10] === segundoDigito;
   }
 
+  onSubmit(): void {
+    this.formSubmitted = true;
+    const cpf = this.autoCadastroForm.get('cpf')?.value.replace(/\D/g, '');
+    if (!this.validarCPF(cpf)) {
+      this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
+      return;
+    }
+    if (this.autoCadastroForm.valid) {
+      this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
+      localStorage.setItem(
+        'userData',
+        JSON.stringify(this.autoCadastroForm.value)
+      );
+      console.log('Formulário enviado:', this.autoCadastroForm.value);
+      console.log('Senha gerada:', this.senhaGerada);
+      this.router.navigate(['client']);
+    }
+  }
+
   buscarEndereco(): void {
     const cep = this.autoCadastroForm.get('cep')?.value;
     if (cep) {
@@ -126,30 +143,14 @@ export class RegisterComponent implements OnInit {
         },
         (error) => {
           console.error('Erro ao buscar o endereço:', error);
-          alert('Erro ao buscar o endereço. Tente novamente mais tarde.');
         }
       );
     }
   }
 
-  onSubmit(): void {
-    this.formSubmitted = true;
-    const cpf = this.autoCadastroForm.get('cpf')?.value.replace(/\D/g, '');
-    
-    if (!this.validarCPF(cpf)) {
-      this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
-      return;
-    }
-
-    if (!this.autoCadastroForm.valid)
-      return;
-
-    const data: IRegistrarClienteRequest = this.autoCadastroForm.value;
-    console.log('usuario cadastrado: ', data);
-
-    this.authService.doRegister(data).subscribe(
+  onCadastrar() {
+    this.authService.doRegister(this.autoCadastroForm.value).subscribe(
       () => {
-        alert('usuario cadastrado com sucesso')
         this.router.navigate(['client']);
       },
       (error) => {
