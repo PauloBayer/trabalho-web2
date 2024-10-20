@@ -66,10 +66,6 @@ export const routes: Routes = [
     data: { role: 'ROLE_FUNCIONARIO' },
     children: [
       {
-        path: '',
-        component: PaginaInicialComponent,
-      },
-      {
         path: 'funcionarios',
         component: FuncionariosComponent,
       },
