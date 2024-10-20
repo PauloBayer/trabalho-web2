@@ -54,18 +54,22 @@ export class PaginaInicialComponent implements OnInit {
     s.historico?.push(historico);
   }
 
-  show(s: ISolicitacao) {
-    console.log(s);
-  }
-
-  checkOrcamento() {
-    this.router.navigate(['client/orcamentos']);
-  }
-
   get orderSolicitacoes(): ISolicitacao[] {
     return this.solicitacoes;
     // return this.solicitacoes.sort(
     //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()
     // );
+  }
+
+  pagarServico(idSolicitacao: string) {
+    this.router.navigate([`client/pagar-servico/${idSolicitacao}`])
+  }
+
+  visualizarServico(idSolicitacao: string) {
+    this.router.navigate([`client/servico/${idSolicitacao}`])
+  }
+
+  checkOrcamento(idSolicitacao: string) {
+    this.router.navigate([`client/orcamentos/${idSolicitacao}`])
   }
 }

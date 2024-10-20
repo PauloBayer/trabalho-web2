@@ -1,10 +1,13 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion'; 
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
   selector: 'app-mostrar-orcamentos',
@@ -17,17 +20,54 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './mostrar-orcamentos.component.html',
   styleUrl: './mostrar-orcamentos.component.css'
 })
-export class MostrarOrcamentosComponent {
-
-  constructor(public dialog: MatDialog) {}
-
+export class MostrarOrcamentosComponent implements OnInit {
+  solicitacaoId: string | null = null;
+  solicitacao!: ISolicitacao;
   readonly panelOpenState = signal(false);
+
+  constructor(
+    public dialog: MatDialog, 
+    private route: ActivatedRoute, 
+    private solicitacaoService: SolicitacaoService, 
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.solicitacaoId = params.get('id');
+    });
+
+    if (this.solicitacaoId) {
+      this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
+        next: (data: ISolicitacao) => {
+          this.solicitacao = data;
+
+          if (this.solicitacao.status !== 'ORCADA') {
+            alert('Não é possível pagar o serviço porque o status não é ORCADA');
+            this.router.navigate(['client']);
+          }
+        },
+        error: (error) => {
+          this.router.navigate(['not-found']);
+        }
+      });
+    }
+  }
 
   openDialogAccept() {
     const dialogRef = this.dialog.open(DialogContentAccept);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.solicitacaoService.aprovarServico(this.solicitacao.id).subscribe({
+        next: () => {
+          alert(`Serviço aprovado com sucesso`);
+          this.router.navigate(['client']);
+        },
+        error: (error) => {
+          alert(`ERRO ao tentar aprovar o serviço: ${error}`);
+          this.router.navigate(['client']);
+        }
+      });
     });
   }
 
@@ -35,8 +75,31 @@ export class MostrarOrcamentosComponent {
     const dialogRef = this.dialog.open(DialogContentDecline);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      const motivoRejeicao = result;
+
+      this.solicitacaoService.rejeitarServico(this.solicitacao.id, motivoRejeicao).subscribe({
+        next: () => {
+          alert(`Serviço rejeitado com sucesso`);
+          this.router.navigate(['client']);
+        },
+        error: (error) => {
+          alert(`ERRO ao tentar aprovar o serviço: ${error}`);
+          this.router.navigate(['client']);
+        }
+      });
     });
+  }
+
+  formatDate(timestamp: string): string {
+    const date = new Date(timestamp);
+
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear();
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}h${minutes}`;
   }
 }
 

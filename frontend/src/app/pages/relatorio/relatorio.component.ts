@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Importando CommonModule
 import { FormsModule } from '@angular/forms'; // Importando FormsModule
-import { categoriasSeed } from '../seeds/seed';
-import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
+import { categoriasSeed } from '../../seeds/seed';
+import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 
 interface Receita {
   data: Date;

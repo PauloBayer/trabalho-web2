@@ -8,6 +8,7 @@ import { ICliente } from '../model/entities/cliente.interface';
 import { IRegistrarClienteRequest } from '../model/requests/registrar-cliente-request.interface';
 import { IFuncionario } from '../model/entities/funcionario.interface';
 import { seedLocalStorage } from '../seeds/seed';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
 
   endpoint: string = environment.httpApiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   doLogin(data: IUserLogin): Observable<ILoginResponse> {
     seedLocalStorage();
@@ -96,5 +97,21 @@ export class AuthService {
       return role;
     else
       return null;
+  }
+
+  navigateToHomepageByRole() {
+    const role = this.getUserRole();
+
+    if (role === 'ROLE_CLIENTE') {
+      this.router.navigate(['client']);
+      return;
+    }
+
+    if (role === 'ROLE_FUNCIONARIO') {
+      this.router.navigate(['funcionario']);
+      return;
+    }
+
+    this.router.navigate(['']);
   }
 }
