@@ -1,20 +1,25 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B] mt-20">
+<div
+    class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B] mt-20">
     <div class="bg-black text-white rounded-lg shadow-lg w-3/4 p-8">
         <h1 class="text-3xl font-bold text-center mb-6">Detalhes da Solicitação de Manutenção</h1>
         <hr class="border-t-2 border-white mb-6">
 
         <div class="bg-gray-800 p-6 rounded-lg shadow-sm mb-6">
-            <p class="text-lg"><strong>Cliente:</strong> {{ solicitacao?.cliente ?? 'Cliente não disponível' }}</p>
-            <p class="text-lg"><strong>Equipamento:</strong> {{ solicitacao?.descricaoEquipamento ?? 'Equipamento não disponível' }}</p>
-            <p class="text-lg"><strong>Defeito:</strong> {{ solicitacao?.descricaoDefeito ?? 'Defeito não disponível' }}</p>
-            <p class="text-lg"><strong>Estado:</strong>  {{ solicitacao?.estado ?? 'Estado não disponível' }}</p>
+            <p class="text-lg"><strong>Cliente:</strong> {{ solicitacao.cliente ?? 'Cliente não disponível' }}</p>
+            <p class="text-lg"><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento ?? 'Equipamento não
+                disponível' }}</p>
+            <p class="text-lg"><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito ?? 'Defeito não disponível' }}
+            </p>
+            <p class="text-lg"><strong>Estado:</strong> {{ solicitacao.status ?? 'Estado não disponível' }}</p>
         </div>
 
-        <div *ngIf="solicitacao?.estado === 'ABERTA' || solicitacao?.estado === 'REDIRECIONADA'" class="bg-gray-800 p-6 rounded-lg shadow-sm">
+        <div *ngIf="solicitacao?.status === 'ABERTA' || solicitacao.status === 'REDIRECIONADA'"
+            class="bg-gray-800 p-6 rounded-lg shadow-sm">
             <h2 class="text-2xl font-bold text-center mb-4">Ações</h2>
 
             <div class="flex justify-center mb-4">
-                <button (click)="isModalOpen = true" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                <button (click)="isModalOpen = true"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                     Efetuar Manutenção
                 </button>
             </div>
@@ -25,25 +30,33 @@
                     <form [formGroup]="manutencaoForm" (ngSubmit)="efetuarManutencao()">
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Descrição da Manutenção:</label>
-                            <textarea formControlName="descricaoManutencao" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" rows="4"></textarea>
-                            <div *ngIf="manutencaoForm.get('descricaoManutencao')?.invalid && manutencaoForm.get('descricaoManutencao')?.touched" class="text-red-500">
+                            <textarea formControlName="descricaoManutencao"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                rows="4"></textarea>
+                            <div *ngIf="manutencaoForm.get('descricaoManutencao')?.invalid && manutencaoForm.get('descricaoManutencao')?.touched"
+                                class="text-red-500">
                                 Descrição é obrigatória.
                             </div>
                         </div>
 
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Orientações para o Cliente:</label>
-                            <textarea formControlName="orientacoesCliente" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" rows="4"></textarea>
-                            <div *ngIf="manutencaoForm.get('orientacoesCliente')?.invalid && manutencaoForm.get('orientacoesCliente')?.touched" class="text-red-500">
+                            <textarea formControlName="orientacoesCliente"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                rows="4"></textarea>
+                            <div *ngIf="manutencaoForm.get('orientacoesCliente')?.invalid && manutencaoForm.get('orientacoesCliente')?.touched"
+                                class="text-red-500">
                                 Orientações são obrigatórias.
                             </div>
                         </div>
 
                         <div class="flex justify-between mt-6">
-                            <button (click)="isModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button (click)="isModalOpen = false"
+                                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
                             </button>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Confirmar
                             </button>
                         </div>
@@ -52,28 +65,33 @@
             </div>
 
             <div class="flex justify-center mb-4">
-                <button (click)="isRedirectModalOpen = true" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                <button (click)="isRedirectModalOpen = true"
+                    class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                     Redirecionar Manutenção
                 </button>
             </div>
 
-            <div *ngIf="isRedirectModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div *ngIf="isRedirectModalOpen"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-gray-900 text-white rounded-lg shadow-lg w-3/4 p-8">
                     <h3 class="text-2xl font-bold mb-4">Redirecionar para Funcionário</h3>
                     <form (ngSubmit)="redirecionarManutencao()">
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Funcionário:</label>
-                            <select formControlName="funcionarioDestino" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+                            <select formControlName="funcionarioDestino"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
                                 <option value="Maria Souza">Maria Souza</option>
                                 <option value="João Ferreira">João Ferreira</option>
                             </select>
                         </div>
 
                         <div class="flex justify-between mt-6">
-                            <button (click)="isRedirectModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button (click)="isRedirectModalOpen = false"
+                                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
-                            </button>                            
-                            <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            </button>
+                            <button type="submit"
+                                class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Confirmar
                             </button>
                         </div>
@@ -82,8 +100,10 @@
             </div>
         </div>
 
-        <div *ngIf="solicitacao?.estado === 'ARRUMADA'" class="mt-6 flex justify-center">
-            <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300" (click)="finalizarSolicitacao()">
+        <div *ngIf="solicitacao.status === estadoSolicitacao.ARRUMADA" class="mt-6 flex justify-center">
+            <button
+                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+                (click)="finalizarSolicitacao()">
                 Finalizar Solicitação
             </button>
         </div>
@@ -92,8 +112,8 @@
             <h2 class="text-2xl font-bold text-center mb-4">Histórico</h2>
             <ul class="list-disc pl-5 space-y-2">
                 <li *ngFor="let historico of solicitacao?.historico">
-                    {{ historico.dataHora | date:'short' }} - 
-                    <span class="font-semibold">{{ historico.acao }}</span> por 
+                    {{ historico.dataHora | date:'short' }} -
+                    <span class="font-semibold">{{ historico.descricaoManutencao }}</span> por
                     {{ historico.funcionarioOrigem || historico.funcionario }}.
                 </li>
             </ul>

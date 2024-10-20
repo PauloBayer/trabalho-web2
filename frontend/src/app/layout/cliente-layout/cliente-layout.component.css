@@ -7,6 +7,10 @@
     overflow-x: hidden;
 }
 
+.gradient-bg {
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+}
+
 .h-border {
     position: relative;
     top: 20px;
@@ -15,6 +19,10 @@
     background-color: black;
     color: white;
 
+}
+
+.margin-main {
+    margin: 50px 0;
 }
 
 .header-text {
