@@ -15,6 +15,8 @@ import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
+import { RelatorioComponent } from './relatorio/relatorio.component';
+import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
 
 export const routes: Routes = [
   {
@@ -71,9 +73,21 @@ export const routes: Routes = [
       },
     ],
   },
+
+  {
+    path: 'funcionario',
+    component: FuncionarioLayoutComponent,
+    canActivate: [authGuard],
+    children: [{ path: 'Orcamentos', component: EfetuarOrcamentoComponent }],
+  },
+
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'relatorio',
+    component: RelatorioComponent,
   },
   {
     path: 'register',
