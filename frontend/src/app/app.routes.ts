@@ -36,10 +36,6 @@ export const routes: Routes = [
     data: { role: 'ROLE_CLIENTE' },
     children: [
       {
-        path: '',
-        component: PaginaInicialComponent,
-      },
-      {
         path: 'solicitacao-manutencao',
         component: SolicitacaoManutencaoComponent,
       },
@@ -51,13 +47,21 @@ export const routes: Routes = [
         path: 'servico',
         component: VisualizarServicoComponent,
       },
+    ],
+  },
+  {
+    path: 'funcionario',
+    component: FuncionarioLayoutComponent,
+    canActivate: [authGuard],
+    data: { role: 'ROLE_FUNCIONARIO' },
+    children: [
       {
-        path: 'efetuar',
-        component: EfetuarOrcamentoComponent,
+        path: '',
+        component: PaginaInicialComponent,
       },
       {
-        path: 'solicitacoes',
-        component: SolicitacoesFuncionarioComponent,
+        path: 'funcionarios',
+        component: FuncionariosComponent,
       },
       {
         path: 'categorias',
@@ -71,17 +75,13 @@ export const routes: Routes = [
         path: 'funcionarios',
         component: FuncionariosComponent,
       },
-    ],
-  },
-  {
-    path: 'funcionario',
-    component: FuncionarioLayoutComponent,
-    canActivate: [authGuard],
-    data: { role: 'ROLE_FUNCIONARIO' },
-    children: [
       {
-        path: 'funcionarios',
-        component: FuncionariosComponent,
+        path: 'efetuar',
+        component: EfetuarOrcamentoComponent,
+      },
+      {
+        path: 'solicitacoes',
+        component: SolicitacoesFuncionarioComponent,
       },
     ],
   },
