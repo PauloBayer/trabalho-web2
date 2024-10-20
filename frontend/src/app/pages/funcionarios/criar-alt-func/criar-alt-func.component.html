@@ -1,32 +1,39 @@
 <div class="dialog-box bg-black text-white">
-    <span mat-dialog-title>{{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário' }}</span>
+    <span class="text-3xl font-bold" mat-dialog-title>
+        {{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário'}}
+    </span>
     <div mat-dialog-content>
-        <form [formGroup]="form">
+        <form [formGroup]=" form">
             <mat-form-field>
-                <label>Nome</label>
+                <label class="font-semibold">Nome</label>
                 <mat-label style="color: white;">Nome</mat-label>
-                <input matInput style="color: black;" formControlName="nome" />
+                <input type="text" id="nome" formControlName="nome"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
             </mat-form-field>
             <mat-form-field>
-                <label>Email</label>
+                <label class="font-semibold">Email</label>
                 <mat-label>Email</mat-label>
-                <input style="color: black;" matInput formControlName="email" />
+                <input type="text" id="email" formControlName="email"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
             </mat-form-field>
             <mat-form-field>
-                <label>Data de Nascimento</label>
+                <label class="font-semibold">Data de Nascimento</label>
                 <mat-label>Data de Nascimento</mat-label>
-                <input matInput style="color: black;" formControlName="data_nascimento" />
+                <input type="text" id="data_nascimento" formControlName="data_nascimento"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
             </mat-form-field>
             <mat-form-field>
-                <label>Senha</label>
+                <label class="font-semibold">Senha</label>
                 <mat-label>Senha</mat-label>
-                <input matInput style="color: black;" formControlName="senha" />
+                <input type="text" id="senha" formControlName="senha"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
             </mat-form-field>
         </form>
     </div>
     <div mat-dialog-actions class="d-flex flex-row gap-3 justify-content-end">
-        <button mat-button (click)="onCancel()" class="cancelar">Cancelar</button>
-        <button mat-button (click)="onSubmit()" class="salvar" cdkFocusInitial>{{ data?.funcionario ? 'Salvar' : 'Criar'
+        <button mat-button (click)="onCancel()" class="cancelar font-bold">Cancelar</button>
+        <button mat-button (click)="onSubmit()" class="salvar font-bold" cdkFocusInitial>{{ data?.funcionario ? 'Salvar'
+            : 'Criar'
             }}</button>
     </div>
 </div>

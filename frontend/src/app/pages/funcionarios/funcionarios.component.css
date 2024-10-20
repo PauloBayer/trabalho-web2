@@ -68,6 +68,16 @@ table {
 mat-paginator {
     background-color: black;
     color: white;
+    fill: white;
+}
+
+::ng-deep .mat-mdc-select-min-line {
+    color: white;
+    fill: white;
+}
+
+::ng-deep .mat-mdc-paginator-icon {
+    fill: white !important;
 }
 
 ::ng-deep mat-icon.no-margin {

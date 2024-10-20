@@ -5,9 +5,9 @@ import { IHistorico } from "../model/entities/historico.interface";
 import { ISolicitacao } from "../model/entities/solicitacao.interface";
 
 
-export const funcionario1: IFuncionario = { id: Math.random(), email: 'maria.santos@email.com', nome: 'Maria Santos', data_nascimento: '1985-07-15', senha: '1234' };
-export const funcionario2: IFuncionario = { id: Math.random(), email: 'mario.souza@email.com', nome: 'Mário Souza', data_nascimento: '1990-03-20', senha: '1234' };
-export const funcionario3: IFuncionario = { id: Math.random(), email: 'funcionario@email.com', nome: 'funcionario', data_nascimento: '2000-03-20', senha: '1234' };
+export const funcionario1: IFuncionario = { id: Math.random(), email: 'maria.santos@email.com', nome: 'Maria Santos', dataNascimento: '1985-07-15', senha: '1234' };
+export const funcionario2: IFuncionario = { id: Math.random(), email: 'mario.souza@email.com', nome: 'Mário Souza', dataNascimento: '1990-03-20', senha: '1234' };
+export const funcionario3: IFuncionario = { id: Math.random(), email: 'funcionario@email.com', nome: 'funcionario', dataNascimento: '2000-03-20', senha: '1234' };
 
 export const funcionariosSeed: IFuncionario [] = [ funcionario1, funcionario2, funcionario3 ];
 
