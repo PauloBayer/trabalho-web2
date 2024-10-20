@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
         this.authService.setToken(data.token);
-        this.router.navigate(['client']); 
+        this.router.navigate(['']); 
       },
       error: (error) => {
         this.loginError = 'Usuário ou senha inválidos'; 
