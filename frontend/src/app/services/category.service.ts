@@ -14,6 +14,7 @@ export class CategoryService {
   /** Get all categories from localStorage */
   getCategories(): Observable<ICategoriaEquipamento[]> {
     const categories = localStorage.getItem(this.localStorageKey);
+
     return of(categories ? JSON.parse(categories) : []);
   }
 
@@ -43,6 +44,7 @@ export class CategoryService {
       category.name === updatedCategory.name ? updatedCategory : category
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
+    
     return of(null);
   }
 
@@ -54,6 +56,7 @@ export class CategoryService {
       (category) => category.name !== categoryName
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
+
     return of(null);
   }
 }

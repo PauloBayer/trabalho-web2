@@ -13,6 +13,7 @@
 
         <hr>
 
+        @if (solicitacoes.length > 0) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
             @for (solicitacao of solicitacoes; track $index) {
             <div class="bg-[#423B3A] rounded-2xl p-5">
@@ -56,5 +57,12 @@
             </div>
             }
         </div>
+        }
+
+        @else {
+        <p class="font-nuckle font-light text-white h-9">
+            Você ainda não fez nenhuma solicitação!
+        </p>
+        }
     </div>
 </div>

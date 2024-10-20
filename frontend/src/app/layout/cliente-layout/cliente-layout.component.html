@@ -1,12 +1,17 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<div class="gradient-bg">
-    <header style="background-color: black;">
-        <div class="header">
-            <div class="row">
-                <div
-                    class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3">
-                    <img src="HealGuy.png" alt="" class="w-20">
-                    <span class="header-text" (click)="goHome()">HealBoard</span>
+<header style="background-color: black;">
+    <div class="header">
+        <div class="row">
+            <div
+                class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3">
+                <img src="HealGuy.png" alt="" class="w-20">
+                <span class="header-text" (click)="goHome()">HealBoard</span>
+            </div>
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+                <div class="d-flex flex-row-reverse align-items-center gap-3">
+                    <i class="bi bi-person-circle" style="font-size: 50px;"></i>
+                    <span class="header-text" (click)="goLogout()">Logout</span>
+                    <span class="header-text" (click)="goToSolicitacoes()">Orçamentos</span>
                 </div>
                 <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
                     <div class="d-flex flex-row-reverse align-items-center gap-3">
@@ -21,36 +26,36 @@
             </div>
         </div>
         <div class="h-border"></div>
-    </header>
+</header>
 
-    <main class="margin-main">
-        <router-outlet></router-outlet>
-    </main>
+<main class="margin-main">
+    <router-outlet></router-outlet>
+</main>
 
-    <footer>
-        <div class="f-border ">
-        </div>
-        <div class="px-5 pb-5">
-            <div class="row bg-black gap-3 gap-md-0">
-                <div class="col-12 d-flex flex-row align-items-center justify-content-center py-2 gap-3">
-                    <img src="HealGuy.png" alt="" class="w-20">
-                    <span class="header-text" (click)="goHome()">HealBoard</span>
-                </div>
-                <div class="col-12 col-md-6 d-flex flex-column align-items-md-start align-items-center">
-                    <a href="#" class="small-text">Sobre a Companhia</a>
-                    <a href="#" class="small-text"> ©Copright</a>
-                    <a href="#" class="small-text">Termos de Uso</a>
-                </div>
-                <div class="col-12 col-md-6 d-flex flex-column align-items-md-end align-items-center">
-                    <a href="#" class="small-text">Entre em Contato</a>
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-facebook" style="font-size: 40px;"></i>
-                        <i class="bi bi-linkedin" style="font-size: 40px;"></i>
-                        <i class="bi bi-twitter" style="font-size: 40px;"></i>
-                        <i class="bi bi-pin-map-fill" style="font-size: 40px;"></i>
-                    </div>
+<footer>
+    <div class="f-border ">
+    </div>
+    <div class="px-5 pb-5">
+        <div class="row bg-black gap-3 gap-md-0">
+            <div class="col-12 d-flex flex-row align-items-center justify-content-center py-2 gap-3">
+                <img src="HealGuy.png" alt="" class="w-20">
+                <span class="header-text" (click)="goHome()">HealBoard</span>
+            </div>
+            <div class="col-12 col-md-6 d-flex flex-column align-items-md-start align-items-center">
+                <a href="#" class="small-text">Sobre a Companhia</a>
+                <a href="#" class="small-text"> ©Copright</a>
+                <a href="#" class="small-text">Termos de Uso</a>
+            </div>
+            <div class="col-12 col-md-6 d-flex flex-column align-items-md-end align-items-center">
+                <a href="#" class="small-text">Entre em Contato</a>
+                <div class="d-flex gap-3">
+                    <i class="bi bi-facebook" style="font-size: 40px;"></i>
+                    <i class="bi bi-linkedin" style="font-size: 40px;"></i>
+                    <i class="bi bi-twitter" style="font-size: 40px;"></i>
+                    <i class="bi bi-pin-map-fill" style="font-size: 40px;"></i>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 </div>

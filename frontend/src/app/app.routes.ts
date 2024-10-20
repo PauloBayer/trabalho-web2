@@ -15,12 +15,13 @@ import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
+import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -32,6 +33,7 @@ export const routes: Routes = [
     path: 'client',
     component: ClienteLayoutComponent,
     canActivate: [authGuard],
+    data: { role: 'ROLE_CLIENTE' },
     children: [
       {
         path: '',
@@ -72,6 +74,18 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'funcionario',
+    component: FuncionarioLayoutComponent,
+    canActivate: [authGuard],
+    data: { role: 'ROLE_FUNCIONARIO' },
+    children: [
+      {
+        path: 'funcionarios',
+        component: FuncionariosComponent,
+      },
+    ],
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },
@@ -82,6 +96,10 @@ export const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent,
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
   },
   {
     path: '**',
