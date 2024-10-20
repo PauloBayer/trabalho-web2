@@ -124,29 +124,16 @@ export class ManutencaoComponent implements OnInit {
       descricaoManutencao,
       orientacoesCliente,
       this.funcionarioLogado
-    ).subscribe(
-      (response) => {
-        this.solicitacao.status = 'ARRUMADA';
-        if (!this.solicitacao.historico) {
-          this.solicitacao.historico = [];  
-        }
-
-        this.solicitacao.historico.push({
-          id: this.generateUniqueId(), 
-          dataHora: new Date().toISOString(),  
-          statusAtual: 'ARRUMADA',
-          funcionarioOrigem: this.funcionarioLogado.id.toString(),  
-          funcionario: this.funcionarioLogado.nome || 'Funcionário não disponível',  
-        });
-
-        this.isModalOpen = false;
-
-        console.log('Manutenção efetuada com sucesso.');
+    ).subscribe({
+      next: (response) => {
+        alert('Manutenção efetuada com sucesso.');
+        this.router.navigate(['funcionario']);
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao efetuar manutenção:', error);
+        this.router.navigate(['funcionario']);
       }
-    );
+    });
   } else {
     this.manutencaoForm.markAllAsTouched();
   }
