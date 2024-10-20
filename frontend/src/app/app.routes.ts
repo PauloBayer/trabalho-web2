@@ -19,6 +19,7 @@ import { RelatorioComponent } from './pages/relatorio/relatorio.component';
 import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
+import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { role: 'ROLE_FUNCIONARIO' },
     children: [
+      {
+        path: '',
+        component: PaginaInicialFuncionarioComponent,
+      },
       {
         path: 'funcionarios',
         component: FuncionariosComponent,
