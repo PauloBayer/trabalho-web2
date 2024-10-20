@@ -42,13 +42,23 @@ export class SolicitacaoService {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     const dataHora = new Date().toISOString();
-    
+
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+
+    if (!userLogado)
+      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
+
+    if ((userLogado as IFuncionario).dataNascimento)
+      return throwError(() => new Error(`Não autorizado: funcionários não podem criar solicitações`));
+
     solicitacoes.push({
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
       descricaoEquipamento: descricaoEquipamento,
       dataHoraCriacao: dataHora,
+      cliente: userLogado as ICliente,
       status: 'ABERTA',
       historico: [{
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),

@@ -27,7 +27,7 @@ export class AuthService {
 
     if (clienteEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado));
-      localStorage.setItem('userRole', 'ROLE_CLIENTE');
+      this.setUserRole('ROLE_CLIENTE');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -37,7 +37,7 @@ export class AuthService {
 
     if (funcionarioEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado));
-      localStorage.setItem('userRole', 'ROLE_FUNCIONARIO');
+      this.setUserRole('ROLE_FUNCIONARIO');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -82,10 +82,19 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.getToken() ? true : false;
+    return this.getToken() && this.getUserRole() ? true : false;
   }
 
-  getUserRole(): string | null {
-    return localStorage.getItem('userRole');
+  setUserRole(role: 'ROLE_CLIENTE' | 'ROLE_FUNCIONARIO'): void {
+    localStorage.setItem('userRole', role);
+  }
+
+  getUserRole(): 'ROLE_CLIENTE' | 'ROLE_FUNCIONARIO' | null {
+    const role = localStorage.getItem('userRole');
+
+    if (role == 'ROLE_CLIENTE' || role == 'ROLE_FUNCIONARIO')
+      return role;
+    else
+      return null;
   }
 }

@@ -17,12 +17,12 @@ import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -34,11 +34,8 @@ export const routes: Routes = [
     path: 'client',
     component: ClienteLayoutComponent,
     canActivate: [authGuard],
+    data: { role: 'ROLE_CLIENTE' },
     children: [
-      {
-        path: '',
-        component: PaginaInicialComponent,
-      },
       {
         path: 'solicitacao-manutencao',
         component: SolicitacaoManutencaoComponent,
@@ -51,13 +48,21 @@ export const routes: Routes = [
         path: 'servico',
         component: VisualizarServicoComponent,
       },
+    ],
+  },
+  {
+    path: 'funcionario',
+    component: FuncionarioLayoutComponent,
+    canActivate: [authGuard],
+    data: { role: 'ROLE_FUNCIONARIO' },
+    children: [
       {
-        path: 'efetuar',
-        component: EfetuarOrcamentoComponent,
+        path: '',
+        component: PaginaInicialComponent,
       },
       {
-        path: 'solicitacoes',
-        component: SolicitacoesFuncionarioComponent,
+        path: 'funcionarios',
+        component: FuncionariosComponent,
       },
       {
         path: 'categorias',
@@ -71,23 +76,23 @@ export const routes: Routes = [
         path: 'funcionarios',
         component: FuncionariosComponent,
       },
+      {
+        path: 'efetuar',
+        component: EfetuarOrcamentoComponent,
+      },
+      {
+        path: 'solicitacoes',
+        component: SolicitacoesFuncionarioComponent,
+      },
+      {
+        path: 'relatorio',
+        component: RelatorioComponent,
+      },
     ],
   },
-
-  {
-    path: 'funcionario',
-    component: FuncionarioLayoutComponent,
-    canActivate: [authGuard],
-    children: [{ path: 'Orcamentos', component: EfetuarOrcamentoComponent }],
-  },
-
   {
     path: 'login',
     component: LoginComponent,
-  },
-  {
-    path: 'relatorio',
-    component: RelatorioComponent,
   },
   {
     path: 'register',
@@ -96,6 +101,10 @@ export const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent,
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
   },
   {
     path: '**',
