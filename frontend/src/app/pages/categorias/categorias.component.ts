@@ -72,6 +72,10 @@ export class CategoriasComponent implements AfterViewInit {
     }
   }
   
+  findIndexOfElement(element: string) {
+    return this.dataSource.data.findIndex((item) => item.name === element) + 1;
+  }
+
   openDialog() {
     this.dialog
       .open(CategoriaDialog, {

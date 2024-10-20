@@ -7,7 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class CategoryService {
-  private localStorageKey = 'categories';
+  private localStorageKey = 'categorias';
 
   constructor() {}
 

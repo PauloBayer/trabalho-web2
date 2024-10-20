@@ -7,8 +7,8 @@ import { ICategoriaEquipamento } from './categoria-equipamento.interface';
 export interface ISolicitacao {
     id: string,
     categoriaEquipamento: ICategoriaEquipamento,
-    cliente?: string | ICliente,
-    funcionario?: IFuncionario | string,
+    cliente?: ICliente,
+    funcionario?: IFuncionario,
     status?: EstadoSolicitacaoType,
     dataHoraCriacao: string,
     dataHoraAtualizacao?: string,
