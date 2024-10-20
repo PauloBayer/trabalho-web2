@@ -1,36 +1,48 @@
 <div id="container">
   <div class="left">
-    <div style="
-        background: linear-gradient(
-          90deg,
-          rgba(255, 196, 43, 1) 0%,
-          rgba(255, 94, 43, 1) 100%
-        );
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 40px;
-        margin-bottom: 40px;
-      ">
-      Seja bem-vindo
+    <div class="welcome-text">
+      Seja bem vindo
     </div>
-    <div></div>
 
-    <input id="username" type="text" placeholder="usuário" onchange="updateButtonState()" style="
-        border: 2px solid rgba(255, 196, 43, 1);
-        border-radius: 30px;
-        padding: 8px;
-      " [formControl]="loginForm.controls.email" />
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+      <input
+        id="username"
+        type="text"
+        placeholder="Usuário"
+        [formControl]="loginForm.controls.email"
+        [ngClass]="{ 'input-error': loginForm.controls.email.invalid && loginForm.controls.email.touched }"
+        class="border-gradient-input"
+      />
+      <div class="error-placeholder">
+        <div *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched" class="error-text">
+          O e-mail é obrigatório e deve ser válido.
+        </div>
+      </div>
 
-    <input id="user-password" type="password" placeholder="senha" onchange="updateButtonState()" style="
-        margin-top: 10px;
-        border: 2px solid rgba(255, 196, 43, 1);
-        border-radius: 30px;
-        padding: 8px;
-      " [formControl]="loginForm.controls.senha" />
+      <input
+        id="user-password"
+        type="password"
+        placeholder="Senha"
+        [formControl]="loginForm.controls.senha"
+        [ngClass]="{ 'input-error': loginForm.controls.senha.invalid && loginForm.controls.senha.touched }"
+        class="border-gradient-input"
+      />
+      <div class="error-placeholder">
+        <div *ngIf="loginForm.controls.senha.touched" class="error-text">
+          A senha é obrigatória.
+        </div>
+      </div>
 
-    <a style="color: rgba(255, 94, 43, 1)" href="register">Criar conta</a>
+      <div class="error-placeholder">
+        <div *ngIf="loginError" class="error-text">
+          {{ loginError }}
+        </div>
+      </div>
 
-    <a class="btn" id="btn-login" (click)="onLogin()"> Entrar </a>
+      <a class="register-link" class="btn" href="register">Criar conta</a>
+      <br>
+      <button type="submit" class="btn" id="btn-login">Entrar</button>
+    </form>
   </div>
 
   <div class="right"></div>

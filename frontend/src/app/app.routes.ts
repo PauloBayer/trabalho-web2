@@ -95,6 +95,10 @@ export const routes: Routes = [
         component: ManutencaoComponent,
       },
       {
+        path: 'servico/:id',
+        component: VisualizarServicoComponent,
+      },
+      {
         path: 'relatorio',
         component: RelatorioComponent,
       },
