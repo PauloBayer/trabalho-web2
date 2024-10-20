@@ -1,24 +1,39 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B] mt-20">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B]">
     <div class="bg-black text-white rounded-lg shadow-lg w-3/4 p-8">
         <h1 class="text-3xl font-bold text-center mb-6">Detalhes da Solicitação de Manutenção</h1>
         <hr class="border-t-2 border-white mb-6">
 
+        <!-- Detalhes da Solicitação -->
         <div class="bg-gray-800 p-6 rounded-lg shadow-sm mb-6">
-            <p class="text-lg"><strong>Cliente:</strong> {{ solicitacao?.cliente ?? 'Cliente não disponível' }}</p>
-            <p class="text-lg"><strong>Equipamento:</strong> {{ solicitacao?.descricaoEquipamento ?? 'Equipamento não disponível' }}</p>
-            <p class="text-lg"><strong>Defeito:</strong> {{ solicitacao?.descricaoDefeito ?? 'Defeito não disponível' }}</p>
-            <p class="text-lg"><strong>Estado:</strong>  {{ solicitacao?.estado ?? 'Estado não disponível' }}</p>
+            <p class="text-lg"><strong>Cliente:</strong> {{ getClienteNome(solicitacao.cliente) }}</p>
+            <p class="text-lg"><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento || 'Equipamento não disponível' }}</p>
+            <p class="text-lg"><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito || 'Defeito não disponível' }}</p>
+            <p class="text-lg"><strong>Estado:</strong> {{ solicitacao.status || 'Estado não disponível' }}</p>
         </div>
 
-        <div *ngIf="solicitacao?.estado === 'ABERTA' || solicitacao?.estado === 'REDIRECIONADA'" class="bg-gray-800 p-6 rounded-lg shadow-sm">
+        <!-- Ações para Solicitações ABERTA ou REDIRECIONADA -->
+        <div *ngIf="solicitacao?.status === 'ABERTA' || solicitacao?.status === 'REDIRECIONADA'" class="bg-gray-800 p-6 rounded-lg shadow-sm">
             <h2 class="text-2xl font-bold text-center mb-4">Ações</h2>
 
-            <div class="flex justify-center mb-4">
-                <button (click)="isModalOpen = true" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+            <div class="flex justify-between mb-4 space-x-4">
+
+                <!-- Botão Redirecionar Manutenção -->
+                <button (click)="isRedirectModalOpen = true" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                    Redirecionar Manutenção
+                </button>   
+                
+                <!-- Botão Efetuar Manutenção -->
+                <button (click)="isModalOpen = true" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                     Efetuar Manutenção
+                </button>
+                
+                <!-- Botão Finalizar Solicitação -->
+                <button class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300" (click)="finalizarSolicitacao()">
+                    Finalizar Solicitação
                 </button>
             </div>
 
+            <!-- Efetuar Manutenção Modal -->
             <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-gray-900 text-white rounded-lg shadow-lg w-3/4 p-8">
                     <h3 class="text-2xl font-bold mb-4">Descrição da Manutenção</h3>
@@ -39,6 +54,7 @@
                             </div>
                         </div>
 
+                        <!-- Botões "Cancelar" e "Confirmar" alinhados na mesma linha -->
                         <div class="flex justify-between mt-6">
                             <button (click)="isModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
@@ -51,12 +67,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-center mb-4">
-                <button (click)="isRedirectModalOpen = true" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
-                    Redirecionar Manutenção
-                </button>
-            </div>
-
+            <!-- Redirecionar Manutenção Modal -->
             <div *ngIf="isRedirectModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-gray-900 text-white rounded-lg shadow-lg w-3/4 p-8">
                     <h3 class="text-2xl font-bold mb-4">Redirecionar para Funcionário</h3>
@@ -69,10 +80,11 @@
                             </select>
                         </div>
 
+                        <!-- Botões "Cancelar" e "Confirmar" alinhados na mesma linha -->
                         <div class="flex justify-between mt-6">
                             <button (click)="isRedirectModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
-                            </button>                            
+                            </button>
                             <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Confirmar
                             </button>
@@ -82,19 +94,14 @@
             </div>
         </div>
 
-        <div *ngIf="solicitacao?.estado === 'ARRUMADA'" class="mt-6 flex justify-center">
-            <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300" (click)="finalizarSolicitacao()">
-                Finalizar Solicitação
-            </button>
-        </div>
-
+        <!-- Histórico da Solicitação -->
         <div class="mt-8 bg-gray-800 p-6 rounded-lg shadow-sm">
             <h2 class="text-2xl font-bold text-center mb-4">Histórico</h2>
             <ul class="list-disc pl-5 space-y-2">
                 <li *ngFor="let historico of solicitacao?.historico">
                     {{ historico.dataHora | date:'short' }} - 
-                    <span class="font-semibold">{{ historico.acao }}</span> por 
-                    {{ historico.funcionarioOrigem || historico.funcionario }}.
+                    <span class="font-semibold">{{ historico.statusAtual }}</span> por 
+                    {{ getFuncionarioNome(historico.funcionarioOrigem) || getFuncionarioNome(historico.funcionario) || 'Funcionário não disponível' }}.
                 </li>
             </ul>
         </div>

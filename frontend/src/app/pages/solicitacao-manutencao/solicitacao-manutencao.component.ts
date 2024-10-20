@@ -32,7 +32,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
     this.solicitacaoForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      categorie: ['', Validators.required],
+      //categorie: ['', Validators.required],
       problem: ['', Validators.required],
     });
   }
@@ -58,7 +58,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
       .criarSolicitacao(description, problem, categorie)
       .subscribe({
         next: (data) => {
-          this.router.navigate(['client']);
+          this.router.navigate(['client/manutencao']);
         },
         error: (error) => {
           // arrumar mensagem de erro
