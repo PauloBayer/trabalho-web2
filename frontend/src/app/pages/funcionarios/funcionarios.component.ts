@@ -11,6 +11,7 @@ import { IFuncionario } from '../../model/entities/funcionario.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CriarAltFuncComponent } from './criar-alt-func/criar-alt-func.component';
 import { DeleteFuncComponent } from './delete-func/delete-func.component';
+import { FuncionarioService } from '../../services/funcionario.service';
 
 @Component({
   selector: 'app-funcionarios',
@@ -37,31 +38,27 @@ export class FuncionariosComponent implements AfterViewInit {
     'Ações',
   ];
   dataSource: MatTableDataSource<any>;
+  funcionarios: IFuncionario[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource([
-      {
-        id: '1',
-        nome: 'João',
-        email: 'joao@mail.com',
-        dataNascimento: '01/01/2000',
-        senha: '123mudar',
-      },
-      {
-        id: '2',
-        nome: 'Maria',
-        email: 'maria@mail.com',
-        dataNascimento: '02/02/1990',
-        senha: '123mudar',
-      },
-    ]);
+  constructor(
+    public dialog: MatDialog,
+    public funcionarioService: FuncionarioService
+  ) {
+    this.dataSource = new MatTableDataSource(this.funcionarios);
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnInit() {
+    this.funcionarioService.findAll().subscribe((funcionarios) => {
+      this.funcionarios = funcionarios;
+      this.dataSource.data = this.funcionarios;
+    });
   }
 
   applyFilter(event: Event) {

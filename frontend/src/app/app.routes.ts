@@ -48,6 +48,10 @@ export const routes: Routes = [
         path: 'servico',
         component: VisualizarServicoComponent,
       },
+      {
+        path: '',
+        component: PaginaInicialComponent,
+      },
     ],
   },
   {
@@ -56,10 +60,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { role: 'ROLE_FUNCIONARIO' },
     children: [
-      {
-        path: '',
-        component: PaginaInicialComponent,
-      },
       {
         path: 'funcionarios',
         component: FuncionariosComponent,
