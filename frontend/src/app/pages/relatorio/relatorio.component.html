@@ -1,15 +1,14 @@
 <body>
-  <h2 class="my-3 title">Relatório de Receita</h2>
-  <form
-    (ngSubmit)="onSubmit(dataInicial.value, dataFinal.value)"
-    class="nav-filter"
-  >
+  <h1>Relatório de Receita</h1>
+  <form (ngSubmit)="onSubmit(dataInicial.value, dataFinal.value)" class="nav-filter">
     <div style="display: flex; align-items: center; gap: 10px">
       <select>
         <option>Todas as categorias</option>
-        <option *ngFor="let categoria of categorias" [value]="categoria.name">
-          {{ categoria.name }}
-        </option>
+        <option>Placas-mãe</option>
+        <option>Processadores</option>
+        <option>Memória RAM</option>
+        <option>Placas de vídeo</option>
+        <option>Armazenamento</option>
       </select>
 
       <label for="dataInicial" style="color: white">Data Inicial:</label>
@@ -18,6 +17,9 @@
       <input type="date" id="dataFinal" #dataFinal />
 
       <button class="btn" type="submit">Gerar Relatório</button>
+      <button class="btn btn-primary mt-3" [disabled]="receitas.length === 0" (click)="printReport()">
+        Imprimir Relatório
+      </button>
     </div>
   </form>
 
@@ -25,14 +27,15 @@
     <table *ngIf="receitas.length > 0" class="black-box">
       <thead>
         <tr>
-          <td><h1>Data</h1></td>
-          <td><h1>Receita</h1></td>
+          <th class="data-header">Data</th>
+          <th class="valor-header">Receita</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-body">
         <tr *ngFor="let receita of receitas">
-          <td>{{ receita.data | date }}</td>
-          <td>{{ receita.valor | currency }}</td>
+          <td class="data-col">{{ receita.data | date }}</td>
+          <td class="categoria-col">{{ receita.categoria }}</td>
+          <td class="valor-col">{{ receita.valor | currency }}</td>
         </tr>
       </tbody>
     </table>

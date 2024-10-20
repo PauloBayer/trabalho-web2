@@ -84,7 +84,7 @@ export const routes: Routes = [
         component: FuncionariosComponent,
       },
       {
-        path: 'efetuar',
+        path: 'efetuar-orcamento/:id',
         component: EfetuarOrcamentoComponent,
       },
       {
