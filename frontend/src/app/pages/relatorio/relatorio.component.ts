@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importando CommonModule
-import { FormsModule } from '@angular/forms'; // Importando FormsModule
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { categoriasSeed } from '../../seeds/seed';
 import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
-import { Receita } from '../../model/entities/receita';
 import { PrintService } from '../../services/print.service';
 import { Router } from '@angular/router';
+import { Receita } from '../../model/entities/receita';
 
 @Component({
   selector: 'app-relatorio',

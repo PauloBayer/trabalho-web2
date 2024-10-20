@@ -30,6 +30,14 @@ export class SolicitacaoService {
     }
   }
 
+  findAllSolicitacoesWithStatusABERTA(): Observable<ISolicitacao []> {
+    let solicitacoesString = localStorage.getItem('solicitacoes');
+    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoesAbertas: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === 'ABERTA');
+    
+    return of(solicitacoesAbertas);
+  }
+
   getSolicitacaoById(id: string): Observable<ISolicitacao> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let allSolicitacoes: ISolicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];

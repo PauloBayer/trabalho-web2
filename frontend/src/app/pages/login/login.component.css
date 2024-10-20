@@ -1,4 +1,3 @@
-/* styles.css */
 html,
 body {
   margin: 0;
@@ -9,13 +8,6 @@ body {
 #container {
   display: flex;
   height: 100vh;
-}
-
-.border-gradient-input {
-  border-radius: 30px; /* Deve combinar com o contêiner */
-  padding: 8px;
-  width: 100%; /* Ajusta a largura do input */
-  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
 }
 
 .left,
@@ -29,7 +21,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   background-color: white;
 }
 
@@ -42,9 +33,51 @@ body {
       rgba(255, 94, 43, 0.4) 100%
     ),
     url(/login.jpg);
-
   object-fit: fill;
   background-size: cover;
+}
+
+.welcome-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.border-gradient-input {
+  border: 2px solid rgba(255, 196, 43, 1);
+  border-radius: 30px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.error-placeholder {
+  height: 20px; 
+  margin-bottom: 10px;
+}
+
+.error-text {
+  color: red;
+}
+
+.register-link {
+  color: rgba(255, 94, 43, 1);
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .btn {
@@ -53,12 +86,15 @@ body {
     rgba(255, 196, 43, 1) 0%,
     rgba(255, 94, 43, 1) 100%
   );
-  padding: 10px 80px;
-  border-radius: 60px;
+  padding: 10px;
+  border-radius: 30px;
   color: white;
-  margin-top: 30px;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.register {
-  justify-content: end;
+.input-error {
+  border-color: red;
 }

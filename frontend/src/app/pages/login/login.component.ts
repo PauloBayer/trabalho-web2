@@ -11,19 +11,21 @@ import { IUserLogin } from '../../model/requests/user-login-request.interface';
 import { ILoginResponse } from '../../model/responses/login-response.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup<{
     email: FormControl<string>;
     senha: FormControl<string>;
   }>;
+  loginError: string | null = null; 
 
   constructor(
     private authService: AuthService,
@@ -34,33 +36,35 @@ export class LoginComponent implements OnInit {
     this.loginForm = new FormGroup({
       email: new FormControl<string>('', {
         nonNullable: true,
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.email],
       }),
       senha: new FormControl<string>('', {
         nonNullable: true,
-        validators: [Validators.required],
       }),
     });
   }
 
   ngOnInit(): void {
-    // if (this.authService.isLoggedIn()) 
-    //   this.router.navigate(['']); Comentei pq estava impedindo de entrar nesta página
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['']);
+    }
   }
 
   onLogin() {
-    if (!this.loginForm.valid) return;
+    if (!this.loginForm.valid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
 
     const user: IUserLogin = this.loginForm.getRawValue();
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
-        console.log(data)
         this.authService.setToken(data.token);
-        this.router.navigate(['client']);
+        this.router.navigate(['']);
       },
       error: (error) => {
-        alert('erro ao fazer login')
-        console.error(error)
+        this.loginError = 'Usuário ou senha inválidos'; 
+        console.error(error);
       }
     });
   }

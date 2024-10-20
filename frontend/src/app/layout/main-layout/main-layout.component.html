@@ -2,17 +2,55 @@
 <header style="background-color: black">
   <div class="header">
     <div class="row">
-      <div (click)="goHome()"
-        class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3">
+      <div
+        class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3"
+      >
         <img src="HealGuy.png" alt="" class="w-20" />
         <span class="header-text">HealBoard</span>
       </div>
-      <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
-        <div class="d-flex flex-row-reverse align-items-center gap-3">
-          <a class="header-text" (click)="goRegister()">Cadastrar</a>
-          <a class="header-text" (click)="goLogin()">Entrar</a>
+
+      @if (isAuthenticated()) 
+      {
+        <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+          <div class="d-flex flex-row-reverse align-items-center gap-3">
+            <a
+              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
+              (click)="goLogout()" 
+            >
+              Logout
+            </a>
+            
+            <a 
+              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
+              (click)="goHomepage()" 
+            >
+              Homepage
+            </a>            
+          </div>
         </div>
-      </div>
+      }
+
+      @else 
+      {
+        <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+          <div class="d-flex flex-row-reverse align-items-center gap-3">
+            <a 
+              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
+              (click)="goRegister()" 
+            >
+              Cadastrar
+            </a>
+
+            <a 
+              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
+              (click)="goLogin()"
+            >
+              Entrar
+            </a>
+          </div>
+        </div>
+      }
+
     </div>
   </div>
   <div class="h-border"></div>

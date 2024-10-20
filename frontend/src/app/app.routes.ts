@@ -19,6 +19,8 @@ import { RelatorioComponent } from './pages/relatorio/relatorio.component';
 import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PrintComponent } from './pages/print/print.component';
+import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
+import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 
 export const routes: Routes = [
   {
@@ -38,21 +40,25 @@ export const routes: Routes = [
     data: { role: 'ROLE_CLIENTE' },
     children: [
       {
+        path: '',
+        component: PaginaInicialComponent,
+      },
+      {
         path: 'solicitacao-manutencao',
         component: SolicitacaoManutencaoComponent,
       },
       {
-        path: 'orcamentos',
+        path: 'orcamentos/:id',
         component: MostrarOrcamentosComponent,
       },
       {
-        path: 'servico',
+        path: 'servico/:id',
         component: VisualizarServicoComponent,
       },
       {
-        path: '',
-        component: PaginaInicialComponent,
-      },
+        path: 'pagar-servico/:id',
+        component: PagarServicoComponent
+      }
     ],
   },
   {
@@ -62,16 +68,16 @@ export const routes: Routes = [
     data: { role: 'ROLE_FUNCIONARIO' },
     children: [
       {
+        path: '',
+        component: PaginaInicialFuncionarioComponent,
+      },
+      {
         path: 'funcionarios',
         component: FuncionariosComponent,
       },
       {
         path: 'categorias',
         component: CategoriasComponent,
-      },
-      {
-        path: 'manutencao',
-        component: ManutencaoComponent,
       },
       {
         path: 'funcionarios',
@@ -84,6 +90,14 @@ export const routes: Routes = [
       {
         path: 'solicitacoes',
         component: SolicitacoesFuncionarioComponent,
+      },
+      {
+        path: 'manutencao/:id',
+        component: ManutencaoComponent,
+      },
+      {
+        path: 'servico/:id',
+        component: VisualizarServicoComponent,
       },
       {
         path: 'relatorio',
