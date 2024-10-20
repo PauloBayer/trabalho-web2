@@ -39,9 +39,12 @@
                 }
 
                 @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
-                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3">
-                    Pagar serviço
-                </button>
+                    <button 
+                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                        (click)="pagarServico(solicitacao.id)"
+                    >
+                        Pagar serviço
+                    </button>
                 }
 
                 @else if (solicitacao.status === 'REJEITADA') {

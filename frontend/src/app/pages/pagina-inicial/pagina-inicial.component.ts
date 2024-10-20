@@ -68,4 +68,8 @@ export class PaginaInicialComponent implements OnInit {
     //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()
     // );
   }
+
+  pagarServico(idSolicitacao: string) {
+    this.router.navigate([`client/pagar-servico/${idSolicitacao}`])
+  }
 }
