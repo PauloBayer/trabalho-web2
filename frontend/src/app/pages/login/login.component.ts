@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     email: FormControl<string>;
     senha: FormControl<string>;
   }>;
-  loginError: string | null = null; 
+  loginError: string | null = null;
 
   constructor(
     private authService: AuthService,
@@ -36,10 +36,11 @@ export class LoginComponent implements OnInit {
     this.loginForm = new FormGroup({
       email: new FormControl<string>('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.email],
+        validators: [Validators.required, Validators.email], 
       }),
       senha: new FormControl<string>('', {
         nonNullable: true,
+        validators: [Validators.required], 
       }),
     });
   }
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit {
     this.authService.doLogin(user).subscribe({
       next: (data: ILoginResponse) => {
         this.authService.setToken(data.token);
-        this.router.navigate(['']);
+        this.router.navigate(['client']); 
       },
       error: (error) => {
         this.loginError = 'Usuário ou senha inválidos'; 
