@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
+import { SolicitacaoService } from '../../services/solicitacao.service';
+import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 
 @Component({
   selector: 'app-servico-visualizar',
@@ -10,52 +12,28 @@ import { Router } from '@angular/router';
   imports: [CommonModule],
 })
 export class VisualizarServicoComponent implements OnInit {
-  solicitacao: any;
+  solicitacao: ISolicitacao | null = null;
+  solicitacaoId: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute, 
+    private solicitacaoService: SolicitacaoService 
+  ) {}
 
   ngOnInit(): void {
-    this.solicitacao = {
-      id: '12345',
-      servico: 'Formatação de Equipamento',
-      data: new Date('2024-09-20T13:58:00'),
-      status: 'ORÇADA',
-      descricao:
-        'Solicitação de formatação e reinstalação do sistema operacional.',
-      passos: [
-        {
-          data: new Date('2024-09-20T13:35:00'),
-          funcionario: 'João Silva',
-          acao: 'Solicitação Realizada',
+    this.solicitacaoId = this.route.snapshot.paramMap.get('id') || '';
+
+    if (this.solicitacaoId) {
+      this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
+        next: (solicitacao) => {
+          this.solicitacao = solicitacao;
         },
-        {
-          data: new Date('2024-09-20T13:45:00'),
-          funcionario: 'João Silva',
-          acao: 'Orçamento Aprovado',
-        },
-        {
-          data: new Date('2024-09-20T13:58:00'),
-          funcionario: 'João Silva',
-          acao: 'Aguardando Pagamento',
-        },
-      ],
-    };
-  }
-
-  aprovarSolicitacao() {
-    this.router.navigate(['client/orcamentos']);
-  }
-
-  rejeitarSolicitacao() {
-    alert('Solicitação rejeitada!');
-  }
-
-  resgatarServico() {
-    alert('Serviço resgatado!');
-  }
-
-  pagarServico() {
-    alert('Pagamento realizado!');
+        error: (err) => {
+          console.error('Erro ao carregar solicitação:', err);
+        }
+      });
+    }
   }
 
   visualizarServico() {
