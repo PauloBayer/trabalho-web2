@@ -48,7 +48,7 @@ export class PaginaInicialComponent implements OnInit {
   resgatarSolicitacao(s: ISolicitacao) {
     const historico: IHistorico = {
       dataHora: new Date().toISOString(),
-      statusAtual: 'APROVADA',
+      statusAtual: EstadoSolicitacaoType.APROVADA,
       id: '',
     };
     s.historico?.push(historico);

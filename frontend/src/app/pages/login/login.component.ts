@@ -44,8 +44,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) 
-      this.router.navigate(['']);
+    // if (this.authService.isLoggedIn()) 
+    //   this.router.navigate(['']); Comentei pq estava impedindo de entrar nesta página
   }
 
   onLogin() {

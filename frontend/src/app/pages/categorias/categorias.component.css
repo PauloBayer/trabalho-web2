@@ -72,11 +72,9 @@ tr.example-element-row:not(.example-expanded-row):active {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
 }
 
 .black-box {
-    margin: 150px 0 25px;
     background-color: black;
     display: flex;
     flex-direction: column;
