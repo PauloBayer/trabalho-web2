@@ -18,6 +18,7 @@ import { authGuard } from './guards/auth.guard';
 import { RelatorioComponent } from './pages/relatorio/relatorio.component';
 import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { PrintComponent } from './pages/print/print.component';
 import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
 import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 
@@ -119,6 +120,10 @@ export const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent,
+  },
+  {
+    path: 'print',
+    component: PrintComponent,
   },
   {
     path: '**',

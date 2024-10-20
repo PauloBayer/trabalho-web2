@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Imprimir Relatório de Receita</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printable,
+            #printable * {
+                visibility: visible;
+            }
+
+            #printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        /* Estilos adicionais para impressão */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="printable">
+        <h1>Relatório de Receita</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let receita of receitas">
+                    <td>{{ receita.data | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ receita.categoria }}</td>
+                    <td>{{ receita.valor | currency:'BRL' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

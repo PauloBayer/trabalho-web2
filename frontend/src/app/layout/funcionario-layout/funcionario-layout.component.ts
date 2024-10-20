@@ -31,4 +31,9 @@ export class FuncionarioLayoutComponent {
   goToFuncionarios() {
     this.router.navigate(['funcionario/funcionarios']);
   }
+
+  
+  goToRelatorios() {
+    this.router.navigate(['funcionario/relatorio']);
+  }
 }

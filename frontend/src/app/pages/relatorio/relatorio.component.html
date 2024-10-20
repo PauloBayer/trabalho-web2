@@ -1,9 +1,6 @@
 <body>
   <h1>Relatório de Receita</h1>
-  <form
-    (ngSubmit)="onSubmit(dataInicial.value, dataFinal.value)"
-    class="nav-filter"
-  >
+  <form (ngSubmit)="onSubmit(dataInicial.value, dataFinal.value)" class="nav-filter">
     <div style="display: flex; align-items: center; gap: 10px">
       <select>
         <option>Todas as categorias</option>
@@ -20,6 +17,9 @@
       <input type="date" id="dataFinal" #dataFinal />
 
       <button class="btn" type="submit">Gerar Relatório</button>
+      <button class="btn btn-primary mt-3" [disabled]="receitas.length === 0" (click)="printReport()">
+        Imprimir Relatório
+      </button>
     </div>
   </form>
 
@@ -34,6 +34,7 @@
       <tbody class="table-body">
         <tr *ngFor="let receita of receitas">
           <td class="data-col">{{ receita.data | date }}</td>
+          <td class="categoria-col">{{ receita.categoria }}</td>
           <td class="valor-col">{{ receita.valor | currency }}</td>
         </tr>
       </tbody>
