@@ -33,7 +33,7 @@ export class FuncionariosComponent implements AfterViewInit {
     'id',
     'nome',
     'email',
-    'data_nascimento',
+    'dataNascimento',
     'Ações',
   ];
   dataSource: MatTableDataSource<any>;
@@ -46,14 +46,14 @@ export class FuncionariosComponent implements AfterViewInit {
         id: '1',
         nome: 'João',
         email: 'joao@mail.com',
-        data_nascimento: '01/01/2000',
+        dataNascimento: '01/01/2000',
         senha: '123mudar',
       },
       {
         id: '2',
         nome: 'Maria',
         email: 'maria@mail.com',
-        data_nascimento: '02/02/1990',
+        dataNascimento: '02/02/1990',
         senha: '123mudar',
       },
     ]);

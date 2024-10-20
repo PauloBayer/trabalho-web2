@@ -22,7 +22,7 @@ export class SolicitacaoService {
 
     if (usuarioLogado && (usuarioLogado as ICliente).cpf) {
       let solicitacoesDoClienteLogado: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
-        solicitacao.cliente.cpf === (usuarioLogado as ICliente).cpf
+        solicitacao?.cliente?.cpf === (usuarioLogado as ICliente).cpf
     );
     return of(solicitacoesDoClienteLogado);
     } else {
@@ -136,7 +136,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA' as EstadoSolicitacaoType,
+          status: 'APROVADA',
           historico: historicoAtualizado
         };
   
@@ -174,7 +174,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA' as EstadoSolicitacaoType,
+          status: 'APROVADA',
           motivoRejeicao: motivoRejeicao,
           historico: historicoAtualizado
         };
@@ -296,7 +296,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'PAGA' as EstadoSolicitacaoType,
+          status: 'PAGA',
           historico: historicoAtualizado
         };
   

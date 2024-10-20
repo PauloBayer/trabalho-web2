@@ -1,5 +1,6 @@
 import { ICategoriaEquipamento } from "../model/entities/categoria-equipamento.interface";
 import { ICliente } from "../model/entities/cliente.interface";
+import { EstadoSolicitacaoType } from "../model/entities/estado-solicitacao.type";
 import { IFuncionario } from "../model/entities/funcionario.interface";
 import { IHistorico } from "../model/entities/historico.interface";
 import { ISolicitacao } from "../model/entities/solicitacao.interface";
@@ -78,7 +79,6 @@ const historico8_APROVADA: IHistorico = { id: '8c', statusAnterior: 'ORCADA', st
 const historico8_AGUARDANDO_PAGAMENTO: IHistorico = { id: '8d', statusAnterior: 'APROVADA', statusAtual: 'AGUARDANDO_PAGAMENTO', dataHora: '2023-09-20T08:35:50Z', funcionario: funcionario2, descricaoManutencao: 'descricaoManutencao lorem ipsum ergo sutum', orientacoesManutencao: 'orientacoesManutencao lorem ipsum ergo sutum' };
 const historico8_PAGA: IHistorico = { id: '8e', statusAnterior: 'AGUARDANDO_PAGAMENTO', statusAtual: 'PAGA', dataHora: '2023-09-20T08:35:50Z' };
 const historico8_FINALIZADA: IHistorico = { id: '8f', statusAnterior: 'PAGA', statusAtual: 'FINALIZADA', dataHora: '2023-09-20T08:35:50Z' };
-
 
 const solicitacao1: ISolicitacao = { id: '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-01T12:45:30Z', cliente: cliente5, status: 'ABERTA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', historico: [ historico1_ABERTA ] };
 const solicitacao2: ISolicitacao = { id: 'e5d178e0-9203-4b8f-bf9a-c2fa5f5a3b85', categoriaEquipamento: categoria2, dataHoraCriacao: '2023-09-04T14:22:18Z', cliente: cliente5, status: 'ORCADA', descricaoEquipamento: 'descricaoEquipamento lorem ipsum ergo sutum', descricaoDefeito: 'descricaoDefeito lorem ipsum ergo sutum', valorOrcado: 200.0, funcionario: funcionario3, historico: [ historico2_ABERTA, historico2_ORCADA ] };

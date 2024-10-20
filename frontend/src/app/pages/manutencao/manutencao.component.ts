@@ -6,6 +6,7 @@ import { IFuncionario } from '../../model/entities/funcionario.interface';
 import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 import { ICliente } from '../../model/entities/cliente.interface';
 import { funcionario2 } from '../../seeds/seed';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 
 @Component({
   selector: 'app-manutencao',
