@@ -15,12 +15,16 @@ import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
+import { RelatorioComponent } from './pages/relatorio/relatorio.component';
+import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
+import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -32,6 +36,7 @@ export const routes: Routes = [
     path: 'client',
     component: ClienteLayoutComponent,
     canActivate: [authGuard],
+    data: { role: 'ROLE_CLIENTE' },
     children: [
       {
         path: '',
@@ -42,12 +47,40 @@ export const routes: Routes = [
         component: SolicitacaoManutencaoComponent,
       },
       {
-        path: 'orcamentos',
+        path: 'orcamentos/:id',
         component: MostrarOrcamentosComponent,
       },
       {
-        path: 'servico',
+        path: 'servico/:id',
         component: VisualizarServicoComponent,
+      },
+      {
+        path: 'pagar-servico/:id',
+        component: PagarServicoComponent
+      }
+    ],
+  },
+  {
+    path: 'funcionario',
+    component: FuncionarioLayoutComponent,
+    canActivate: [authGuard],
+    data: { role: 'ROLE_FUNCIONARIO' },
+    children: [
+      {
+        path: '',
+        component: PaginaInicialFuncionarioComponent,
+      },
+      {
+        path: 'funcionarios',
+        component: FuncionariosComponent,
+      },
+      {
+        path: 'categorias',
+        component: CategoriasComponent,
+      },
+      {
+        path: 'funcionarios',
+        component: FuncionariosComponent,
       },
       {
         path: 'efetuar',
@@ -58,12 +91,12 @@ export const routes: Routes = [
         component: SolicitacoesFuncionarioComponent,
       },
       {
-        path: 'categorias',
-        component: CategoriasComponent,
+        path: 'manutencao/:id',
+        component: ManutencaoComponent,
       },
       {
-        path: 'funcionarios',
-        component: FuncionariosComponent,
+        path: 'relatorio',
+        component: RelatorioComponent,
       },
     ],
   },
@@ -80,8 +113,8 @@ export const routes: Routes = [
     component: LogoutComponent,
   },
   {
-    path: 'manutencao/:id',
-    component: ManutencaoComponent,
+    path: 'not-found',
+    component: NotFoundComponent,
   },
   {
     path: '**',

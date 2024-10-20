@@ -34,11 +34,17 @@
         <label for="categorie" class="mt-4"> Categoria do Equipamento </label>
         <select name="categorie" id="categorie" formControlName="categorie"
           class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-1 py-2 focus:border-white hover:border-slate-300">
+          
           <!-- Para cada opcão dentro das categorias, crie uma opcao dentro do select -->
-          <option *ngFor="let cat of categories" [value]="cat.name"
-            class="bg-black text-white text-sm border border-slate-500 rounded-md px-1 py-2 focus:border-white hover:border-slate-300">
-            {{ cat.description }}
-          </option>
+           @for (categoria of categories; track $index) {
+            <option 
+              [value]="categoria.name"
+              class="bg-black text-white text-sm border border-slate-500 rounded-md px-1 py-2 focus:border-white hover:border-slate-300"
+            >
+              {{ categoria.name }}
+            </option>
+           }
+
         </select>
         <small class="text-red-500 font-bold px-3" *ngIf="
             (submit && !solicitacaoForm.get('categorie')?.value) ||

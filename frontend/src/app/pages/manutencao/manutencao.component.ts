@@ -8,6 +8,8 @@ import { ICliente } from '../../model/entities/cliente.interface';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { funcionario2 } from '../../seeds/seed';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 
 @Component({
   selector: 'app-manutencao',

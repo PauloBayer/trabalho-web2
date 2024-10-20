@@ -22,12 +22,20 @@ export class SolicitacaoService {
 
     if (usuarioLogado && (usuarioLogado as ICliente).cpf) {
       let solicitacoesDoClienteLogado: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
-        solicitacao.cliente.cpf === (usuarioLogado as ICliente).cpf
+        solicitacao?.cliente?.cpf === (usuarioLogado as ICliente).cpf
     );
     return of(solicitacoesDoClienteLogado);
     } else {
       return of(allSolicitacoes);
     }
+  }
+
+  findAllSolicitacoesWithStatusABERTA(): Observable<ISolicitacao []> {
+    let solicitacoesString = localStorage.getItem('solicitacoes');
+    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoesAbertas: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === 'ABERTA');
+    
+    return of(solicitacoesAbertas);
   }
 
   getSolicitacaoById(id: string): Observable<ISolicitacao> {
@@ -42,13 +50,23 @@ export class SolicitacaoService {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     const dataHora = new Date().toISOString();
-    
+
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+
+    if (!userLogado)
+      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
+
+    if ((userLogado as IFuncionario).dataNascimento)
+      return throwError(() => new Error(`Não autorizado: funcionários não podem criar solicitações`));
+
     solicitacoes.push({
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
       descricaoEquipamento: descricaoEquipamento,
       dataHoraCriacao: dataHora,
+      cliente: userLogado as ICliente,
       status: 'ABERTA',
       historico: [{
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -126,7 +144,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA' as EstadoSolicitacaoType,
+          status: 'APROVADA',
           historico: historicoAtualizado
         };
   
@@ -164,7 +182,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA' as EstadoSolicitacaoType,
+          status: 'APROVADA',
           motivoRejeicao: motivoRejeicao,
           historico: historicoAtualizado
         };
@@ -286,7 +304,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'PAGA' as EstadoSolicitacaoType,
+          status: 'PAGA',
           historico: historicoAtualizado
         };
   

@@ -19,7 +19,7 @@ import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/se
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm: FormGroup<{
     email: FormControl<string>;
     senha: FormControl<string>;
@@ -43,11 +43,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.authService.isLoggedIn()) 
-      this.router.navigate(['']);
-  }
-
   onLogin() {
     if (!this.loginForm.valid) return;
 
@@ -56,7 +51,7 @@ export class LoginComponent implements OnInit {
       next: (data: ILoginResponse) => {
         console.log(data)
         this.authService.setToken(data.token);
-        this.router.navigate(['client']);
+        this.authService.navigateToHomepageByRole();
       },
       error: (error) => {
         alert('erro ao fazer login')

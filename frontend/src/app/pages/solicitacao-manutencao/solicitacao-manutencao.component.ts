@@ -41,6 +41,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (data: ICategoriaEquipamento[]) => {
         this.categories = data;
+        console.log(this.categories);
       },
       error: (error) => console.error(error),
     });

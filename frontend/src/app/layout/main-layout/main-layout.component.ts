@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -9,15 +10,25 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './main-layout.component.css',
 })
 export class MainLayoutComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  goHome() {
-    this.router.navigate(['']);
+  goHomepage() {
+    this.authService.navigateToHomepageByRole();
   }
+  
   goLogin() {
     this.router.navigate(['login']);
   }
+  
   goRegister() {
     this.router.navigate(['register']);
+  }
+
+  goLogout() {
+    this.router.navigate(['logout']);
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isLoggedIn();
   }
 }

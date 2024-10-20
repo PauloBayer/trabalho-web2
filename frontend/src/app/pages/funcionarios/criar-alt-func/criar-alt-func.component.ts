@@ -22,7 +22,7 @@ export class CriarAltFuncComponent {
     this.form = this.fb.group({
       nome: [data?.funcionario?.nome || ''],
       email: [data?.funcionario?.email || ''],
-      data_nascimento: [data?.funcionario?.data_nascimento || ''],
+      dataNascimento: [data?.funcionario?.dataNascimento || ''],
       senha: [data?.funcionario?.senha || ''],
     });
   }

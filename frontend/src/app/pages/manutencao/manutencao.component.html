@@ -40,26 +40,34 @@
                     <form [formGroup]="manutencaoForm" (ngSubmit)="efetuarManutencao()">
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Descrição da Manutenção:</label>
-                            <textarea formControlName="descricaoManutencao" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" rows="4"></textarea>
-                            <div *ngIf="manutencaoForm.get('descricaoManutencao')?.invalid && manutencaoForm.get('descricaoManutencao')?.touched" class="text-red-500">
+                            <textarea formControlName="descricaoManutencao"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                rows="4"></textarea>
+                            <div *ngIf="manutencaoForm.get('descricaoManutencao')?.invalid && manutencaoForm.get('descricaoManutencao')?.touched"
+                                class="text-red-500">
                                 Descrição é obrigatória.
                             </div>
                         </div>
 
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Orientações para o Cliente:</label>
-                            <textarea formControlName="orientacoesCliente" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" rows="4"></textarea>
-                            <div *ngIf="manutencaoForm.get('orientacoesCliente')?.invalid && manutencaoForm.get('orientacoesCliente')?.touched" class="text-red-500">
+                            <textarea formControlName="orientacoesCliente"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                rows="4"></textarea>
+                            <div *ngIf="manutencaoForm.get('orientacoesCliente')?.invalid && manutencaoForm.get('orientacoesCliente')?.touched"
+                                class="text-red-500">
                                 Orientações são obrigatórias.
                             </div>
                         </div>
 
                         <!-- Botões "Cancelar" e "Confirmar" alinhados na mesma linha -->
                         <div class="flex justify-between mt-6">
-                            <button (click)="isModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button (click)="isModalOpen = false"
+                                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
                             </button>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Confirmar
                             </button>
                         </div>
@@ -74,7 +82,8 @@
                     <form (ngSubmit)="redirecionarManutencao()">
                         <div class="my-4 w-full">
                             <label class="block font-semibold mb-2 text-gray-300">Funcionário:</label>
-                            <select formControlName="funcionarioDestino" class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+                            <select formControlName="funcionarioDestino"
+                                class="bg-gray-700 text-white border border-gray-500 rounded-lg w-full p-3 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
                                 <option value="Maria Souza">Maria Souza</option>
                                 <option value="João Ferreira">João Ferreira</option>
                             </select>
@@ -82,7 +91,8 @@
 
                         <!-- Botões "Cancelar" e "Confirmar" alinhados na mesma linha -->
                         <div class="flex justify-between mt-6">
-                            <button (click)="isRedirectModalOpen = false" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button (click)="isRedirectModalOpen = false"
+                                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
                                 Cancelar
                             </button>
                             <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">

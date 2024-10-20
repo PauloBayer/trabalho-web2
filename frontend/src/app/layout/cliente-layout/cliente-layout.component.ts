@@ -22,4 +22,8 @@ export class ClienteLayoutComponent {
   goHome() {
     this.router.navigate(['client']);
   }
+
+  goLogout() {
+    this.router.navigate(['logout']);
+  }
 }

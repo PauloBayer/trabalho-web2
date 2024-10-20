@@ -8,6 +8,7 @@ import { ICliente } from '../model/entities/cliente.interface';
 import { IRegistrarClienteRequest } from '../model/requests/registrar-cliente-request.interface';
 import { IFuncionario } from '../model/entities/funcionario.interface';
 import { seedLocalStorage } from '../seeds/seed';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
 
   endpoint: string = environment.httpApiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   doLogin(data: IUserLogin): Observable<ILoginResponse> {
     seedLocalStorage();
@@ -27,7 +28,7 @@ export class AuthService {
 
     if (clienteEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(clienteEncontrado));
-      localStorage.setItem('userRole', 'ROLE_CLIENTE');
+      this.setUserRole('ROLE_CLIENTE');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -37,7 +38,7 @@ export class AuthService {
 
     if (funcionarioEncontrado) {
       localStorage.setItem('userLogado', JSON.stringify(funcionarioEncontrado));
-      localStorage.setItem('userRole', 'ROLE_FUNCIONARIO');
+      this.setUserRole('ROLE_FUNCIONARIO');
       return of({ token: 'fake-bearer-token' });
     }
 
@@ -82,10 +83,35 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.getToken() ? true : false;
+    return this.getToken() && this.getUserRole() ? true : false;
   }
 
-  getUserRole(): string | null {
-    return localStorage.getItem('userRole');
+  setUserRole(role: 'ROLE_CLIENTE' | 'ROLE_FUNCIONARIO'): void {
+    localStorage.setItem('userRole', role);
+  }
+
+  getUserRole(): 'ROLE_CLIENTE' | 'ROLE_FUNCIONARIO' | null {
+    const role = localStorage.getItem('userRole');
+
+    if (role == 'ROLE_CLIENTE' || role == 'ROLE_FUNCIONARIO')
+      return role;
+    else
+      return null;
+  }
+
+  navigateToHomepageByRole() {
+    const role = this.getUserRole();
+
+    if (role === 'ROLE_CLIENTE') {
+      this.router.navigate(['client']);
+      return;
+    }
+
+    if (role === 'ROLE_FUNCIONARIO') {
+      this.router.navigate(['funcionario']);
+      return;
+    }
+
+    this.router.navigate(['']);
   }
 }
