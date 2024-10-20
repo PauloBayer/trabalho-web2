@@ -24,11 +24,11 @@
         type="password"
         placeholder="Senha"
         [formControl]="loginForm.controls.senha"
-        [ngClass]="{ 'input-error': loginForm.controls.senha.invalid && loginForm.controls.senha.touched }"
+        [ngClass]="{ 'input-error': loginForm.controls.senha.touched && loginForm.controls.senha.hasError('required') }"
         class="border-gradient-input"
       />
       <div class="error-placeholder">
-        <div *ngIf="loginForm.controls.senha.touched" class="error-text">
+        <div *ngIf="loginForm.controls.senha.touched && loginForm.controls.senha.hasError('required')" class="error-text">
           A senha é obrigatória.
         </div>
       </div>
