@@ -195,7 +195,7 @@ redirecionarManutencao() {
 }
 
 finalizarSolicitacao() {
-  this.solicitacaoService.finalizarSolicitacao(this.solicitacao.id, this.funcionarioLogado).subscribe(
+  this.solicitacaoService.finalizarSolicitacao(this.solicitacao.id).subscribe(
     (response) => {
       // Sucesso ao finalizar a solicitação
       console.log('Solicitação finalizada com sucesso.');

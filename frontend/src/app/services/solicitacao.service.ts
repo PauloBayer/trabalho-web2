@@ -321,10 +321,19 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  finalizarSolicitacao(id: string, funcionarioResponsavel: IFuncionario): Observable<null> {
+  finalizarSolicitacao(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
+
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+
+    if (!userLogado)
+      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
+
+    if ((userLogado as ICliente).cep)
+      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
   
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
@@ -337,7 +346,7 @@ export class SolicitacaoService {
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'FINALIZADA',
-          funcionario: funcionarioResponsavel
+          funcionario: userLogado as IFuncionario
         });
   
         const updatedSolicitacao: ISolicitacao = { 
