@@ -15,6 +15,7 @@ import { ManutencaoComponent } from './pages/manutencao/manutencao.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { authGuard } from './guards/auth.guard';
+import { RelatorioComponent } from './relatorio/relatorio.component';
 import { FuncionarioLayoutComponent } from './layout/funcionario-layout/funcionario-layout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
@@ -82,6 +83,10 @@ export const routes: Routes = [
       {
         path: 'solicitacoes',
         component: SolicitacoesFuncionarioComponent,
+      },
+      {
+        path: 'relatorio',
+        component: RelatorioComponent,
       },
     ],
   },
