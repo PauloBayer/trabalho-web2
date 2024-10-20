@@ -29,7 +29,6 @@ hr {
 }
 
 .black-box {
-    margin-top: 125px;
     background-color: black;
     display: flex;
     flex-direction: column;

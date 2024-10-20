@@ -33,8 +33,8 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) 
-      this.router.navigate(['']);
+    // if (this.authService.isLoggedIn()) 
+    //   this.router.navigate(['']); Comentei pq estava impedindo de entrar nesta página
 
     this.autoCadastroForm = this.fb.group({
       cpf: [

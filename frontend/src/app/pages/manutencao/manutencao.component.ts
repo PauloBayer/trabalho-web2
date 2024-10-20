@@ -6,6 +6,7 @@ import { IFuncionario } from '../../model/entities/funcionario.interface';
 import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 import { ICliente } from '../../model/entities/cliente.interface';
 import { funcionario2 } from '../../seeds/seed';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 
 @Component({
   selector: 'app-manutencao',
@@ -20,6 +21,7 @@ export class ManutencaoComponent {
   isRedirectModalOpen = false;
   funcionarioDestino = '';
   idSolicitacao = '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7'; // puxar do param da url
+  estadoSolicitacao = EstadoSolicitacaoType;
 
   funcionarioLogado: IFuncionario; // remover quando tiver a api
 

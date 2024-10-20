@@ -1,5 +1,5 @@
-<div id="background" class="flex items-center justify-center py-16 h-screen">
-    <div class="bg-black w-10/12 rounded-2xl">
+<div id="background" class="flex items-center justify-center">
+    <div class="bg-black w-10/12 rounded-2xl black-box">
         <div class="flex justify-between">
             <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
                 Solicitações
@@ -44,10 +44,8 @@
                 }
 
                 @else if (solicitacao.status === 'REJEITADA') {
-                <button 
-                    class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-                    (click)="resgatarSolicitacao(solicitacao)"
-                >
+                <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                    (click)="resgatarSolicitacao(solicitacao)">
                     Resgatar serviço
                 </button>
                 }
