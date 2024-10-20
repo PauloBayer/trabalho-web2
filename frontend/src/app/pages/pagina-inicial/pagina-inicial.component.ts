@@ -72,4 +72,8 @@ export class PaginaInicialComponent implements OnInit {
   pagarServico(idSolicitacao: string) {
     this.router.navigate([`client/pagar-servico/${idSolicitacao}`])
   }
+
+  visualizarServico(idSolicitacao: string) {
+    this.router.navigate([`client/servico/${idSolicitacao}`])
+  }
 }

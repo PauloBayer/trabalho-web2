@@ -50,7 +50,7 @@ export const routes: Routes = [
         component: MostrarOrcamentosComponent,
       },
       {
-        path: 'servico',
+        path: 'servico/:id',
         component: VisualizarServicoComponent,
       },
       {
