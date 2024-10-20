@@ -8,7 +8,7 @@ body {
 
 #container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .border-gradient-input {
