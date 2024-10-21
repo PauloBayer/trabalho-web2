@@ -113,15 +113,19 @@ export class RegisterComponent implements OnInit {
       this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
       return;
     }
+  
     if (this.autoCadastroForm.valid) {
       this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
-      localStorage.setItem(
-        'userData',
-        JSON.stringify(this.autoCadastroForm.value)
+      const formData = this.autoCadastroForm.value;
+      formData.senha = this.senhaGerada;  
+      this.authService.doRegister(formData).subscribe(
+        () => {
+          this.router.navigate(['login']);
+        },
+        (error) => {
+          console.error('Erro ao cadastrar:', error);
+        }
       );
-      console.log('Formulário enviado:', this.autoCadastroForm.value);
-      console.log('Senha gerada:', this.senhaGerada);
-      this.router.navigate(['client']);
     }
   }
 
@@ -146,17 +150,5 @@ export class RegisterComponent implements OnInit {
         }
       );
     }
-  }
-
-  onCadastrar() {
-    this.authService.doRegister(this.autoCadastroForm.value).subscribe(
-      () => {
-        this.router.navigate(['client']);
-      },
-      (error) => {
-        console.error('Erro ao cadastrar:', error);
-        alert('Erro ao cadastrar. Tente novamente mais tarde.');
-      }
-    );
   }
 }
