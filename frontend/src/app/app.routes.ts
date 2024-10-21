@@ -7,7 +7,6 @@ import { MostrarOrcamentosComponent } from './pages/mostrar-orcamentos/mostrar-o
 import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { ClienteLayoutComponent } from './layout/cliente-layout/cliente-layout.component';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
-import { SolicitacoesFuncionarioComponent } from './pages/solicitacoes-funcionario/solicitacoes-funcionario.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { CategoriasComponent } from './pages/categorias/categorias.component';
@@ -21,6 +20,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PrintComponent } from './pages/print/print.component';
 import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
 import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
+import { GerenciarSolicitacoesComponent } from './pages/gerenciar-solicitacoes/gerenciar-solicitacoes.component';
+import { FinalizarSolicitacaoComponent } from './pages/finalizar-solicitacao/finalizar-solicitacao.component';
 
 export const routes: Routes = [
   {
@@ -88,12 +89,20 @@ export const routes: Routes = [
         component: EfetuarOrcamentoComponent,
       },
       {
-        path: 'solicitacoes',
-        component: SolicitacoesFuncionarioComponent,
+        path: 'gerenciar-solicitacoes',
+        component: GerenciarSolicitacoesComponent,
+      },
+      {
+        path: 'solicitacao/:id',
+        component: VisualizarServicoComponent,
       },
       {
         path: 'manutencao/:id',
         component: ManutencaoComponent,
+      },
+      {
+        path: 'finalizar/:id',
+        component: FinalizarSolicitacaoComponent,
       },
       {
         path: 'servico/:id',

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-servico-visualizar',
@@ -18,7 +19,8 @@ export class VisualizarServicoComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute, 
-    private solicitacaoService: SolicitacaoService 
+    private solicitacaoService: SolicitacaoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +43,6 @@ export class VisualizarServicoComponent implements OnInit {
   }
 
   voltar() {
-    this.router.navigate(['client']);
+    this.authService.navigateToHomepageByRole();
   }
 }

@@ -1,61 +1,36 @@
-<body>
-  <div class="black-box">
-    <h1 class="text-3xl font-bold px-5 pt-5">
-      Efetuar Orçamento
-      <pre></pre>
-    </h1>
-    <hr class="my-3 h-0.5 border-t-0 bg-slate-800" />
+<body class="flex items-center justify-center">
+    <div class="bg-black w-10/12 md:w-3/5 xl:w-2/5 2xl:w-1/3 rounded-2xl black-box px-8">
+        <h1 class="my-4 font-nuckle text-4xl font-extrabold text-white">
+            Efetuar orcamento
+        </h1>
 
-    <form class="pl-5 pb-5 flex flex-row">
-      <div class="relative flex flex-col w-80 mr-10">
-        <div class="flex justify-between">
-          <div>ID: <strong style="font-size: 30px">#3456</strong></div>
-          <div style="margin-left: 10px">
-            Nome: <strong style="font-size: 20px">João da Silva</strong>
-          </div>
-        </div>
-
-        <div class="flex justify-between" style="margin-top: 20px">
-          <div class="text-left">
-            <p><strong>Nome do Equipamento:</strong> Laptop Dell Inspiron 15</p>
-            <p>
-              <strong>Descrição do Equipamento:</strong> Notebook com
-              processador Intel Core i7, 16GB RAM, 512GB SSD
+        <div class="pb-4">
+            <p class="font-nuckle font-light text-white mb-3">
+                Data: {{ formatDate(solicitacao.dataHoraCriacao) }}
             </p>
-            <p><strong>Categoria do Equipamento:</strong> Notebook</p>
-            <p>
-              <strong>Descrição do Defeito:</strong> Tela não liga e o sistema
-              não inicia, possivelmente devido a falha na placa-mãe
+            <p class="font-nuckle font-light text-white mb-3">
+                Status: {{ solicitacao.status }}
             </p>
-          </div>
+            <p class="font-nuckle font-light text-white mb-3">
+                Orientações de manutenção: {{ solicitacao.orientacoesManutencao }}
+            </p>
+            <p class="font-nuckle font-light text-white mb-3">
+                Descrição equipamento: {{ solicitacao.descricaoEquipamento }}
+            </p>
+
+            <div class="block">
+                <label for="number" class="block" style="margin-top: 20px">
+                    Valor do Orçamento:
+                </label>
+                <input id="number" formControlName="number"
+                    class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+                    type="text" placeholder="R$" />
+            </div>
+
+            <button class="w-64 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-11 my-4"
+                (click)="onEfetuarOrcamento()">
+                Efetuar orçamento
+            </button>
         </div>
-
-        <label for="number" class="" style="margin-top: 20px">
-          Valor do Orçamento
-        </label>
-        <input id="number" formControlName="number"
-          class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-          type="text" placeholder="R$" />
-
-        <!-- <small
-          class="text-red-500 font-bold px-3"
-          *ngIf="
-            !formPagar.get('number')?.value && formPagar.get('number')?.touched
-          "
-        >
-          Digite o valor do orçamento!
-        </small> -->
-      </div>
-
-      <div class="flex flex-col items-end">
-        <button type="submit" mat-button class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]">
-          Enviar
-        </button>
-        <button type=" submit" style="margin-top: 10px"
-          class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]">
-          Cancelar
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
 </body>

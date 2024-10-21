@@ -8,8 +8,6 @@ import { ICliente } from '../../model/entities/cliente.interface';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { funcionario2 } from '../../seeds/seed';
-import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 
 @Component({
   selector: 'app-manutencao',
@@ -17,7 +15,6 @@ import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.t
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './manutencao.component.html',
 })
-
 export class ManutencaoComponent implements OnInit {
   solicitacao!: ISolicitacao;
   funcionarios: IFuncionario[] = [];
@@ -25,7 +22,7 @@ export class ManutencaoComponent implements OnInit {
   isModalOpen = false;
   isRedirectModalOpen = false;
   funcionarioDestino = '';
-  idSolicitacao = ''; // Inicializado vazio para ser preenchido pelo param da URL
+  idSolicitacao = '';
 
   funcionarioLogado!: IFuncionario;
 
@@ -44,6 +41,10 @@ export class ManutencaoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    this.funcionarioLogado = userLogado as IFuncionario;
+
     const solicitacaoId = this.route.snapshot.paramMap.get('id');
     if (solicitacaoId) {
       this.solicitacaoService.getSolicitacaoById(solicitacaoId).subscribe({
@@ -53,70 +54,47 @@ export class ManutencaoComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao buscar solicitação', err);
+          this.router.navigate(['funcionario']);
         }
       });
     }
 
-    this.getFuncionarios();
-
-    // Obtenção do usuário logado do localStorage com verificação de tipo
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = null;
-
-    if (userLogadoString) {
-      try {
-        const parsedUser = JSON.parse(userLogadoString);
-        if ((parsedUser as IFuncionario).id) {
-          userLogado = parsedUser as IFuncionario;
-        } else if ((parsedUser as ICliente).cpf) {
-          userLogado = parsedUser as ICliente;
-        }
-      } catch (error) {
-        console.error('Erro ao parsear o usuário logado:', error);
-      }
-    }
-
-    this.funcionarioLogado = userLogado as IFuncionario;
-  }
-
-  getFuncionarios(): void {
-    this.funcionarioService.findAll().subscribe(
-      (funcionarios) => {
-        this.funcionarios = funcionarios;
+    this.funcionarioService.findAll().subscribe({
+      next: (funcionarios) => {
+        this.funcionarios = funcionarios.filter(funcionario => funcionario.id !== this.funcionarioLogado.id);
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao carregar funcionários:', error);
+        this.router.navigate(['funcionario']);
       }
-    );
+    });
   }
 
   getClienteNome(cliente: ICliente | undefined | string): string {
-    if (typeof cliente === 'string') {
+    if (typeof cliente === 'string')
       return 'Cliente inválido: ' + cliente;
-    }
-    if (!cliente) {
+    
+    if (!cliente)
       return 'Cliente não disponível';
-    }
+
     return cliente.nome || 'Nome do cliente não disponível';
   }
 
   getFuncionarioNome(funcionario: IFuncionario | string | undefined): string {
-    if (typeof funcionario === 'string') {
+    if (typeof funcionario === 'string')
       return 'Funcionário inválido: ' + funcionario;
-    }
-    if (!funcionario) {
-      return 'Funcionário não disponível';
-    }
+
+    if (!funcionario)
+      return 'Funcionário';
+    
     return funcionario.nome || 'Nome do funcionário não disponível';
   }
 
- efetuarManutencao() {
-  this.manutencaoForm.get('descricaoManutencao')?.setValidators(Validators.required);
-  this.manutencaoForm.get('orientacoesCliente')?.setValidators(Validators.required);
-  this.manutencaoForm.get('funcionarioDestino')?.clearValidators();
-  this.manutencaoForm.updateValueAndValidity();
+  efetuarManutencao() {
+    if (!this.manutencaoForm.valid)
+      return;
 
-  if (this.manutencaoForm.valid) {
+    this.manutencaoForm.markAllAsTouched();
     const { descricaoManutencao, orientacoesCliente } = this.manutencaoForm.value;
 
     this.solicitacaoService.efetuarManutencao(
@@ -126,106 +104,37 @@ export class ManutencaoComponent implements OnInit {
       this.funcionarioLogado
     ).subscribe({
       next: (response) => {
-        alert('Manutenção efetuada com sucesso.');
+        this.isModalOpen = false;
+        alert('Manutenção efetuada com sucesso');
         this.router.navigate(['funcionario']);
       },
       error: (error) => {
-        console.error('Erro ao efetuar manutenção:', error);
+        this.isModalOpen = false;
+        alert('erro ao efetuar manutenção');
         this.router.navigate(['funcionario']);
       }
     });
-  } else {
-    this.manutencaoForm.markAllAsTouched();
   }
-}
-generateUniqueId(): string {
-  return 'id-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
-}
-redirecionarManutencao() {
-  // Definindo validadores para os campos
-  this.manutencaoForm.get('funcionarioDestino')?.setValidators(Validators.required);
-  this.manutencaoForm.get('descricaoManutencao')?.clearValidators();
-  this.manutencaoForm.get('orientacoesCliente')?.clearValidators();
-  this.manutencaoForm.updateValueAndValidity();
 
-  // Verificando se o formulário é válido
-  if (this.manutencaoForm.valid) {
-    // Encontrar o funcionário de destino
-    const funcionarioDestino: IFuncionario = this.funcionarios.find(
-      (f) => f.id === parseFloat(this.manutencaoForm.get('funcionarioDestino')?.value)
-    )!;
+  redirecionarManutencao() {
+    this.manutencaoForm.get('funcionarioDestino')?.clearValidators();
+    const funcionarioDestinoId = parseFloat(this.manutencaoForm.get('funcionarioDestino')?.value);
+    const funcionarioDestino: IFuncionario = this.funcionarios.find(f => f.id === funcionarioDestinoId)!;
 
-    // Chamada para o serviço de redirecionar manutenção
     this.solicitacaoService.redirecionarManutencao(
       this.solicitacao.id,
-      this.funcionarioLogado,
       funcionarioDestino
-    ).subscribe(
-      () => {
-        // Atualizar o estado da solicitação para "REDIRECIONADA"
-        this.solicitacao.status = 'REDIRECIONADA';
-
-        // Verificar se o histórico já existe
-        if (!this.solicitacao.historico) {
-          this.solicitacao.historico = [];  // Inicializa o histórico se for undefined
-        }
-
-        // Adiciona o novo item no histórico
-        this.solicitacao.historico.push({
-          id: this.generateUniqueId(),  // Gerando um ID único
-          dataHora: new Date().toISOString(),  // Convertendo a data para string ISO
-          statusAtual: 'REDIRECIONADA',
-          funcionarioOrigem: this.funcionarioLogado.id.toString(),  // Convertendo para string
-          funcionario: this.funcionarioLogado.nome || 'Funcionário não disponível',  // Usando o nome do funcionário ou um valor default
-        });
-
-        // Fechar o modal após redirecionar
+    ).subscribe({
+      next: (data) => {
         this.isModalOpen = false;
-
-        console.log('Manutenção redirecionada com sucesso.');
+        alert('sucesso ao redirecionar manutenção');
+        this.router.navigate(['funcionario']);
       },
-      (error) => {
-        console.error('Erro ao redirecionar manutenção:', error);
+      error: (error) => {
+        this.isModalOpen = false;
+        alert('erro ao redirecionar manutencao');
+        this.router.navigate(['funcionario']);
       }
-    );
-  } else {
-    // Marcar todos os campos como tocados para exibir as mensagens de erro
-    this.manutencaoForm.markAllAsTouched();
+    });
   }
-}
-
-finalizarSolicitacao() {
-  this.solicitacaoService.finalizarSolicitacao(this.solicitacao.id, this.funcionarioLogado).subscribe(
-    (response) => {
-      // Sucesso ao finalizar a solicitação
-      console.log('Solicitação finalizada com sucesso.');
-
-      // Atualizando o status da solicitação localmente
-      this.solicitacao.status = 'FINALIZADA';  // Defina o status conforme necessário
-
-      // Verifique se o histórico já existe, caso contrário, inicialize-o
-      if (!this.solicitacao.historico) {
-        this.solicitacao.historico = [];
-      }
-
-      // Adiciona o novo item no histórico
-      this.solicitacao.historico.push({
-        id: this.generateUniqueId(),  // Gerar um ID único
-        dataHora: new Date().toISOString(),  // Data e hora atual
-        statusAtual: 'FINALIZADA',
-        funcionarioOrigem: this.funcionarioLogado.id.toString(),  // Funcionario que finalizou
-        funcionario: this.funcionarioLogado.nome || 'Funcionário não disponível',  // Nome do funcionário
-      });
-
-      // Fechar o modal ou redirecionar para outra tela, se necessário
-      this.isModalOpen = false;
-
-      console.log('Solicitação e histórico atualizados.');
-    },
-    (error) => {
-      // Erro ao finalizar a solicitação
-      console.error('Erro ao finalizar solicitação:', error);
-    }
-  );
-}
 }
