@@ -8,7 +8,6 @@ import { ICliente } from '../../model/entities/cliente.interface';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
 
 @Component({
   selector: 'app-manutencao',
@@ -42,6 +41,10 @@ export class ManutencaoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    this.funcionarioLogado = userLogado as IFuncionario;
+
     const solicitacaoId = this.route.snapshot.paramMap.get('id');
     if (solicitacaoId) {
       this.solicitacaoService.getSolicitacaoById(solicitacaoId).subscribe({
@@ -51,166 +54,87 @@ export class ManutencaoComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao buscar solicitação', err);
+          this.router.navigate(['funcionario']);
         }
       });
     }
 
-    this.getFuncionarios();
-
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = null;
-
-    if (userLogadoString) {
-      try {
-        const parsedUser = JSON.parse(userLogadoString);
-        if ((parsedUser as IFuncionario).id) {
-          userLogado = parsedUser as IFuncionario;
-        } else if ((parsedUser as ICliente).cpf) {
-          userLogado = parsedUser as ICliente;
-        }
-      } catch (error) {
-        console.error('Erro ao parsear o usuário logado:', error);
-      }
-    }
-
-    this.funcionarioLogado = userLogado as IFuncionario;
-  }
-
-  getFuncionarios(): void {
-    this.funcionarioService.findAll().subscribe(
-      (funcionarios) => {
-        this.funcionarios = funcionarios;
+    this.funcionarioService.findAll().subscribe({
+      next: (funcionarios) => {
+        this.funcionarios = funcionarios.filter(funcionario => funcionario.id !== this.funcionarioLogado.id);
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao carregar funcionários:', error);
+        this.router.navigate(['funcionario']);
       }
-    );
+    });
   }
 
   getClienteNome(cliente: ICliente | undefined | string): string {
-    if (typeof cliente === 'string') {
+    if (typeof cliente === 'string')
       return 'Cliente inválido: ' + cliente;
-    }
-    if (!cliente) {
+    
+    if (!cliente)
       return 'Cliente não disponível';
-    }
+
     return cliente.nome || 'Nome do cliente não disponível';
   }
 
   getFuncionarioNome(funcionario: IFuncionario | string | undefined): string {
-    if (typeof funcionario === 'string') {
+    if (typeof funcionario === 'string')
       return 'Funcionário inválido: ' + funcionario;
-    }
-    if (!funcionario) {
+
+    if (!funcionario)
       return 'Funcionário';
-    }
+    
     return funcionario.nome || 'Nome do funcionário não disponível';
   }
 
   efetuarManutencao() {
-    this.manutencaoForm.get('descricaoManutencao')?.setValidators(Validators.required);
-    this.manutencaoForm.get('orientacoesCliente')?.setValidators(Validators.required);
-    this.manutencaoForm.get('funcionarioDestino')?.clearValidators();
-    this.manutencaoForm.updateValueAndValidity();
+    if (!this.manutencaoForm.valid)
+      return;
 
-    if (this.manutencaoForm.valid) {
-      const { descricaoManutencao, orientacoesCliente } = this.manutencaoForm.value;
+    this.manutencaoForm.markAllAsTouched();
+    const { descricaoManutencao, orientacoesCliente } = this.manutencaoForm.value;
 
-      this.solicitacaoService.efetuarManutencao(
-        this.solicitacao.id,
-        descricaoManutencao,
-        orientacoesCliente,
-        this.funcionarioLogado
-      ).subscribe({
-        next: (response) => {
-          this.isModalOpen = false;
-          this.router.navigateByUrl(`/funcionario/manutencao/${this.solicitacao.id}`).then(() => {
-            this.loadSolicitacaoData();
-          });
-        },
-        error: (error) => {
-          this.isModalOpen = false;
-          console.error('Erro ao efetuar manutenção:', error);
-          this.router.navigateByUrl(`/funcionario/manutencao/${this.solicitacao.id}`).then(() => {
-            this.loadSolicitacaoData();
-          });
-        }
-      });
-    } else {
-      this.manutencaoForm.markAllAsTouched();
-    }
+    this.solicitacaoService.efetuarManutencao(
+      this.solicitacao.id,
+      descricaoManutencao,
+      orientacoesCliente,
+      this.funcionarioLogado
+    ).subscribe({
+      next: (response) => {
+        this.isModalOpen = false;
+        alert('Manutenção efetuada com sucesso');
+        this.router.navigate(['funcionario']);
+      },
+      error: (error) => {
+        this.isModalOpen = false;
+        alert('erro ao efetuar manutenção');
+        this.router.navigate(['funcionario']);
+      }
+    });
   }
-}
-
-finalizarSolicitacao() {
-  this.solicitacaoService.finalizarSolicitacao(this.solicitacao.id).subscribe(
-    (response) => {
-      // Sucesso ao finalizar a solicitação
-      console.log('Solicitação finalizada com sucesso.');
-   });
-}
 
   redirecionarManutencao() {
     this.manutencaoForm.get('funcionarioDestino')?.clearValidators();
-    this.manutencaoForm.get('descricaoManutencao')?.clearValidators();
-    this.manutencaoForm.get('orientacoesCliente')?.clearValidators();
-    this.manutencaoForm.updateValueAndValidity();
-    
-    if (1) {
-      const funcionarioDestinoId = parseFloat(this.manutencaoForm.get('funcionarioDestino')?.value);
-      const funcionarioDestino: IFuncionario = this.funcionarios.find(f => f.id === funcionarioDestinoId)!;
-  
-      this.solicitacaoService.redirecionarManutencao(
-        this.solicitacao.id,
-        this.funcionarioLogado,
-        funcionarioDestino
-      ).subscribe(
-        () => {
-          this.solicitacao.status = 'REDIRECIONADA';
-          if (!this.solicitacao.historico) {
-            this.solicitacao.historico = [];
-          }
-  
-          const funcionarioNome = this.getFuncionarioNome(this.funcionarioLogado);
-          
-          this.solicitacao.historico.push({
-            id: this.generateUniqueId(),
-            dataHora: new Date().toISOString(),
-            statusAtual: 'REDIRECIONADA',
-            funcionarioOrigem: this.funcionarioLogado.id.toString(),
-            funcionario: funcionarioNome,
-          });
-          this.isRedirectModalOpen = false;
-          this.router.navigateByUrl(`/funcionario/manutencao/${this.solicitacao.id}`).then(() => {
-            this.loadSolicitacaoData();
-          });
-        },
-        (error) => {
-          this.router.navigateByUrl(`/funcionario/manutencao/${this.solicitacao.id}`).then(() => {
-            this.loadSolicitacaoData();
-          });
-        }
-      );
-    } else {
-      this.manutencaoForm.markAllAsTouched();
-    }
-  }
+    const funcionarioDestinoId = parseFloat(this.manutencaoForm.get('funcionarioDestino')?.value);
+    const funcionarioDestino: IFuncionario = this.funcionarios.find(f => f.id === funcionarioDestinoId)!;
 
-  generateUniqueId(): string {
-    return 'id-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000);
-  }
-
-  loadSolicitacaoData(): void {
-    const solicitacaoId = this.route.snapshot.paramMap.get('id');
-    if (solicitacaoId) {
-      this.solicitacaoService.getSolicitacaoById(solicitacaoId).subscribe({
-        next: (solicitacao) => {
-          this.solicitacao = solicitacao;
-        },
-        error: (err) => {
-          console.error('Erro ao carregar dados atualizados da solicitação', err);
-        }
-      });
-    }
+    this.solicitacaoService.redirecionarManutencao(
+      this.solicitacao.id,
+      funcionarioDestino
+    ).subscribe({
+      next: (data) => {
+        this.isModalOpen = false;
+        alert('sucesso ao redirecionar manutenção');
+        this.router.navigate(['funcionario']);
+      },
+      error: (error) => {
+        this.isModalOpen = false;
+        alert('erro ao redirecionar manutencao');
+        this.router.navigate(['funcionario']);
+      }
+    });
   }
 }

@@ -208,10 +208,19 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  redirecionarManutencao(id: string, funcionarioOrigem: IFuncionario, funcionarioDestino: IFuncionario): Observable<null> {
+  redirecionarManutencao(id: string, funcionarioDestino: IFuncionario): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
+
+    let userLogadoString = localStorage.getItem('userLogado');
+    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+
+    if (!userLogado)
+      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
+
+    if ((userLogado as ICliente).cep)
+      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
   
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
@@ -224,9 +233,9 @@ export class SolicitacaoService {
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: 'REDIRECIONADA',
-          funcionarioOrigem: funcionarioOrigem,
+          funcionarioOrigem: userLogado as IFuncionario,
           funcionarioDestino: funcionarioDestino,
-          funcionario: funcionarioOrigem
+          funcionario: userLogado as IFuncionario
         });
   
         const updatedSolicitacao: ISolicitacao = { 
