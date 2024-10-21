@@ -11,10 +11,6 @@ import { Router, RouterModule } from '@angular/router';
 export class ClienteLayoutComponent {
   constructor(private router: Router) {}
 
-  goToSolicitacoes() {
-    this.router.navigate(['client/solicitacoes']);
-  }
-
   goToMakeSolicitacoes() {
     this.router.navigate(['client/solicitacao-manutencao']);
   }

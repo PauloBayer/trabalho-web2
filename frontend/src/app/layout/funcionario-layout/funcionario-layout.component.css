@@ -13,12 +13,10 @@
 
 .h-border {
     position: relative;
-    top: 20px;
     border-radius: 0 0 40px 40px;
     padding: 10px;
     background-color: black;
     color: white;
-
 }
 
 .margin-main {
@@ -62,5 +60,4 @@ footer {
     padding: 10px;
     background-color: black;
     color: white;
-
 }
