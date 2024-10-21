@@ -17,7 +17,7 @@
       <input type="date" id="dataFinal" #dataFinal />
 
       <button class="btn" type="submit">Gerar Relatório</button>
-      <button class="btn btn-primary mt-3" [disabled]="receitas.length === 0" (click)="printReport()">
+      <button class="btn" [disabled]="receitas.length === 0" (click)="printReport()">
         Imprimir Relatório
       </button>
     </div>

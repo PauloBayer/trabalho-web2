@@ -52,6 +52,21 @@ export class PaginaInicialComponent implements OnInit {
       id: '',
     };
     s.historico?.push(historico);
+
+    this.solicitacaoService.resgatarServico(s.id).subscribe({
+      next: () => {
+        alert('Solicitação resgatada com sucesso');
+        this.solicitacaoService.findAllSolicitacoes().subscribe({
+          next: (data: ISolicitacao[]) => {
+            this.solicitacoes = data;
+          },
+          error: (error) => console.error(error),
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   get orderSolicitacoes(): ISolicitacao[] {
