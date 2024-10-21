@@ -140,6 +140,15 @@ export class ManutencaoComponent implements OnInit {
       this.manutencaoForm.markAllAsTouched();
     }
   }
+}
+
+finalizarSolicitacao() {
+  this.solicitacaoService.finalizarSolicitacao(this.solicitacao.id).subscribe(
+    (response) => {
+      // Sucesso ao finalizar a solicitação
+      console.log('Solicitação finalizada com sucesso.');
+   });
+}
 
   redirecionarManutencao() {
     this.manutencaoForm.get('funcionarioDestino')?.clearValidators();

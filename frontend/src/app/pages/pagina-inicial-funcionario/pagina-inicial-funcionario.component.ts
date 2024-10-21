@@ -40,6 +40,6 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   }
 
   efetuarOrcamento(idSolicitacao: string) {
-    this.router.navigate([`client/efetuar/${idSolicitacao}`]);
+    this.router.navigate([`funcionario/efetuar-orcamento/${idSolicitacao}`]);
   }
 }
