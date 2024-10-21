@@ -12,10 +12,6 @@ export class FuncionarioLayoutComponent {
   
   constructor(private router: Router) {}
 
-  goToSolicitacoes() {
-    this.router.navigate(['funcionario/solicitacoes']);
-  }
-
   goHome() {
     this.router.navigate(['funcionario']);
   }

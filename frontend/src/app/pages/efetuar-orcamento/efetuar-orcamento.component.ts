@@ -39,7 +39,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
 
           if (this.solicitacao.status !== 'ABERTA') {
             alert('Não é possível pagar o serviço porque o status não é ABERTA');
-            this.router.navigate(['client']);
+            this.router.navigate(['funcionario']);
           }
         },
         error: (error) => {
@@ -55,12 +55,12 @@ export class EfetuarOrcamentoComponent implements OnInit {
 
       this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado).subscribe({
         next: () => {
-          alert('Sucesso ao realizar pagamento');
-          this.router.navigate(['client']);
+          alert('Sucesso ao efetuar o orçamento');
+          this.router.navigate(['funcionario']);
         },
         error: (error) => {
-          alert(`Erro ao realizar pagamento: ${error}`);
-          this.router.navigate(['client']);
+          alert(`Erro ao efetuar o orçamento: ${error}`);
+          this.router.navigate(['funcionario']);
         }
       });
     }

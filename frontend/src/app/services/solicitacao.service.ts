@@ -232,7 +232,7 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'REDIRECIONADA',
+          statusAtual: 'AGUARDANDO_PAGAMENTO',
           funcionarioOrigem: userLogado as IFuncionario,
           funcionarioDestino: funcionarioDestino,
           funcionario: userLogado as IFuncionario
@@ -240,7 +240,7 @@ export class SolicitacaoService {
   
         const updatedSolicitacao: ISolicitacao = { 
           ...solicitacao, 
-          status: 'REDIRECIONADA',
+          status: 'AGUARDANDO_PAGAMENTO',
           funcionario: funcionarioDestino,
           historico: historicoAtualizado
         };

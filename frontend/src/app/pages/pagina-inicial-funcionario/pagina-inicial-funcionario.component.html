@@ -1,8 +1,15 @@
 <div id="background" class="flex items-center justify-center">
     <div class="bg-black w-10/12 rounded-2xl black-box">
-        <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
-            Solicitações abertas
-        </h1>
+        <div class="flex justify-between">
+            <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
+                Solicitações abertas
+            </h1>
+
+            <button (click)="goToGerenciarSolicitacoes()"
+                class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4">
+                Gerenciar solicitações
+            </button>
+        </div>
 
         <hr>
 
@@ -32,15 +39,24 @@
                             Efetuar orçamento
                         </button>
                     }
+
+                    <button
+                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
+                        (click)="visualizarServico(solicitacao.id)"
+                    >
+                        Visualizar a situação
+                    </button>
                 </div>
                 }
             </div>
         }
 
         @else {
-            <p class="font-nuckle font-light text-white h-9">
-                Parece que não tem nenhuma solicitação aberta
-            </p>
-        }
+            <div class="text-center pb-3">
+                <p class="font-nuckle font-light text-white h-9">
+                    <strong>Parece que não tem nenhuma solicitação aberta</strong>
+                </p>
+            </div>
+            }
     </div>
 </div>

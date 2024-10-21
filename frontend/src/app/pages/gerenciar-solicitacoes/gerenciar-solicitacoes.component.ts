@@ -54,4 +54,8 @@ export class GerenciarSolicitacoesComponent implements OnInit {
   efetuarManutencao(idSolicitacao: string) {
     this.router.navigate([`funcionario/manutencao/${idSolicitacao}`]);
   }
+
+  goToSolicitacoesAbertas() {
+    this.router.navigate(['funcionario']);
+  }
 }

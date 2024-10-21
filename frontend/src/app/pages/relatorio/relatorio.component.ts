@@ -27,6 +27,7 @@ export class RelatorioComponent {
     private printService: PrintService,
     private router: Router
   ) {
+  // Gerando 50 registros de exemplo
   for (let i = 0; i < 10; i++) {
     const randomDate = new Date(2024, 9, Math.floor(Math.random() * 31) + 1); // Outubro de 2024
     const randomValue = Math.floor(Math.random() * 5000) + 500; // Valor entre 500 e 5500

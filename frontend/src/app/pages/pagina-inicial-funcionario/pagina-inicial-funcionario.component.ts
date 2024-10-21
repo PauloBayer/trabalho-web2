@@ -42,4 +42,12 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   efetuarOrcamento(idSolicitacao: string) {
     this.router.navigate([`funcionario/efetuar-orcamento/${idSolicitacao}`]);
   }
+
+  visualizarServico(idSolicitacao: string) {
+    this.router.navigate([`funcionario/solicitacao/${idSolicitacao}`]);
+  }
+
+  goToGerenciarSolicitacoes() {
+    this.router.navigate(['funcionario/gerenciar-solicitacoes']);
+  }
 }
