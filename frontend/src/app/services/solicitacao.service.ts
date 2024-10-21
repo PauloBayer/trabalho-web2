@@ -385,4 +385,51 @@ export class SolicitacaoService {
   
     return of(null);
   }
+
+  resgatarServico(id: string): Observable<null> {
+    const solicitacoesString = localStorage.getItem('solicitacoes');
+    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacaoEncontrada = false;
+
+    solicitacoes = solicitacoes.map(solicitacao => {
+      if (solicitacao.id === id) {
+        if (solicitacao.status !== 'REJEITADA') {
+          throw new Error(`Solicitação com ID ${id} não está no status 'REJEITADA'.`);
+        }
+
+        solicitacaoEncontrada = true;
+
+        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
+
+        historicoAtualizado.push({
+          id: this.generateUniqueId(),
+          dataHora: new Date().toISOString(),
+          statusAnterior: solicitacao.status,
+          statusAtual: 'APROVADA'
+        });
+
+        const updatedSolicitacao: ISolicitacao = { 
+          ...solicitacao, 
+          status: 'APROVADA',
+          historico: historicoAtualizado
+        };
+
+        return updatedSolicitacao;
+      }
+      return solicitacao;
+    });
+
+    if (!solicitacaoEncontrada) {
+      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada.`));
+    }
+
+    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
+
+    return of(null);
+  }
+
+  private generateUniqueId(): string {
+    return Math.random().toString(36).substring(2, 15) + 
+           Math.random().toString(36).substring(2, 15);
+  }
 }
