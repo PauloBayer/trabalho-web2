@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { categoriasSeed } from '../../seeds/seed';
-import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { PrintService } from '../../services/print.service';
 import { Router } from '@angular/router';
 import { Receita } from '../../model/entities/receita';
+import { CategoriaEquipamento } from '../../model/entities/categoria-equipamento';
 
 @Component({
   selector: 'app-relatorio',
@@ -15,7 +15,7 @@ import { Receita } from '../../model/entities/receita';
   styleUrls: ['./relatorio.component.css'], // Corrigido para styleUrls
 })
 export class RelatorioComponent {
-  categorias: ICategoriaEquipamento[] = [];
+  categorias: CategoriaEquipamento[] = [];
   categoriaSelecionada: string = 'Todas as categorias';
 
   ngOnInit(): void {

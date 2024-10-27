@@ -1,7 +1,7 @@
 // src/app/services/category.service.ts
 import { Injectable } from '@angular/core';
-import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
 import { Observable, of, throwError } from 'rxjs';
+import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +12,16 @@ export class CategoryService {
   constructor() {}
 
   /** Get all categories from localStorage */
-  getCategories(): Observable<ICategoriaEquipamento[]> {
+  getCategories(): Observable<CategoriaEquipamento[]> {
     const categories = localStorage.getItem(this.localStorageKey);
 
     return of(categories ? JSON.parse(categories) : []);
   }
 
   /** Add a new category to localStorage */
-  addCategory(category: ICategoriaEquipamento): Observable<null> {
+  addCategory(category: CategoriaEquipamento): Observable<null> {
     const categoriesString = localStorage.getItem(this.localStorageKey);
-    const categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    const categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     
     // Check if the category name already exists to prevent duplicates
     const exists = categories.some((cat) => cat.name === category.name);
@@ -36,9 +36,9 @@ export class CategoryService {
   }
 
   /** Update an existing category in localStorage */
-  updateCategory(updatedCategory: ICategoriaEquipamento): Observable<null> {
+  updateCategory(updatedCategory: CategoriaEquipamento): Observable<null> {
     const categoriesString = localStorage.getItem(this.localStorageKey);
-    let categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     
     categories = categories.map((category) =>
       category.name === updatedCategory.name ? updatedCategory : category
@@ -51,7 +51,7 @@ export class CategoryService {
   /** Delete a category from localStorage */
   deleteCategory(categoryName: string): Observable<null> {
     const categoriesString = localStorage.getItem(this.localStorageKey);
-    let categories: ICategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
+    let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     categories = categories.filter(
       (category) => category.name !== categoryName
     );

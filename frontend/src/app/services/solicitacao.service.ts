@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ICategoriaEquipamento } from '../model/entities/categoria-equipamento.interface';
 import { Observable, of, throwError } from 'rxjs';
-import { ISolicitacao } from '../model/entities/solicitacao.interface';
-import { ICliente } from '../model/entities/cliente.interface';
-import { IFuncionario } from '../model/entities/funcionario.interface';
+import { Solicitacao } from '../model/entities/solicitacao';
+import { Cliente } from '../model/entities/cliente';
+import { Funcionario } from '../model/entities/funcionario';
+import { EstadoSolicitacaoType } from '../model/entities/estado-solicitacao.enum';
+import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,16 @@ export class SolicitacaoService {
 
   constructor() {}
 
-  findAllSolicitacoes(): Observable<ISolicitacao []> {
+  findAllSolicitacoes(): Observable<Solicitacao []> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
 
     let usuarioLogadoString = localStorage.getItem('userLogado');
-    let usuarioLogado: ICliente | IFuncionario | null = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
+    let usuarioLogado: Cliente | Funcionario | null = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
 
-    if (usuarioLogado && (usuarioLogado as ICliente).cpf) {
-      let solicitacoesDoClienteLogado: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
-        solicitacao?.cliente?.cpf === (usuarioLogado as ICliente).cpf
+    if (usuarioLogado && (usuarioLogado as Cliente).cpf) {
+      let solicitacoesDoClienteLogado: Solicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
+        solicitacao?.cliente?.cpf === (usuarioLogado as Cliente).cpf
     );
     return of(solicitacoesDoClienteLogado);
     } else {
@@ -29,34 +30,34 @@ export class SolicitacaoService {
     }
   }
 
-  findAllSolicitacoesWithStatusABERTA(): Observable<ISolicitacao []> {
+  findAllSolicitacoesWithStatusABERTA(): Observable<Solicitacao []> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacoesAbertas: ISolicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === 'ABERTA');
+    let solicitacoesAbertas: Solicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === EstadoSolicitacaoType.ABERTA);
     
     return of(solicitacoesAbertas);
   }
 
-  getSolicitacaoById(id: string): Observable<ISolicitacao> {
+  getSolicitacaoById(id: string): Observable<Solicitacao> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes: ISolicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    const foundedSolicitacao = allSolicitacoes.find((solicitacao: ISolicitacao) => solicitacao.id === id);
+    let allSolicitacoes: Solicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    const foundedSolicitacao = allSolicitacoes.find((solicitacao: Solicitacao) => solicitacao.id === id);
 
     return foundedSolicitacao ? of(foundedSolicitacao) : throwError(() => new Error(`solicitacao com o id ${id} nao encontrada`));
   }
 
-  criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: ICategoriaEquipamento): Observable<null> {
+  criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: CategoriaEquipamento): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     const dataHora = new Date().toISOString();
 
     let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
 
     if (!userLogado)
       return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
 
-    if ((userLogado as IFuncionario).dataNascimento)
+    if ((userLogado as Funcionario).dataNascimento)
       return throwError(() => new Error(`Não autorizado: funcionários não podem criar solicitações`));
 
     solicitacoes.push({
@@ -64,13 +65,14 @@ export class SolicitacaoService {
       categoriaEquipamento: categoriaEquipamento,
       descricaoDefeito: descricaoDefeito,
       descricaoEquipamento: descricaoEquipamento,
+      descricaoOrcamento: '',
       dataHoraCriacao: dataHora,
-      cliente: userLogado as ICliente,
-      status: 'ABERTA',
+      cliente: userLogado as Cliente,
+      status: EstadoSolicitacaoType.ABERTA,
       historico: [{
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
         dataHora: dataHora,
-        statusAtual: 'ABERTA',
+        statusAtual: EstadoSolicitacaoType.ABERTA,
         descricaoDefeito: descricaoDefeito,
         descricaoEquipamento: descricaoEquipamento,
       }]
@@ -81,18 +83,18 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  efetuarOrcamento(id: string, valorOrcado: number): Observable<null> {
+  efetuarOrcamento(id: string, valorOrcado: number, descricao: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
 
     let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
 
     if (!userLogado)
       return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
 
-    if ((userLogado as ICliente).cep)
+    if ((userLogado as Cliente).cep)
       return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -105,17 +107,18 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'ORCADA',
+          statusAtual: EstadoSolicitacaoType.ORCADA,
           valorOrcado: valorOrcado,
-          funcionario: userLogado as IFuncionario
+          funcionario: userLogado as Funcionario
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'ORCADA',
+          status: EstadoSolicitacaoType.ORCADA,
           historico: historicoAtualizado,
           valorOrcado: valorOrcado,
-          funcionario: userLogado as IFuncionario
+          descricaoOrcamento: descricao,
+          funcionario: userLogado as Funcionario
         };
   
         return updatedSolicitacao;
@@ -134,7 +137,7 @@ export class SolicitacaoService {
 
   aprovarServico(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -147,12 +150,12 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'APROVADA',
+          statusAtual: EstadoSolicitacaoType.APROVADA,
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA',
+          status: EstadoSolicitacaoType.APROVADA,
           historico: historicoAtualizado
         };
   
@@ -171,7 +174,7 @@ export class SolicitacaoService {
 
   rejeitarServico(id: string, motivoRejeicao: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -184,13 +187,13 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'REJEITADA',
+          statusAtual: EstadoSolicitacaoType.REJEITADA,
           motivoRejeicao: motivoRejeicao
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA',
+          status: EstadoSolicitacaoType.APROVADA,
           motivoRejeicao: motivoRejeicao,
           historico: historicoAtualizado
         };
@@ -208,18 +211,18 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  redirecionarManutencao(id: string, funcionarioDestino: IFuncionario): Observable<null> {
+  redirecionarManutencao(id: string, funcionarioDestino: Funcionario): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
 
     let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
 
     if (!userLogado)
       return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
 
-    if ((userLogado as ICliente).cep)
+    if ((userLogado as Cliente).cep)
       return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -232,15 +235,15 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'AGUARDANDO_PAGAMENTO',
-          funcionarioOrigem: userLogado as IFuncionario,
+          statusAtual: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
+          funcionarioOrigem: userLogado as Funcionario,
           funcionarioDestino: funcionarioDestino,
-          funcionario: userLogado as IFuncionario
+          funcionario: userLogado as Funcionario
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'AGUARDANDO_PAGAMENTO',
+          status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
           funcionario: funcionarioDestino,
           historico: historicoAtualizado
         };
@@ -258,9 +261,9 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  efetuarManutencao(id: string, descricaoManutencao: string, orientacoesManutencao: string, funcionario: IFuncionario): Observable<null> {
+  efetuarManutencao(id: string, descricaoManutencao: string, orientacoesManutencao: string, funcionario: Funcionario): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -273,15 +276,15 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'AGUARDANDO_PAGAMENTO',
+          statusAtual: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao,
           funcionario: funcionario
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'AGUARDANDO_PAGAMENTO',
+          status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
           historico: historicoAtualizado,
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao
@@ -303,7 +306,7 @@ export class SolicitacaoService {
 
   pagarServico(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -316,12 +319,12 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'PAGA'
+          statusAtual: EstadoSolicitacaoType.PAGA
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'PAGA',
+          status: EstadoSolicitacaoType.PAGA,
           historico: historicoAtualizado
         };
   
@@ -340,16 +343,16 @@ export class SolicitacaoService {
 
   finalizarSolicitacao(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
 
     let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
 
     if (!userLogado)
       return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
 
-    if ((userLogado as ICliente).cep)
+    if ((userLogado as Cliente).cep)
       return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
   
     solicitacoes = solicitacoes.map(solicitacao => {
@@ -362,13 +365,13 @@ export class SolicitacaoService {
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'FINALIZADA',
-          funcionario: userLogado as IFuncionario
+          statusAtual: EstadoSolicitacaoType.FINALIZADA,
+          funcionario: userLogado as Funcionario
         });
   
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'FINALIZADA',
+          status: EstadoSolicitacaoType.FINALIZADA,
           historico: historicoAtualizado,
         };
   
@@ -388,12 +391,12 @@ export class SolicitacaoService {
 
   resgatarServico(id: string): Observable<null> {
     const solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: ISolicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
 
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
-        if (solicitacao.status !== 'REJEITADA') {
+        if (solicitacao.status !== EstadoSolicitacaoType.REJEITADA) {
           throw new Error(`Solicitação com ID ${id} não está no status 'REJEITADA'.`);
         }
 
@@ -405,12 +408,12 @@ export class SolicitacaoService {
           id: this.generateUniqueId(),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
-          statusAtual: 'APROVADA'
+          statusAtual: EstadoSolicitacaoType.APROVADA
         });
 
-        const updatedSolicitacao: ISolicitacao = { 
+        const updatedSolicitacao: Solicitacao = { 
           ...solicitacao, 
-          status: 'APROVADA',
+          status: EstadoSolicitacaoType.APROVADA,
           historico: historicoAtualizado
         };
 

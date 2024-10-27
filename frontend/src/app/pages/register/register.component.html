@@ -5,7 +5,7 @@
       class="text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 text-3xl mb-6 mt-5">
       Cadastro</div>
     <form [formGroup]="autoCadastroForm" (ngSubmit)="onSubmit()"
-      class="border-2 border-orange-200 rounded-lg px-6 py-4 w-4/5 space-y-4 mb-5">
+      class="border-2 border-orange-200 rounded-lg px-6 py-4 w-4/5 space-y-4 mb-3">
 
       <!-- CPF Field -->
       <div class="w-full">
@@ -61,6 +61,11 @@
           class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
       </div>
       <div class="w-full">
+        <label for="numero" class="block text-sm font-medium">Número do Logradouro:</label>
+        <input type="text" id="numero" formControlName="numero"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+      </div>
+      <div class="w-full">
         <label for="bairro" class="block text-sm font-medium">Bairro:</label>
         <input type="text" id="bairro" formControlName="bairro"
           class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
@@ -94,11 +99,22 @@
       <!-- Submit Button -->
       <div class="text-center mt-6">
         <button type="submit"
-          class="px-6 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-medium">
+          class="px-6 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-medium"
+          [ngClass]="{'cursor-not-allowed': !autoCadastroForm.valid}" [disabled]="!autoCadastroForm.valid">
           Cadastrar
         </button>
+        @if (!autoCadastroForm.valid) {
+        <br>
+        <span class="text-red-400 text-xs mt-1">
+          O formulário não é válido. Garanta que tudo foi preenchido corretamente
+        </span>
+        }
       </div>
     </form>
+    <br>
+    <span>Já possui uma conta?</span>
+    <br>
+    <button (click)="goToLogin()" class="btn mb-5 mt-2" id="btn-login">Entrar</button>
   </div>
 
   <!-- Lado direito -->

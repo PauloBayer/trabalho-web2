@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { SolicitacaoService } from '../../services/solicitacao.service';
   styleUrl: './gerenciar-solicitacoes.component.css'
 })
 export class GerenciarSolicitacoesComponent implements OnInit {
-  solicitacoes: ISolicitacao[] = [];
+  solicitacoes: Solicitacao[] = [];
 
   constructor(
     private router: Router,
@@ -20,7 +20,7 @@ export class GerenciarSolicitacoesComponent implements OnInit {
 
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
-      next: (data: ISolicitacao[]) => {
+      next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
       error: (error) => console.error(error),

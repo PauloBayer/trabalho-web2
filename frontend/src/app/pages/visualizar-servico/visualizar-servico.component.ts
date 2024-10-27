@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule],
 })
 export class VisualizarServicoComponent implements OnInit {
-  solicitacao: ISolicitacao | null = null;
+  solicitacao: Solicitacao | null = null;
   solicitacaoId: string = '';
 
   constructor(

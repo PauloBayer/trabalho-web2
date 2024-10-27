@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { Router } from '@angular/router';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 
 @Component({
   selector: 'app-pagina-inicial-funcionario',
@@ -12,13 +12,13 @@ import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 })
 export class PaginaInicialFuncionarioComponent implements OnInit {
   
-  solicitacoes: ISolicitacao [] = [];
+  solicitacoes: Solicitacao [] = [];
 
   constructor (private router: Router, private solicitacaoService: SolicitacaoService) {}
   
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoesWithStatusABERTA().subscribe({
-      next: (data: ISolicitacao []) => {
+      next: (data: Solicitacao []) => {
         this.solicitacoes = data;
       },
       error: (error) => {

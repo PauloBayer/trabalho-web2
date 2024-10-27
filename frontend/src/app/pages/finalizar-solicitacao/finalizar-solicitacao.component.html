@@ -13,7 +13,7 @@
                     Status: {{ solicitacao.status }}
                 </p>
                 <p class="font-nuckle font-light text-white mb-3">
-                    Categoria do equipamento: {{ solicitacao.categoriaEquipamento.name }}
+                    Categoria do equipamento: {{ solicitacao.categoriaEquipamento?.name }}
                 </p>
                 <p class="font-nuckle font-light text-white mb-3">
                     Descrição equipamento: {{ solicitacao.descricaoEquipamento }}
@@ -32,10 +32,8 @@
                 </p>
             </div>
 
-            <button
-                class="w-64 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-11 mb-3" 
-                (click)="onFinalizarSolicitacao()"
-            >
+            <button class="w-64 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-11 mb-3"
+                (click)="onFinalizarSolicitacao()">
                 Finalizar solicitação
             </button>
         </div>

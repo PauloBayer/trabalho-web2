@@ -18,19 +18,56 @@
                 Descrição equipamento: {{ solicitacao.descricaoEquipamento }}
             </p>
 
-            <div class="block">
-                <label for="number" class="block" style="margin-top: 20px">
-                    Valor do Orçamento:
-                </label>
-                <input id="number" formControlName="number"
-                    class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-                    type="text" placeholder="R$" />
-            </div>
+            <form [formGroup]="orcamentoForm">
+                <!-- Descrição do Orçamento -->
+                <div class="block">
+                    <label for="descricao" class="block" style="margin-top: 20px">
+                        Descrição do Orçamento:
+                    </label>
+                    <textarea id="descricao" formControlName="descricao"
+                        class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300 resize-none"
+                        placeholder="Descreva detalhadamente o orçamento..." rows="4"></textarea>
+                    <!-- Mensagem de Erro para Descrição do Orçamento -->
+                    <div *ngIf="orcamentoForm.get('descricao')?.touched && orcamentoForm.get('descricao')?.invalid"
+                        class="text-red-500 text-sm mt-1">
+                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['required']">
+                            A descrição do orçamento é obrigatória.
+                        </span>
+                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['minlength']">
+                            A descrição deve ter no mínimo 10 caracteres.
+                        </span>
+                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['maxlength']">
+                            A descrição não pode exceder 500 caracteres.
+                        </span>
+                    </div>
+                </div>
 
-            <button class="w-64 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-11 my-4"
-                (click)="onEfetuarOrcamento()">
-                Efetuar orçamento
-            </button>
+                <div class="block">
+                    <label for="number" class="block" style="margin-top: 20px">
+                        Valor do Orçamento:
+                    </label>
+                    <input id="number" formControlName="number"
+                        class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+                        type="text" placeholder="R$" />
+                    <!-- Mensagem de Erro para Valor do Orçamento -->
+                    <div *ngIf="orcamentoForm.get('number')?.touched && orcamentoForm.get('number')?.invalid"
+                        class="text-red-500 text-sm mt-1">
+                        <span *ngIf="orcamentoForm.get('number')?.errors?.['required']">
+                            O valor do orçamento é obrigatório.
+                        </span>
+                        <span *ngIf="orcamentoForm.get('number')?.errors?.['pattern']">
+                            Insira um valor válido (números com até duas casas decimais).
+                        </span>
+                    </div>
+                </div>
+                <button class="w-64 rounded-md font-nuckle font-light text-white h-11 my-4"
+                    (click)="onEfetuarOrcamento()" [disabled]="!orcamentoForm.valid" [ngClass]="{
+                  'bg-[#FF5E2B]': orcamentoForm.valid,
+                  'bg-[#D3D3D3]': !orcamentoForm.valid
+                }">
+                    Efetuar Orçamento
+                </button>
+            </form>
         </div>
     </div>
 </body>

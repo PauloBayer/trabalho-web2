@@ -1,5 +1,5 @@
-export interface Receita {
-    categoria: string;
-    data: Date;
-    valor: number;
+export class Receita {
+    categoria: string = '';
+    data: Date = new Date();
+    valor: number = 0;
   }

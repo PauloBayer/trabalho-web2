@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { ILoginResponse } from '../model/responses/login-response.interface';
-import { IUserLogin } from '../model/requests/user-login-request.interface';
+import { LoginResponse } from '../model/responses/login-response';
+import { UserLogin } from '../model/requests/user-login-request';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../env/environment';
-import { ICliente } from '../model/entities/cliente.interface';
-import { IRegistrarClienteRequest } from '../model/requests/registrar-cliente-request.interface';
-import { IFuncionario } from '../model/entities/funcionario.interface';
+import { Cliente } from '../model/entities/cliente';
+import { RegistrarClienteRequest } from '../model/requests/registrar-cliente-request';
+import { Funcionario } from '../model/entities/funcionario';
 import { seedLocalStorage } from '../seeds/seed';
 import { Router } from '@angular/router';
 
@@ -19,11 +19,11 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  doLogin(data: IUserLogin): Observable<ILoginResponse> {
+  doLogin(data: UserLogin): Observable<LoginResponse> {
     seedLocalStorage();
 
     let clientesString = localStorage.getItem('clientes');
-    let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
+    let clientes: Cliente[] = clientesString ? JSON.parse(clientesString) : [];
     const clienteEncontrado = clientes.find(cliente => cliente.email === data.email && cliente.senha === data.senha);
 
     if (clienteEncontrado) {
@@ -33,7 +33,7 @@ export class AuthService {
     }
 
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    let funcionarios: Funcionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
     const funcionarioEncontrado = funcionarios.find(funcionario => funcionario.email === data.email && funcionario.senha === data.senha);
 
     if (funcionarioEncontrado) {
@@ -43,14 +43,14 @@ export class AuthService {
     }
 
     return throwError(() => new Error('Email ou senha inválidos'));
-    // return this.http.post<ILoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
+    // return this.http.post<LoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
   }
   
-  doRegister(data: IRegistrarClienteRequest): Observable<null> {
+  doRegister(data: RegistrarClienteRequest): Observable<null> {
     seedLocalStorage();
     
     let clientesString = localStorage.getItem('clientes');
-    let clientes: ICliente[] = clientesString ? JSON.parse(clientesString) : [];
+    let clientes: Cliente[] = clientesString ? JSON.parse(clientesString) : [];
 
     clientes.push({
       id: Math.random(),
