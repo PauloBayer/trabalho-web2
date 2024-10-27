@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -20,10 +20,10 @@ export class CriarAltFuncComponent {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      nome: [data?.funcionario?.nome || ''],
-      email: [data?.funcionario?.email || ''],
-      dataNascimento: [data?.funcionario?.dataNascimento || ''],
-      senha: [data?.funcionario?.senha || ''],
+      nome: [data?.funcionario?.nome || '', Validators.required],
+      email: [data?.funcionario?.email || '', Validators.required],
+      dataNascimento: [data?.funcionario?.dataNascimento || '', Validators.required],
+      senha: [data?.funcionario?.senha || '', Validators.required],
     });
   }
 
@@ -32,6 +32,8 @@ export class CriarAltFuncComponent {
   }
 
   onSubmit(): void {
-    this.dialogRef.close(this.form.value);
+    if (this.form.valid) {
+      this.dialogRef.close(this.form.value);
+    }
   }
 }

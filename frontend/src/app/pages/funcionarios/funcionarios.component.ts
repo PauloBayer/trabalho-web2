@@ -7,7 +7,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { IFuncionario } from '../../model/entities/funcionario.interface';
+import { Funcionario } from '../../model/entities/funcionario';
 import { MatDialog } from '@angular/material/dialog';
 import { CriarAltFuncComponent } from './criar-alt-func/criar-alt-func.component';
 import { DeleteFuncComponent } from './delete-func/delete-func.component';
@@ -38,7 +38,7 @@ export class FuncionariosComponent implements AfterViewInit {
     'Ações',
   ];
   dataSource: MatTableDataSource<any>;
-  funcionarios: IFuncionario[] = [];
+  funcionarios: Funcionario[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 

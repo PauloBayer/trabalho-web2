@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { IFuncionario } from '../model/entities/funcionario.interface';
+import { Funcionario } from '../model/entities/funcionario';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class FuncionarioService {
 
   create(email: string, nome: string, dataNascimento: string, senha: string): Observable<null> {
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    let funcionarios: Funcionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
 
     funcionarios.push({
       id: Math.random(),
@@ -26,9 +26,9 @@ export class FuncionarioService {
     return of(null);
   }
 
-  findById(id: number): Observable<IFuncionario> {
+  findById(id: number): Observable<Funcionario> {
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    let funcionarios: Funcionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
 
     const funcionario = funcionarios.find(f => f.id === id);
     
@@ -38,14 +38,14 @@ export class FuncionarioService {
     return of(funcionario);
   }
 
-  findAll(): Observable<IFuncionario[]> {
+  findAll(): Observable<Funcionario[]> {
     let funcionariosString = localStorage.getItem('funcionarios');
     return of(funcionariosString ? JSON.parse(funcionariosString) : []);
   }
   
   deleteById(id: number): Observable<null> {
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    let funcionarios: Funcionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
 
     const index = funcionarios.findIndex(f => f.id === id);
     if (index === -1)
@@ -59,7 +59,7 @@ export class FuncionarioService {
   
   updateById(id: number, email: string, nome: string, dataNascimento: string, senha: string): Observable<null> {
     let funcionariosString = localStorage.getItem('funcionarios');
-    let funcionarios: IFuncionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
+    let funcionarios: Funcionario[] = funcionariosString ? JSON.parse(funcionariosString) : [];
 
     const index = funcionarios.findIndex(f => f.id === id);
     if (index === -1)

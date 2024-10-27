@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       cep: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       logradouro: [''],
+      numero: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       bairro: [''],
       cidade: [''],
       estado: [''],
@@ -150,5 +151,9 @@ export class RegisterComponent implements OnInit {
         }
       );
     }
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['login']);
   }
 }

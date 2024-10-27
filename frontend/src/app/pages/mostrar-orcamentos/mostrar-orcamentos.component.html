@@ -2,7 +2,7 @@
     <div class="black-box w-75 h-75 px-5 pb-5">
         <div class="orcamentos-list">
             <p class="orcamentos-title my-4 lead font-nuckle font-bold text-3xl">Aprovar/rejeitar serviço</p>
-            
+
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
@@ -12,14 +12,15 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="text-left">
-                        <p><strong>Categoria do equipamento:</strong> {{ solicitacao.categoriaEquipamento.name }}</p>
+                        <p><strong>Categoria do equipamento:</strong> {{ solicitacao.categoriaEquipamento?.name }}</p>
                         <p><strong>Descrição do Equipamento:</strong> {{ solicitacao.descricaoEquipamento}}</p>
                         <p><strong>Descrição do Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
                     </div>
                 </mat-expansion-panel>
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> {{ formatDate(solicitacao.dataHoraAtualizacao ?? solicitacao.dataHoraCriacao) }} </mat-panel-title>
+                        <mat-panel-title> {{ formatDate(solicitacao.dataHoraAtualizacao ?? solicitacao.dataHoraCriacao)
+                            }} </mat-panel-title>
                         <mat-panel-description>Status: ORÇADA</mat-panel-description>
                     </mat-expansion-panel-header>
 

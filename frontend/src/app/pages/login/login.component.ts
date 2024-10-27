@@ -7,8 +7,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUserLogin } from '../../model/requests/user-login-request.interface';
-import { ILoginResponse } from '../../model/responses/login-response.interface';
+import { UserLogin } from '../../model/requests/user-login-request';
+import { LoginResponse } from '../../model/responses/login-response';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
 import { CommonModule } from '@angular/common';
@@ -57,9 +57,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const user: IUserLogin = this.loginForm.getRawValue();
+    const user: UserLogin = this.loginForm.getRawValue();
     this.authService.doLogin(user).subscribe({
-      next: (data: ILoginResponse) => {
+      next: (data: LoginResponse) => {
         this.authService.setToken(data.token);
         this.authService.navigateToHomepageByRole();
       },

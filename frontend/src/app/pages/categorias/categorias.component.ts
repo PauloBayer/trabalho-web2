@@ -4,7 +4,6 @@ import { AfterViewInit, Component, Inject, inject, OnDestroy, OnInit, ViewChild 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -14,6 +13,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
+import { CategoriaEquipamento } from '../../model/entities/categoria-equipamento';
 
 @Component({
   selector: 'app-categorias',
@@ -44,13 +44,13 @@ export class CategoriasComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  dataSource = new MatTableDataSource<ICategoriaEquipamento>([]);
+  dataSource = new MatTableDataSource<CategoriaEquipamento>([]);
   columnsToDisplay = ['number', 'name', 'description', 'actions'];
-  expandedCategory: ICategoriaEquipamento | null = null;
+  expandedCategory: CategoriaEquipamento | null = null;
 
   constructor(private categoryService: CategoryService, private dialog: MatDialog) {
     this.categoryService.getCategories().subscribe({
-      next: (data: ICategoriaEquipamento[]) => {
+      next: (data: CategoriaEquipamento[]) => {
         this.dataSource.data = data;  // Atribui os dados corretamente
       },
       error: (data) => alert('ERROR: ' + data)
@@ -85,7 +85,7 @@ export class CategoriasComponent implements AfterViewInit {
       .afterClosed()
       .subscribe((data) => {
         if (data) {
-          const newCategory: ICategoriaEquipamento = {
+          const newCategory: CategoriaEquipamento = {
             name: data.name,
             description: data.description,
           };
@@ -102,7 +102,7 @@ export class CategoriasComponent implements AfterViewInit {
   }
   
 
-  openEditDialog(category: ICategoriaEquipamento) {
+  openEditDialog(category: CategoriaEquipamento) {
     this.dialog
       .open(CategoriaDialog, {
         minHeight: '250px',
@@ -112,7 +112,7 @@ export class CategoriasComponent implements AfterViewInit {
       .afterClosed()
       .subscribe((data) => {
         if (data) {
-          const updatedCategory: ICategoriaEquipamento = {
+          const updatedCategory: CategoriaEquipamento = {
             name: data.name,
             description: data.description,
           };
@@ -143,7 +143,7 @@ export class CategoriasComponent implements AfterViewInit {
   }
   
 
-  toggleExpand(element: ICategoriaEquipamento) {
+  toggleExpand(element: CategoriaEquipamento) {
     this.expandedCategory = this.expandedCategory === element ? null : element;
   }
 
@@ -171,7 +171,7 @@ export class CategoriaDialog implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CategoriaDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { category?: ICategoriaEquipamento }
+    @Inject(MAT_DIALOG_DATA) public data: { category?: CategoriaEquipamento }
   ) {
     this.categoriaForm = new FormGroup({
       name: new FormControl('', [

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { SolicitacaoService } from '../../services/solicitacao.service';
 })
 export class FinalizarSolicitacaoComponent  implements OnInit {
   solicitacaoId: string | null = null;
-  solicitacao!: ISolicitacao;
+  solicitacao!: Solicitacao;
 
   constructor(
     private route: ActivatedRoute, 
@@ -27,7 +27,7 @@ export class FinalizarSolicitacaoComponent  implements OnInit {
 
     if (this.solicitacaoId) {
       this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
-        next: (data: ISolicitacao) => {
+        next: (data: Solicitacao) => {
           this.solicitacao = data;
 
           if (this.solicitacao.status !== 'PAGA') {

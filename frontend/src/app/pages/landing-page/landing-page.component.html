@@ -34,53 +34,43 @@
 <div class="demonstration">
     <div class="row">
         <div class="col-12">
-            <p class="text-center text-xl lg:text-4xl font-bold">Demonstração do Produto</p>
+            <p class="text-center text-xl lg:text-4xl font-bold">Nossos Serviços</p>
         </div>
         <div class="row md:divide-x-2 divide-y-2 md:divide-y-0 divide-black py-4">
             <div class="col-12 col-md-4 p-4">
                 <div class="text-center">
-
-                    <p>Icone</p>
-                    <p>BLAH BLAH BLAH</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque iure unde porro
-                        necessitatibus illo tempora officiis incidunt totam, minima voluptas recusandae optio fugiat
-                        similique aut laboriosam deleniti ducimus explicabo.</p>
-
+                    <mat-icon class="material-icons" style="font-size: 48px; color: #FF5E2B;">build</mat-icon>
+                    <h3 class="text-lg font-semibold mt-3">Reparos Rápidos</h3>
+                    <p>Consertamos seus equipamentos de forma eficiente, garantindo que voltem a funcionar no menor
+                        tempo possível para minimizar seu tempo de inatividade.</p>
                 </div>
             </div>
             <div class="col-12 col-md-4 p-4">
                 <div class="text-center">
-
-                    <p>Icone</p>
-                    <p>BLAH BLAH BLAH</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque iure unde porro
-                        necessitatibus illo tempora officiis incidunt totam, minima voluptas recusandae optio fugiat
-                        similique aut laboriosam deleniti ducimus explicabo.</p>
-
+                    <mat-icon class="material-icons" style="font-size: 48px; color: #FF5E2B;">verified</mat-icon>
+                    <h3 class="text-lg font-semibold mt-3">Técnicos Certificados</h3>
+                    <p>Nossa equipe é composta por profissionais altamente qualificados e certificados, garantindo
+                        serviços de alta qualidade e confiabilidade para seus equipamentos.</p>
                 </div>
             </div>
             <div class="col-12 col-md-4 p-4">
                 <div class="text-center">
-
-                    <p>Icone</p>
-                    <p>BLAH BLAH BLAH</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque iure unde porro
-                        necessitatibus illo tempora officiis incidunt totam, minima voluptas recusandae optio fugiat
-                        similique aut laboriosam deleniti ducimus explicabo.</p>
-
+                    <mat-icon class="material-icons"
+                        style="font-size: 48px; color: #FF5E2B;">assignment_turned_in</mat-icon>
+                    <h3 class="text-lg font-semibold mt-3">Garantia de Serviço</h3>
+                    <p>Oferecemos garantia em todos os nossos serviços, proporcionando tranquilidade e confiança na
+                        qualidade do nosso trabalho.</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 d-flex flex-column align-items-center gap-2 text-center">
+        @if (!isEmployee) {
+        <div class="col-12 d-flex flex-column align-items-center gap-2 text-center mt-6">
             <p>Faça um Orçamento agora com a HealBoard!</p>
-            <button (click)="goLogin()" class="px-3 py-2  bg-[#FF5E2B] rounded-md font-nuckle font-bold text-white">
-                Criar Nova Solicitação
+            <button (click)="goLogin()" class="px-3 py-2 bg-[#FF5E2B] rounded-md font-nuckle font-bold text-white">
+                Faça sua solicitação agora!
             </button>
         </div>
-        <div class="col-12">
-
-        </div>
-
+        }
     </div>
 </div>

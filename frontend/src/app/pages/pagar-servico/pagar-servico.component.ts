@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 
 @Component({
   selector: 'app-pagar-servico',
@@ -12,7 +12,7 @@ import { ISolicitacao } from '../../model/entities/solicitacao.interface';
 })
 export class PagarServicoComponent implements OnInit {
   solicitacaoId: string | null = null;
-  solicitacao!: ISolicitacao;
+  solicitacao!: Solicitacao;
 
   constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService, private router: Router) {}
 
@@ -23,7 +23,7 @@ export class PagarServicoComponent implements OnInit {
 
     if (this.solicitacaoId) {
       this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
-        next: (data: ISolicitacao) => {
+        next: (data: Solicitacao) => {
           this.solicitacao = data;
 
           if (this.solicitacao.status !== 'AGUARDANDO_PAGAMENTO') {

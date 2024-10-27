@@ -1,9 +1,9 @@
 import { Component, computed, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.type';
-import { IHistorico } from '../../model/entities/historico.interface';
+import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.enum';
+import { Historico } from '../../model/entities/historico';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 
 @Component({
   selector: 'app-pagina-inicial',
@@ -13,7 +13,7 @@ import { ISolicitacao } from '../../model/entities/solicitacao.interface';
   styleUrl: './pagina-inicial.component.css',
 })
 export class PaginaInicialComponent implements OnInit {
-  solicitacoes: ISolicitacao[] = [];
+  solicitacoes: Solicitacao[] = [];
 
   constructor(
     private router: Router,
@@ -22,7 +22,7 @@ export class PaginaInicialComponent implements OnInit {
 
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
-      next: (data: ISolicitacao[]) => {
+      next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
       error: (error) => console.error(error),
@@ -45,10 +45,10 @@ export class PaginaInicialComponent implements OnInit {
     this.router.navigate(['client/solicitacao-manutencao']);
   }
 
-  resgatarSolicitacao(s: ISolicitacao) {
-    const historico: IHistorico = {
+  resgatarSolicitacao(s: Solicitacao) {
+    const historico: Historico = {
       dataHora: new Date().toISOString(),
-      statusAtual: 'APROVADA',
+      statusAtual: EstadoSolicitacaoType.APROVADA,
       id: '',
     };
     s.historico?.push(historico);
@@ -57,7 +57,7 @@ export class PaginaInicialComponent implements OnInit {
       next: () => {
         alert('Solicitação resgatada com sucesso');
         this.solicitacaoService.findAllSolicitacoes().subscribe({
-          next: (data: ISolicitacao[]) => {
+          next: (data: Solicitacao[]) => {
             this.solicitacoes = data;
           },
           error: (error) => console.error(error),
@@ -69,7 +69,7 @@ export class PaginaInicialComponent implements OnInit {
     });
   }
 
-  get orderSolicitacoes(): ISolicitacao[] {
+  get orderSolicitacoes(): Solicitacao[] {
     return this.solicitacoes;
     // return this.solicitacoes.sort(
     //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()

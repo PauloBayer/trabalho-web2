@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
+import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -13,17 +13,27 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   templateUrl: './efetuar-orcamento.component.html',
-  styleUrl: './efetuar-orcamento.component.css'
+  styleUrls: ['./efetuar-orcamento.component.css']
 })
 export class EfetuarOrcamentoComponent implements OnInit {
   solicitacaoId: string | null = null;
-  solicitacao!: ISolicitacao;
+  solicitacao!: Solicitacao;
 
   orcamentoForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private solicitacaoService: SolicitacaoService,
+    private router: Router
+  ) {
     this.orcamentoForm = new FormGroup({
-      number: new FormControl('')
+      number: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^\d+(\.\d{1,2})?$/) // Aceita números com até duas casas decimais
+      ]),
+      descricao: new FormControl('', [
+        Validators.required
+      ])
     });
   }
 
@@ -34,7 +44,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
 
     if (this.solicitacaoId) {
       this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
-        next: (data: ISolicitacao) => {
+        next: (data: Solicitacao) => {
           this.solicitacao = data;
 
           if (this.solicitacao.status !== 'ABERTA') {
@@ -50,10 +60,11 @@ export class EfetuarOrcamentoComponent implements OnInit {
   }
 
   onEfetuarOrcamento() {
-    if (this.solicitacaoId) {
+    if (this.orcamentoForm.valid && this.solicitacaoId) {
       const valorOrcado = this.orcamentoForm.get('number')?.value;
+      const descricaoOrcamento = this.orcamentoForm.get('descricao')?.value;
 
-      this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado).subscribe({
+      this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado, descricaoOrcamento).subscribe({
         next: () => {
           alert('Sucesso ao efetuar o orçamento');
           this.router.navigate(['funcionario']);
@@ -63,6 +74,9 @@ export class EfetuarOrcamentoComponent implements OnInit {
           this.router.navigate(['funcionario']);
         }
       });
+    } else {
+      // Marcar todos os controles como tocados para exibir mensagens de erro
+      this.orcamentoForm.markAllAsTouched();
     }
   }
 

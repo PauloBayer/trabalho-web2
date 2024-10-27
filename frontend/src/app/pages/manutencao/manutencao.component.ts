@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { IFuncionario } from '../../model/entities/funcionario.interface';
-import { ISolicitacao } from '../../model/entities/solicitacao.interface';
-import { ICliente } from '../../model/entities/cliente.interface';
+import { Funcionario } from '../../model/entities/funcionario';
+import { Solicitacao } from '../../model/entities/solicitacao';
+import { Cliente } from '../../model/entities/cliente';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -16,15 +16,15 @@ import { Router } from '@angular/router';
   templateUrl: './manutencao.component.html',
 })
 export class ManutencaoComponent implements OnInit {
-  solicitacao!: ISolicitacao;
-  funcionarios: IFuncionario[] = [];
+  solicitacao!: Solicitacao;
+  funcionarios: Funcionario[] = [];
   manutencaoForm: FormGroup;
   isModalOpen = false;
   isRedirectModalOpen = false;
   funcionarioDestino = '';
   idSolicitacao = '';
 
-  funcionarioLogado!: IFuncionario;
+  funcionarioLogado!: Funcionario;
 
   constructor(
     private solicitacaoService: SolicitacaoService,
@@ -42,8 +42,8 @@ export class ManutencaoComponent implements OnInit {
 
   ngOnInit(): void {
     let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: IFuncionario | ICliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
-    this.funcionarioLogado = userLogado as IFuncionario;
+    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    this.funcionarioLogado = userLogado as Funcionario;
 
     const solicitacaoId = this.route.snapshot.paramMap.get('id');
     if (solicitacaoId) {
@@ -70,7 +70,7 @@ export class ManutencaoComponent implements OnInit {
     });
   }
 
-  getClienteNome(cliente: ICliente | undefined | string): string {
+  getClienteNome(cliente: Cliente | undefined | string): string {
     if (typeof cliente === 'string')
       return 'Cliente inválido: ' + cliente;
     
@@ -80,7 +80,7 @@ export class ManutencaoComponent implements OnInit {
     return cliente.nome || 'Nome do cliente não disponível';
   }
 
-  getFuncionarioNome(funcionario: IFuncionario | string | undefined): string {
+  getFuncionarioNome(funcionario: Funcionario | string | undefined): string {
     if (typeof funcionario === 'string')
       return 'Funcionário inválido: ' + funcionario;
 
@@ -119,7 +119,7 @@ export class ManutencaoComponent implements OnInit {
   redirecionarManutencao() {
     this.manutencaoForm.get('funcionarioDestino')?.clearValidators();
     const funcionarioDestinoId = parseFloat(this.manutencaoForm.get('funcionarioDestino')?.value);
-    const funcionarioDestino: IFuncionario = this.funcionarios.find(f => f.id === funcionarioDestinoId)!;
+    const funcionarioDestino: Funcionario = this.funcionarios.find(f => f.id === funcionarioDestinoId)!;
 
     this.solicitacaoService.redirecionarManutencao(
       this.solicitacao.id,

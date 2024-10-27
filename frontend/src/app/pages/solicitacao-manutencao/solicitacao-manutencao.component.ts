@@ -7,9 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { ICategoriaEquipamento } from '../../model/entities/categoria-equipamento.interface';
 import { Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
+import { CategoriaEquipamento } from '../../model/entities/categoria-equipamento';
 
 @Component({
   selector: 'app-solicitacao-manutencao',
@@ -19,7 +19,7 @@ import { CategoryService } from '../../services/category.service';
   styleUrl: './solicitacao-manutencao.component.css',
 })
 export class SolicitacaoManutencaoComponent implements OnInit {
-  categories: ICategoriaEquipamento[] = [];
+  categories: CategoriaEquipamento[] = [];
   submit = false;
   solicitacaoForm: FormGroup = new FormGroup({});
 
@@ -39,7 +39,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe({
-      next: (data: ICategoriaEquipamento[]) => {
+      next: (data: CategoriaEquipamento[]) => {
         this.categories = data;
         console.log(this.categories);
       },
