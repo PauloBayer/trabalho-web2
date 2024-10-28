@@ -1,3 +1,4 @@
+<!-- gerenciar-solicitacoes.component.html -->
 <div id="background" class="flex items-center justify-center">
     <div class="bg-black w-10/12 rounded-2xl black-box">
         <div class="flex justify-between">
@@ -13,10 +14,20 @@
 
         <hr>
 
-        @if (solicitacoes.length > 0) {
+        <div *ngIf="solicitacoes.length > 0; else emptyState">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
-                @for (solicitacao of solicitacoes; track $index) {
-                <div class="bg-[#423B3A] rounded-2xl p-5">
+                <div *ngFor="let solicitacao of solicitacoes" 
+                     [ngClass]="{
+                        'bg-gray-500': solicitacao.status === 'ABERTA',
+                        'bg-red-500': solicitacao.status === 'REJEITADA',
+                        'bg-yellow-500': solicitacao.status === 'APROVADA',
+                        'bg-purple-500': solicitacao.status === 'REDIRECIONADA',
+                        'bg-orange-500': solicitacao.status === 'PAGA',
+                        'bg-green-500': solicitacao.status === 'FINALIZADA',
+                        'bg-blue-500': solicitacao.status === 'ARRUMADA',
+                     }"
+                    [style.backgroundColor]="solicitacao.status === 'ORCADA' ? '#8B4513' : null"
+                    class="rounded-2xl p-5">
                     <p class="font-nuckle font-light text-white mb-3">
                         {{ formatDate(solicitacao.dataHoraCriacao) }}
                     </p>
@@ -33,44 +44,36 @@
                         Estado: {{ solicitacao.status }}
                     </p>
 
-                    @if (solicitacao.status === 'ABERTA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-                            (click)="efetuarOrcamento(solicitacao.id)"
-                        >
-                            Efetuar orçamento
-                        </button>
-                    }
+                    <button *ngIf="solicitacao.status === 'ABERTA'"
+                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                        (click)="efetuarOrcamento(solicitacao.id)">
+                        Efetuar orçamento
+                    </button>
 
-                    @if (solicitacao.status === 'APROVADA' || solicitacao.status === 'REDIRECIONADA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-                            (click)="efetuarManutencao(solicitacao.id)"
-                        >
-                            Efetuar manutenção
-                        </button>
-                    }
+                    <button *ngIf="solicitacao.status === 'APROVADA' || solicitacao.status === 'REDIRECIONADA'"
+                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                        (click)="efetuarManutencao(solicitacao.id)">
+                        Efetuar manutenção
+                    </button>
 
-                    @if (solicitacao.status === 'PAGA') {
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-                            (click)="finalizarSolicitacao(solicitacao.id)">
-                            Finalizar solicitação
-                        </button>
-                    }
+                    <button *ngIf="solicitacao.status === 'PAGA'"
+                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+                        (click)="finalizarSolicitacao(solicitacao.id)">
+                        Finalizar solicitação
+                    </button>
 
-                    <button
-                        class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
-                        (click)="visualizarServico(solicitacao.id)"
-                    >
+                    <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
+                        (click)="visualizarServico(solicitacao.id)">
                         Visualizar a situação
                     </button>
                 </div>
-                }
             </div>
-        }
+        </div>
 
-        @else {
+        <ng-template #emptyState>
             <p class="font-nuckle font-light text-white h-9">
                 Parece que não existe nenhuma solicitação :(
             </p>
-        }
+        </ng-template>
     </div>
 </div>
