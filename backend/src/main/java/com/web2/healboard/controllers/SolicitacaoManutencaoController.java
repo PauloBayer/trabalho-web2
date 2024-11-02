@@ -201,4 +201,17 @@ public class SolicitacaoManutencaoController {
         );
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}/resgatar")
+    public ResponseEntity<Void> resgatarServico(
+            @PathVariable UUID id,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Cliente cliente))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.resgatarServico(id, cliente);
+        return ResponseEntity.ok().build();
+    }
 }

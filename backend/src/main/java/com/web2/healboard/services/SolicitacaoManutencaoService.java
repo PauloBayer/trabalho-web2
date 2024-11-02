@@ -115,11 +115,23 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
+    public void resgatarServico(UUID idSolicitacao, Cliente cliente) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.REJEITADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser REJEITADA");
+
+        this.historicoSolicitacaoService.setStatusAprovada(solicitacaoManutencao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.APROVADA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
+    }
+
     public void efetuarManutencao(UUID idSolicitacao, Funcionario funcionario, String descricaoManutencao, String orientacoesManutencao) {
         SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
 
-        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA)
-            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA");
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA
+                && solicitacaoManutencao.getStatus() != StatusSolicitacao.REDIRECIONADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA ou REDIRECIONADA");
 
         this.historicoSolicitacaoService.setStatusAguardandoPagamento(
                 solicitacaoManutencao, descricaoManutencao, orientacoesManutencao, funcionario
@@ -128,11 +140,6 @@ public class SolicitacaoManutencaoService {
         solicitacaoManutencao.setDescricaoManutencao(descricaoManutencao);
         solicitacaoManutencao.setOrientacoesManutencao(orientacoesManutencao);
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
-    }
-
-    public void resgatarServico() {
-        // status deve ser REJEITADA
-        // solicitacao.setStatus(APROVADA)
     }
 
     public void pagarServico() {
