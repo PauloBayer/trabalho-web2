@@ -82,4 +82,17 @@ public class HistoricoSolicitacaoService {
 
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
+
+    public void setStatusRedirecionada(SolicitacaoManutencao solicitacao, Funcionario funcionarioAtual, Funcionario funcionarioDestino) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setFuncionario(funcionarioAtual);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.REDIRECIONADA);
+        historicoSolicitacao.setFuncionarioDestino(funcionarioDestino);
+        historicoSolicitacao.setFuncionarioOrigem(funcionarioAtual);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
 }

@@ -74,7 +74,7 @@ public class SolicitacaoManutencaoMapper {
                         historico.getDescricaoDefeito(),
                         historico.getValorOrcado(),
                         historico.getMotivoRejeicao(),
-                        historico.getFuncionarioOrigem() != null ? historico.getFuncionarioOrigem().getNome() : null,
+                        historico.getFuncionario() != null ? historico.getFuncionario().getNome() : null,
                         historico.getFuncionarioDestino() != null ? historico.getFuncionarioDestino().getNome() : null,
                         historico.getOrientacoesManutencao(),
                         historico.getDescricaoManutencao()

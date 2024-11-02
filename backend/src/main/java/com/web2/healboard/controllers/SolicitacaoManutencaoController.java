@@ -214,4 +214,18 @@ public class SolicitacaoManutencaoController {
         this.solicitacaoManutencaoService.resgatarServico(id, cliente);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{idSolicitacao}/redirecionar/{idFuncionarioDestino}")
+    public ResponseEntity<Void> redirecionarManutencao(
+            @PathVariable UUID idSolicitacao,
+            @PathVariable Long idFuncionarioDestino,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Funcionario funcionario))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.redirecionarManutencao(idSolicitacao, funcionario, idFuncionarioDestino);
+        return ResponseEntity.ok().build();
+    }
 }

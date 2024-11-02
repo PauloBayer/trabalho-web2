@@ -23,6 +23,7 @@ public class SolicitacaoManutencaoService {
 
     private final HistoricoSolicitacaoService historicoSolicitacaoService;
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
+    private final FuncionarioService funcionarioService;
 
     public void registrarSolicitacao(
             SolicitacaoManutencao solicitacao,
@@ -142,14 +143,25 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void pagarServico() {
-        // status deve ser AGUARDANDO PAGAMENTO
+    public void redirecionarManutencao(UUID idSolicitacao, Funcionario funcionarioAtual, Long idFuncionarioDestino) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA
+                && solicitacaoManutencao.getStatus() != StatusSolicitacao.REDIRECIONADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA ou REDIRECIONADA");
+
+        if (!solicitacaoManutencao.getFuncionario().equals(funcionarioAtual))
+            throw new AcaoNaoPermitidaException("não é possível redirecionar porque não está responsável por essa solicitação");
+
+        Funcionario funcionarioDestino = this.funcionarioService.findById(idFuncionarioDestino);
+
+        this.historicoSolicitacaoService.setStatusRedirecionada(solicitacaoManutencao, funcionarioAtual, funcionarioDestino);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.REDIRECIONADA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void redirecionarManutencao() {
-        // status deve ser APROVADA ou REDIRECIONADA
-        // dataHora, funcionario origem e destino
-        // mudar para REDIRECIONADA
+    public void pagarServico() {
+        // status deve ser AGUARDANDO PAGAMENTO
     }
 
     public void finalizarManutencao() {
