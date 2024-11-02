@@ -115,6 +115,21 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
+    public void efetuarManutencao(UUID idSolicitacao, Funcionario funcionario, String descricaoManutencao, String orientacoesManutencao) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA");
+
+        this.historicoSolicitacaoService.setStatusAguardandoPagamento(
+                solicitacaoManutencao, descricaoManutencao, orientacoesManutencao, funcionario
+        );
+        solicitacaoManutencao.setStatus(StatusSolicitacao.AGUARDANDO_PAGAMENTO);
+        solicitacaoManutencao.setDescricaoManutencao(descricaoManutencao);
+        solicitacaoManutencao.setOrientacoesManutencao(orientacoesManutencao);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
+    }
+
     public void resgatarServico() {
         // status deve ser REJEITADA
         // solicitacao.setStatus(APROVADA)
@@ -122,10 +137,6 @@ public class SolicitacaoManutencaoService {
 
     public void pagarServico() {
         // status deve ser AGUARDANDO PAGAMENTO
-    }
-
-    public void efetuarManutencao() {
-        // status deve ser APROVADA
     }
 
     public void redirecionarManutencao() {

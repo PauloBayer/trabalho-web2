@@ -2,6 +2,7 @@ package com.web2.healboard.controllers;
 
 import com.web2.healboard.dtos.mapper.FuncionarioMapper;
 import com.web2.healboard.dtos.mapper.SolicitacaoManutencaoMapper;
+import com.web2.healboard.dtos.request.EfetuarManutencaoRequestDto;
 import com.web2.healboard.dtos.request.EfetuarOrcamentoRequestDto;
 import com.web2.healboard.dtos.request.RejeitarServicoRequestDto;
 import com.web2.healboard.dtos.request.SolicitacaoManutencaoRequestDto;
@@ -182,6 +183,22 @@ public class SolicitacaoManutencaoController {
             throw new NaoAutorizadoException("não autorizado");
 
         this.solicitacaoManutencaoService.rejeitarServico(id, cliente, dto.getMotivoRejeicao());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/manutencao")
+    public ResponseEntity<Void> efetuarManutencao(
+            @PathVariable UUID id,
+            @RequestBody @Valid EfetuarManutencaoRequestDto dto,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Funcionario funcionario))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.efetuarManutencao(
+                id, funcionario, dto.getDescricaoManutencao(), dto.getOrientacoesManutencao()
+        );
         return ResponseEntity.ok().build();
     }
 }

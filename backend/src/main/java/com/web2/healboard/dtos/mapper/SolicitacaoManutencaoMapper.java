@@ -46,24 +46,24 @@ public class SolicitacaoManutencaoMapper {
     }
 
     public static SolicitacaoComHistoricoResponseDto toDto(SolicitacaoManutencao solicitacaoManutencao, List<HistoricoSolicitacao> historicos) {
-        SolicitacaoManutencaoResponseDto solicitacaoDto = new SolicitacaoManutencaoResponseDto();
-        solicitacaoDto.setId(solicitacaoManutencao.getId());
-        solicitacaoDto.setCategoriaEquipamento(solicitacaoManutencao.getCategoriaEquipamento());
-        solicitacaoDto.setNomeFuncionario(
+        SolicitacaoComHistoricoResponseDto responseDto = new SolicitacaoComHistoricoResponseDto();
+        responseDto.setId(solicitacaoManutencao.getId());
+        responseDto.setCategoriaEquipamento(solicitacaoManutencao.getCategoriaEquipamento());
+        responseDto.setNomeFuncionario(
                 solicitacaoManutencao.getFuncionario() == null ? null : solicitacaoManutencao.getFuncionario().getNome()
         );
-        solicitacaoDto.setStatus(solicitacaoManutencao.getStatus().toString());
-        solicitacaoDto.setDataHoraCriacao(solicitacaoManutencao.getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME));
-        solicitacaoDto.setDataHoraAtualizacao(solicitacaoManutencao.getDataHoraAtualizacao().format(DateTimeFormatter.ISO_DATE_TIME));
-        solicitacaoDto.setDescricaoEquipamento(solicitacaoManutencao.getDescricaoEquipamento());
-        solicitacaoDto.setDescricaoDefeito(solicitacaoManutencao.getDescricaoDefeito());
-        solicitacaoDto.setValorOrcado(solicitacaoManutencao.getValorOrcado());
-        solicitacaoDto.setMotivoRejeicao(solicitacaoManutencao.getMotivoRejeicao());
-        solicitacaoDto.setDataHoraPagamento(
+        responseDto.setStatus(solicitacaoManutencao.getStatus().toString());
+        responseDto.setDataHoraCriacao(solicitacaoManutencao.getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME));
+        responseDto.setDataHoraAtualizacao(solicitacaoManutencao.getDataHoraAtualizacao().format(DateTimeFormatter.ISO_DATE_TIME));
+        responseDto.setDescricaoEquipamento(solicitacaoManutencao.getDescricaoEquipamento());
+        responseDto.setDescricaoDefeito(solicitacaoManutencao.getDescricaoDefeito());
+        responseDto.setValorOrcado(solicitacaoManutencao.getValorOrcado());
+        responseDto.setMotivoRejeicao(solicitacaoManutencao.getMotivoRejeicao());
+        responseDto.setDataHoraPagamento(
                 solicitacaoManutencao.getDataHoraPagamento() == null ? null : solicitacaoManutencao.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
         );
-        solicitacaoDto.setOrientacoesManutencao(solicitacaoManutencao.getOrientacoesManutencao());
-        solicitacaoDto.setDescricaoManutencao(solicitacaoManutencao.getDescricaoManutencao());
+        responseDto.setOrientacoesManutencao(solicitacaoManutencao.getOrientacoesManutencao());
+        responseDto.setDescricaoManutencao(solicitacaoManutencao.getDescricaoManutencao());
 
         List<HistoricoResponseDto> historicosDto = historicos.stream()
                 .map(historico -> new HistoricoResponseDto(
@@ -81,6 +81,7 @@ public class SolicitacaoManutencaoMapper {
                 ))
                 .collect(Collectors.toList());
 
-        return new SolicitacaoComHistoricoResponseDto(solicitacaoDto, historicosDto);
+        responseDto.setHistorico(historicosDto);
+        return responseDto;
     }
 }
