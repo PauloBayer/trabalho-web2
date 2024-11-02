@@ -95,4 +95,25 @@ public class HistoricoSolicitacaoService {
 
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
+
+    public void setStatusPaga(SolicitacaoManutencao solicitacao) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.PAGA);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
+
+    public void setStatusFinalizada(SolicitacaoManutencao solicitacao, Funcionario funcionario) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setFuncionario(funcionario);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.FINALIZADA);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
 }

@@ -228,4 +228,30 @@ public class SolicitacaoManutencaoController {
         this.solicitacaoManutencaoService.redirecionarManutencao(idSolicitacao, funcionario, idFuncionarioDestino);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{idSolicitacao}/pagar")
+    public ResponseEntity<Void> pagarServico(
+            @PathVariable UUID idSolicitacao,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Cliente cliente))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.pagarServico(idSolicitacao, cliente);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{idSolicitacao}/finalizar")
+    public ResponseEntity<Void> finalizarSolicitacao(
+            @PathVariable UUID idSolicitacao,
+            Principal principal
+    ) {
+        Object user = this.userService.findByEmail(principal.getName());
+        if (!(user instanceof Funcionario funcionario))
+            throw new NaoAutorizadoException("não autorizado");
+
+        this.solicitacaoManutencaoService.finalizarManutencao(idSolicitacao, funcionario);
+        return ResponseEntity.ok().build();
+    }
 }

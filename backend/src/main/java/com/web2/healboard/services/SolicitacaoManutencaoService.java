@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -160,11 +161,26 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void pagarServico() {
-        // status deve ser AGUARDANDO PAGAMENTO
+    public void pagarServico(UUID idSolicitacao, Cliente cliente) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.AGUARDANDO_PAGAMENTO)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser AGUARDANDO PAGAMENTO");
+
+        this.historicoSolicitacaoService.setStatusPaga(solicitacaoManutencao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.PAGA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void finalizarManutencao() {
-        // status deve ser FINALIZADA
+    public void finalizarManutencao(UUID idSolicitacao, Funcionario funcionario) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.PAGA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser PAGA");
+
+        this.historicoSolicitacaoService.setStatusFinalizada(solicitacaoManutencao, funcionario);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.FINALIZADA);
+        solicitacaoManutencao.setDataHoraPagamento(LocalDateTime.now());
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 }
