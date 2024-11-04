@@ -2,20 +2,25 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <div class="gradient-bg">
     <header style="background-color: black;">
-        <div class="header">
+        <div class="header  px-5 pt-5">
             <div class="row">
                 <div
                     class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3">
                     <img src="HealGuy.png" alt="" class="w-20">
-                    <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goHome()">HealBoard</span>
+                    <span class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-3xl"
+                        (click)="goHome()">HealBoard</span>
                 </div>
                 <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
                     <div class="d-flex flex-row-reverse align-items-center gap-3">
                         <i class="bi bi-person-circle" style="font-size: 50px;"></i>
-                        <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goLogout()">Logout</span>
-                        <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goToCategorias()">Categorias</span>
-                        <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goToFuncionarios()">Funcionários</span>
-                        <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goToRelatorios()">Relatórios</span>
+                        <span class="font-nuckle font-bold text-white hover:cursor-pointer"
+                            (click)="goLogout()">Logout</span>
+                        <span class="font-nuckle font-bold text-white hover:cursor-pointer"
+                            (click)="goToCategorias()">Categorias</span>
+                        <span class="font-nuckle font-bold text-white hover:cursor-pointer"
+                            (click)="goToFuncionarios()">Funcionários</span>
+                        <span class="font-nuckle font-bold text-white hover:cursor-pointer"
+                            (click)="goToRelatorios()">Relatórios</span>
                     </div>
                 </div>
             </div>
@@ -34,7 +39,8 @@
             <div class="row bg-black gap-3 gap-md-0">
                 <div class="col-12 d-flex flex-row align-items-center justify-content-center py-2 gap-3">
                     <img src="HealGuy.png" alt="" class="w-20">
-                    <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goHome()">HealBoard</span>
+                    <span (click)="goHome()"
+                        class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-3xl">HealBoard</span>
                 </div>
                 <div class="col-12 col-md-6 d-flex flex-column align-items-md-start align-items-center">
                     <a href="#" class="font-nuckle font-light text-white">Sobre a Companhia</a>
