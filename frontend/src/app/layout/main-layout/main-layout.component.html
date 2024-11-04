@@ -1,54 +1,44 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 <header style="background-color: black">
-  <div class="header">
+  <div class="header px-5 pt-5">
     <div class="row">
       <div
-        class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3"
-      >
-        <img src="HealGuy.png" alt="" class="w-20" />
-        <span class="header-text">HealBoard</span>
+        class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 pb-4 pb-md-2 gap-3">
+        <img src="HealGuy.png " alt="" class="w-20" />
+        <span
+          class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-3xl">HealBoard</span>
       </div>
 
-      @if (isAuthenticated()) 
+      @if (isAuthenticated())
       {
-        <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
-          <div class="d-flex flex-row-reverse align-items-center gap-3">
-            <a
-              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
-              (click)="goLogout()" 
-            >
-              Logout
-            </a>
-            
-            <a 
-              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
-              (click)="goHomepage()" 
-            >
-              Homepage
-            </a>            
-          </div>
+      <div class=" col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+        <div class="d-flex flex-row-reverse align-items-center gap-3">
+          <a class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" (click)="goLogout()">
+            Logout
+          </a>
+
+          <a class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" (click)="goHomepage()">
+            Homepage
+          </a>
         </div>
+      </div>
       }
 
-      @else 
+      @else
       {
-        <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
-          <div class="d-flex flex-row-reverse align-items-center gap-3">
-            <a 
-              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
-              (click)="goRegister()" 
-            >
-              Cadastrar
-            </a>
+      <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+        <div class="d-flex flex-row-reverse align-items-center gap-3">
+          <a class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-xl"
+            (click)="goRegister()">
+            Cadastrar
+          </a>
 
-            <a 
-              class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200" 
-              (click)="goLogin()"
-            >
-              Entrar
-            </a>
-          </div>
+          <a class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-xl"
+            (click)="goLogin()">
+            Entrar
+          </a>
         </div>
+      </div>
       }
 
     </div>
@@ -66,7 +56,8 @@
     <div class="row bg-black gap-3 gap-md-0">
       <div class="col-12 d-flex flex-row align-items-center justify-content-center py-2 gap-3">
         <img src="HealGuy.png" alt="" class="w-20" />
-        <span class="header-text">HealBoard</span>
+        <span
+          class="font-nuckle font-bold text-white hover:cursor-pointer hover:text-gray-200 text-3xl">HealBoard</span>
       </div>
       <div class="col-12 col-md-6 d-flex flex-column align-items-md-start align-items-center">
         <a href="#" class="small-text">Sobre a Companhia</a>

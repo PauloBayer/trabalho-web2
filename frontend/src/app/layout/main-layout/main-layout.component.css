@@ -1,6 +1,5 @@
 .header {
     width: 100%;
-    padding: 40px 40px 0px 40px;
     background-color: black;
     color: white;
     border-radius: 0 0 40px 40px;
@@ -14,13 +13,6 @@
     padding: 10px;
     background-color: black;
     color: white;
-}
-
-.header-text {
-    font-family: 'nuckle';
-    font-weight: 600;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 .small-text {
