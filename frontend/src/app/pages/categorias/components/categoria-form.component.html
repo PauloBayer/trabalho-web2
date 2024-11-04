@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ isEditing ? 'Editar' : 'Adicionar' }} categoria</h2>
+<mat-dialog-content>
+    <form [formGroup]="categoriaForm">
+        <div>
+            <mat-form-field class="w-100">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="name" placeholder="Digite o nome da sua categoria...">
+            </mat-form-field>
+        </div>
+        <div>
+
+            <mat-form-field class="w-100">
+                <mat-label>Descrição</mat-label>
+                <textarea matInput formControlName="description"
+                    placeholder="Descreva em detalhes essa categoria..."></textarea>
+                <small>{{ categoriaForm.value.description.length }} / 2000</small>
+            </mat-form-field>
+            @if (categoriaForm.get('description')?.hasError('minlength') && categoriaForm.get('description')?.touched) {
+            <mat-error>
+                Descrição deve ter no mínimo 5 caracteres!
+            </mat-error>
+            }
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close [disabled]="!categoriaForm.valid" (click)="closeDialog()">{{
+        isEditing ? 'Editar' : 'Adicionar' }}</button>
+</mat-dialog-actions>

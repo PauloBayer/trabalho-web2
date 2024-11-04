@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="gradient-bg">
+    <header style="background-color: black;">
+        <div class="header">
+            <div class="row">
+                <div class="col-12 col-md-6 d-flex flex-row align-items-center justify-content-center justify-content-md-start py-2 gap-3">
+                    <img src="HealGuy.png" alt="" class="w-20">
+                    <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goHome()">HealBoard</span>
+                </div>
+                
+                <div class="col-12 col-md-6 d-flex flex-column flex-md-row-reverse align-items-center gap-3">
+                    <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goLogout()">Logout</span>
+                    <button (click)="goToMakeSolicitacoes()"
+                        class="px-3 py-2 rounded-md font-nuckle font-bold text-white">
+                        Criar Nova Solicitação
+                    </button>
+                </div>
+            </div>
+            <div class="h-border"></div>
+        </div>
+    </header>
+
+    <main class="margin-main">
+        <router-outlet></router-outlet>
+    </main>
+
+    <footer>
+        <div class="f-border ">
+        </div>
+        <div class="px-5 pb-5">
+            <div class="row bg-black gap-3 gap-md-0">
+                <div class="col-12 d-flex flex-row align-items-center justify-content-center py-2 gap-3">
+                    <img src="HealGuy.png" alt="" class="w-20">
+                    <span class="font-nuckle font-bold text-white hover:cursor-pointer" (click)="goHome()">HealBoard</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex flex-column align-items-md-start align-items-center">
+                    <a href="#" class="font-nuckle font-light text-white">Sobre a Companhia</a>
+                    <a href="#" class="font-nuckle font-light text-white"> ©Copright</a>
+                    <a href="#" class="font-nuckle font-light text-white">Termos de Uso</a>
+                </div>
+                <div class="col-12 col-md-6 d-flex flex-column align-items-md-end align-items-center">
+                    <a href="#" class="font-nuckle font-light text-white">Entre em Contato</a>
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-facebook" style="font-size: 40px;"></i>
+                        <i class="bi bi-linkedin" style="font-size: 40px;"></i>
+                        <i class="bi bi-twitter" style="font-size: 40px;"></i>
+                        <i class="bi bi-pin-map-fill" style="font-size: 40px;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

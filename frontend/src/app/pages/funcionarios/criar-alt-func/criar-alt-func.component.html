@@ -1,0 +1,41 @@
+<div class="dialog-box bg-black text-white">
+    <span class="text-3xl font-bold" mat-dialog-title>
+        {{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário'}}
+    </span>
+    <div mat-dialog-content>
+        <form [formGroup]=" form">
+            <mat-form-field>
+                <label class="font-semibold">Nome</label>
+                <mat-label style="color: white;">Nome</mat-label>
+                <input type="text" id="nome" formControlName="nome"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300 mr-3" />
+            </mat-form-field>
+            <mat-form-field>
+                <label class="font-semibold">Email</label>
+                <mat-label>Email</mat-label>
+                <input type="text" id="email" formControlName="email"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+            </mat-form-field>
+            <mat-form-field>
+                <label class="font-semibold">Data de Nascimento</label>
+                <mat-label>Data de Nascimento</mat-label>
+                <input type="text" id="dataNascimento" formControlName="dataNascimento"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+            </mat-form-field>
+            <mat-form-field>
+                <label class="font-semibold">Senha</label>
+                <mat-label>Senha</mat-label>
+                <input type="text" id="senha" formControlName="senha"
+                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+            </mat-form-field>
+        </form>
+    </div>
+    <div mat-dialog-actions class="d-flex flex-row gap-3 justify-content-end">
+        <button mat-button (click)="onCancel()" class="cancelar font-bold">Cancelar</button>
+        <button mat-button (click)="onSubmit()" class="salvar font-bold" cdkFocusInitial [disabled]="!form.valid"
+            [ngClass]="{'cursor-not-allowed': !form.valid}">
+            {{ data?.funcionario ? 'Salvar' : 'Criar' }}
+        </button>
+
+    </div>
+</div>

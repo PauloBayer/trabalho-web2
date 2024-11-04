@@ -1,0 +1,104 @@
+hr {
+    background: white;
+    height: 2px;
+}
+
+.main {
+    background: rgb(255, 196, 43);
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.black-box {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    color: white;
+    width: 85%;
+    padding: 40px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0 20px;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+table {
+    background-color: black;
+    color: white;
+}
+
+::ng-deep div.mat-sort-header-container {
+    justify-content: center;
+    background-color: black;
+    color: white;
+    font-weight: 800;
+}
+
+::ng-deep td.mat-mdc-cell {
+    text-align: center;
+    background-color: rgb(68, 68, 68);
+    color: white;
+    font-weight: 400;
+}
+
+::ng-deep div.mat-sort-header-arrow {
+    color: white;
+}
+
+::ng-deep div.mat-sort-header-arrow .mat-icon {
+    color: white;
+}
+
+::ng-deep div.mat-sort-header.mat-sort-header-sorted .mat-sort-header-arrow {
+    color: white;
+}
+
+mat-paginator {
+    background-color: black;
+    color: white;
+    fill: white;
+}
+
+::ng-deep .mat-mdc-select-min-line {
+    color: white;
+    fill: white;
+}
+
+::ng-deep .mat-mdc-paginator-icon {
+    fill: white !important;
+}
+
+::ng-deep mat-icon.no-margin {
+    margin: 0 !important;
+}
+
+::ng-deep button.abutton {
+    height: 35px;
+    padding: 5px;
+}
+
+::ng-deep button.red-button {
+    background-color: rgba(255, 94, 43, 1);
+    color: white;
+}
+
+::ng-deep button.create {
+    height: 35px;
+    padding: 15px 25px;
+}
+
+::ng-deep mat-icon.no-margin {
+    margin: 0 !important;
+}

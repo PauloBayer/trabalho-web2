@@ -1,0 +1,14 @@
+.btn {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 196, 43, 1) 0%,
+      rgba(255, 94, 43, 1) 100%
+    );
+    padding: 10px;
+    border-radius: 30px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    width: 100px;
+    box-sizing: border-box;
+  }

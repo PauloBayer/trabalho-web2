@@ -1,0 +1,19 @@
+::ng-deep mat-label {
+    color: white;
+}
+
+.dialog-box {
+    padding: 30px;
+}
+
+.salvar {
+    background-color: rgb(10, 163, 10);
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.cancelar {
+    background-color: rgb(147, 0, 0);
+    padding: 5px 10px;
+    border-radius: 20px;
+}

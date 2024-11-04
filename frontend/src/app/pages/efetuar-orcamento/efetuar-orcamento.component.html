@@ -1,0 +1,50 @@
+<body class="flex items-center justify-center">
+    <div class="bg-black w-10/12 md:w-3/5 xl:w-2/5 2xl:w-1/3 rounded-2xl black-box px-8">
+        <h1 class="my-4 font-nuckle text-4xl font-extrabold text-white">
+            Efetuar orcamento
+        </h1>
+
+        <div class="pb-4">
+            <p class="font-nuckle font-light text-white mb-3">
+                Data: {{ formatDate(solicitacao.dataHoraCriacao) }}
+            </p>
+            <p class="font-nuckle font-light text-white mb-3">
+                Status: {{ solicitacao.status }}
+            </p>
+            <p class="font-nuckle font-light text-white mb-3">
+                Orientações de manutenção: {{ solicitacao.orientacoesManutencao }}
+            </p>
+            <p class="font-nuckle font-light text-white mb-3">
+                Descrição equipamento: {{ solicitacao.descricaoEquipamento }}
+            </p>
+
+            <form [formGroup]="orcamentoForm">
+                <div class="block">
+                    <label for="number" class="block" style="margin-top: 20px">
+                        Valor do Orçamento:
+                    </label>
+                    <input id="number" formControlName="number"
+                        class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
+                        type="text" placeholder="R$" />
+                    <!-- Mensagem de Erro para Valor do Orçamento -->
+                    <div *ngIf="orcamentoForm.get('number')?.touched && orcamentoForm.get('number')?.invalid"
+                        class="text-red-500 text-sm mt-1">
+                        <span *ngIf="orcamentoForm.get('number')?.errors?.['required']">
+                            O valor do orçamento é obrigatório.
+                        </span>
+                        <span *ngIf="orcamentoForm.get('number')?.errors?.['pattern']">
+                            Insira um valor válido (números com até duas casas decimais).
+                        </span>
+                    </div>
+                </div>
+                <button class="w-64 rounded-md font-nuckle font-light text-white h-11 my-4"
+                    (click)="onEfetuarOrcamento()" [disabled]="!orcamentoForm.valid" [ngClass]="{
+                  'bg-[#FF5E2B]': orcamentoForm.valid,
+                  'bg-[#D3D3D3]': !orcamentoForm.valid
+                }">
+                    Efetuar Orçamento
+                </button>
+            </form>
+        </div>
+    </div>
+</body>

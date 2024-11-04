@@ -1,0 +1,100 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#container {
+  display: flex;
+  height: 100vh;
+}
+
+.left,
+.right {
+  height: 100%;
+}
+
+.left {
+  flex: 0 0 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+}
+
+.right {
+  flex: 0 0 60%;
+  background-color: #d0d0d0;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 196, 43, 0.4) 0%,
+      rgba(255, 94, 43, 0.4) 100%
+    ),
+    url(/login.jpg);
+  object-fit: fill;
+  background-size: cover;
+}
+
+.welcome-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.border-gradient-input {
+  border: 2px solid rgba(255, 196, 43, 1);
+  border-radius: 30px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.error-placeholder {
+  height: 20px; 
+  margin-bottom: 10px;
+}
+
+.error-text {
+  color: red;
+}
+
+.register-link {
+  color: rgba(255, 94, 43, 1);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 43, 1) 0%,
+    rgba(255, 94, 43, 1) 100%
+  );
+  padding: 10px;
+  border-radius: 30px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}

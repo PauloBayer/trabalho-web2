@@ -1,0 +1,122 @@
+<div id="container" class="flex h-screen">
+  <!-- Lado esquerdo -->
+  <div class="left flex flex-col justify-center items-center w-2/5 bg-white overflow-y-auto justify-content-start">
+    <div
+      class="text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 text-3xl mb-6 mt-5">
+      Cadastro</div>
+    <form [formGroup]="autoCadastroForm" (ngSubmit)="onSubmit()"
+      class="border-2 border-orange-200 rounded-lg px-6 py-4 w-4/5 space-y-4 mb-3">
+
+      <!-- CPF Field -->
+      <div class="w-full">
+        <label for="cpf" class="block text-sm font-medium">CPF:</label>
+        <input type="text" id="cpf" formControlName="cpf"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <div class="text-red-400 text-xs mt-1 min-h-[20px]">
+          <span *ngIf="formSubmitted && autoCadastroForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['pattern']">CPF deve conter exatamente 11 números.</span>
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['validarCPF']">CPF inválido. Por favor, insira um CPF
+            válido.</span>
+        </div>
+      </div>
+
+      <!-- Nome Field -->
+      <div class="w-full">
+        <label for="nome" class="block text-sm font-medium">Nome:</label>
+        <input type="text" id="nome" formControlName="nome"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <div class="text-red-400 text-xs mt-1 min-h-[20px]">
+          <span *ngIf="formSubmitted && autoCadastroForm.get('nome')?.errors?.['required']">Nome é obrigatório.</span>
+        </div>
+      </div>
+
+      <!-- E-mail Field -->
+      <div class="w-full">
+        <label for="email" class="block text-sm font-medium">E-mail:</label>
+        <input type="email" id="email" formControlName="email"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <div class="text-red-400 text-xs mt-1 min-h-[20px]">
+          <span *ngIf="formSubmitted && autoCadastroForm.get('email')?.errors?.['required']">E-mail é
+            obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('email')?.errors?.['email']">Insira um e-mail válido.</span>
+        </div>
+      </div>
+
+      <!-- CEP Field -->
+      <div class="w-full">
+        <label for="cep" class="block text-sm font-medium">CEP:</label>
+        <input type="text" id="cep" formControlName="cep" (blur)="buscarEndereco()"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <div class="text-red-400 text-xs mt-1 min-h-[20px]">
+          <span *ngIf="formSubmitted && autoCadastroForm.get('cep')?.errors?.['required']">CEP é obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('cep')?.errors?.['pattern']">CEP deve conter 8 números.</span>
+          <span *ngIf="autoCadastroForm.get('cep')?.errors?.['validarCEP']">CEP inválido.</span>
+        </div>
+      </div>
+
+      <!-- Outros Campos (Logradouro, Bairro, etc.) -->
+      <div class="w-full">
+        <label for="logradouro" class="block text-sm font-medium">Logradouro:</label>
+        <input type="text" id="logradouro" formControlName="logradouro"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
+      </div>
+      <div class="w-full">
+        <label for="numero" class="block text-sm font-medium">Número do Logradouro:</label>
+        <input type="text" id="numero" formControlName="numero"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+      </div>
+      <div class="w-full">
+        <label for="bairro" class="block text-sm font-medium">Bairro:</label>
+        <input type="text" id="bairro" formControlName="bairro"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
+      </div>
+      <div class="w-full">
+        <label for="cidade" class="block text-sm font-medium">Cidade:</label>
+        <input type="text" id="cidade" formControlName="cidade"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
+      </div>
+      <div class="w-full">
+        <label for="estado" class="block text-sm font-medium">Estado:</label>
+        <input type="text" id="estado" formControlName="estado"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm" readonly>
+      </div>
+
+      <!-- Telefone Field -->
+      <div class="w-full">
+        <label for="telefone" class="block text-sm font-medium">Telefone:</label>
+        <input type="text" id="telefone" formControlName="telefone"
+          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <div class="text-red-400 text-xs mt-1 min-h-[20px]">
+          <span *ngIf="formSubmitted && autoCadastroForm.get('telefone')?.errors?.['required']">Telefone é
+            obrigatório.</span>
+          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['minlength']">Telefone deve ter ao menos 10
+            dígitos.</span>
+          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['maxlength']">Telefone não pode exceder 11
+            dígitos.</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center mt-6">
+        <button type="submit"
+          class="px-6 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-medium"
+          [ngClass]="{'cursor-not-allowed': !autoCadastroForm.valid}" [disabled]="!autoCadastroForm.valid">
+          Cadastrar
+        </button>
+        @if (!autoCadastroForm.valid) {
+        <br>
+        <span class="text-red-400 text-xs mt-1">
+          O formulário não é válido. Garanta que tudo foi preenchido corretamente
+        </span>
+        }
+      </div>
+    </form>
+    <br>
+    <span>Já possui uma conta?</span>
+    <br>
+    <button (click)="goToLogin()" class="btn mb-5 mt-2" id="btn-login">Entrar</button>
+  </div>
+
+  <!-- Lado direito -->
+  <div class="right w-3/5 bg-cover" style="background-image: url('login.jpg');"></div>
+</div>

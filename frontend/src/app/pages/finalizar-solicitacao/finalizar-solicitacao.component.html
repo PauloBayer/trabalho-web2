@@ -1,0 +1,41 @@
+<div class="h-screen flex items-center justify-center">
+    <div class="bg-black w-10/12 rounded-2xl black-box">
+        <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
+            Finalizar solicitação
+        </h1>
+
+        <div class="px-10 pb-4">
+            <div class="my-6">
+                <p class="font-nuckle font-light text-white mb-3">
+                    Data: {{ formatDate(solicitacao.dataHoraCriacao) }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Status: {{ solicitacao.status }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Categoria do equipamento: {{ solicitacao.categoriaEquipamento?.name }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Descrição equipamento: {{ solicitacao.descricaoEquipamento }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Descrição equipamento: {{ solicitacao.descricaoDefeito }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Orientações de manutenção: {{ solicitacao.orientacoesManutencao }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Nome do funcionário responsável: {{ solicitacao.funcionario?.nome ?? 'funcionario inválido' }}
+                </p>
+                <p class="font-nuckle font-light text-white mb-3">
+                    Valor pago: {{ solicitacao.valorOrcado }}
+                </p>
+            </div>
+
+            <button class="w-64 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-11 mb-3"
+                (click)="onFinalizarSolicitacao()">
+                Finalizar solicitação
+            </button>
+        </div>
+    </div>
+</div>

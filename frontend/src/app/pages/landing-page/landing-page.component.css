@@ -1,0 +1,17 @@
+mat-icon {
+    height: auto !important;
+    width: auto !important;
+}
+
+.presentation {
+    padding: 80px 50px 50px 50px;
+    height: 100%;
+    background: rgb(255, 196, 43);
+    background: linear-gradient(90deg, rgba(255, 196, 43, 1) 0%, rgba(255, 94, 43, 1) 100%);
+    overflow-x: hidden;
+    border-radius: 0px 0px 40px 40px;
+}
+
+.demonstration {
+    padding: 50px 50px 80px 50px;
+}
