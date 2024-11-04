@@ -45,41 +45,19 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
     }
     const filterValueLower = this.filterValue.toLowerCase();
     return this.solicitacoes.filter((solicitacao) => {
-      const solicitacaoString = this.flattenObjectToString(solicitacao).toLowerCase();
-      return solicitacaoString.includes(filterValueLower);
-    });
-  }
+      const id = solicitacao.id.toLowerCase();
+      const clienteNome = solicitacao.cliente?.nome?.toLowerCase() || '';
+      const status = solicitacao.status?.toLowerCase() || '';
+      const descricaoDefeito = solicitacao.descricaoDefeito?.toLowerCase() || '';
 
-  flattenObjectToString(obj: any): string {
-    let result = '';
-    const visited = new Set();
-
-    const recurse = (value: any) => {
-      if (value === null || value === undefined) {
-        return;
-      }
-      if (visited.has(value)) {
-        return; // Avoid circular references
-      }
-      if (typeof value === 'object') {
-        visited.add(value);
-        for (const key in value) {
-          if (value.hasOwnProperty(key)) {
-            recurse(value[key]);
-          }
-        }
-      } else if (
-        typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean'
-      ) {
-        result += ' ' + value.toString();
-      }
-    };
-
-    recurse(obj);
-    return result;
-  }
+      return (
+        id.includes(filterValueLower) ||
+        clienteNome.includes(filterValueLower) ||
+        status.includes(filterValueLower) ||
+        descricaoDefeito.includes(filterValueLower)
+      );
+    }
+  )};
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);

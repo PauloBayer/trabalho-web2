@@ -1,11 +1,14 @@
 <!-- gerenciar-solicitacoes.component.html -->
 <div id="background" class="flex items-center justify-center">
     <div class="bg-black w-10/12 rounded-2xl black-box">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mx-8 my-4">
             <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
                 Gerenciar solicitações
             </h1>
-
+            <mat-form-field id="page-filter" appearance="fill" class="w-1/3">
+                <mat-label>Filtrar solicitações</mat-label>
+                <input matInput [(ngModel)]="filterValue" placeholder="Digite para filtrar por qualquer campo..." />
+            </mat-form-field>
             <button (click)="goToSolicitacoesAbertas()"
                 class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4">
                 Solicitações abertas
@@ -14,10 +17,9 @@
 
         <hr>
 
-        <div *ngIf="solicitacoes.length > 0; else emptyState">
+        <div *ngIf="filteredSolicitacoes.length > 0; else emptyState">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
-                <div *ngFor="let solicitacao of solicitacoes" 
-                     [ngClass]="{
+                <div *ngFor="let solicitacao of filteredSolicitacoes" [ngClass]="{
                         'bg-gray-500': solicitacao.status === 'ABERTA',
                         'bg-red-500': solicitacao.status === 'REJEITADA',
                         'bg-yellow-500': solicitacao.status === 'APROVADA',
@@ -25,8 +27,7 @@
                         'bg-orange-500': solicitacao.status === 'PAGA',
                         'bg-green-500': solicitacao.status === 'FINALIZADA',
                         'bg-blue-500': solicitacao.status === 'ARRUMADA',
-                     }"
-                    [style.backgroundColor]="solicitacao.status === 'ORCADA' ? '#8B4513' : null"
+                     }" [style.backgroundColor]="solicitacao.status === 'ORCADA' ? '#8B4513' : null"
                     class="rounded-2xl p-5">
                     <p class="font-nuckle font-light text-white mb-3">
                         {{ formatDate(solicitacao.dataHoraCriacao) }}
@@ -35,7 +36,7 @@
                     <p class="font-nuckle font-light text-white mb-3">
                         Nome do cliente: {{ solicitacao.cliente?.nome }}
                     </p>
-                    
+
                     <p class="font-nuckle font-light text-white mb-3">
                         Defeito: {{ solicitacao.descricaoDefeito }}
                     </p>

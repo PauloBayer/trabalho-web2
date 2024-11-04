@@ -4,16 +4,26 @@ import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import {  ReactiveFormsModule} from '@angular/forms';
+import {  FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-gerenciar-solicitacoes',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
+  imports: [
+    ReactiveFormsModule, 
+    HttpClientModule, 
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
   templateUrl: './gerenciar-solicitacoes.component.html',
   styleUrl: './gerenciar-solicitacoes.component.css'
 })
 export class GerenciarSolicitacoesComponent implements OnInit {
   solicitacoes: Solicitacao[] = [];
+  filterValue: string = '';
 
   constructor(
     private router: Router,
@@ -28,6 +38,26 @@ export class GerenciarSolicitacoesComponent implements OnInit {
       error: (error) => console.error(error),
     });
   }
+
+  get filteredSolicitacoes(): Solicitacao[] {
+    if (!this.filterValue) {
+      return this.solicitacoes;
+    }
+    const filterValueLower = this.filterValue.toLowerCase();
+    return this.solicitacoes.filter((solicitacao) => {
+      const id = solicitacao.id.toLowerCase();
+      const clienteNome = solicitacao.cliente?.nome?.toLowerCase() || '';
+      const status = solicitacao.status?.toLowerCase() || '';
+      const descricaoDefeito = solicitacao.descricaoDefeito?.toLowerCase() || '';
+
+      return (
+        id.includes(filterValueLower) ||
+        clienteNome.includes(filterValueLower) ||
+        status.includes(filterValueLower) ||
+        descricaoDefeito.includes(filterValueLower)
+      );
+    }
+  )};
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
