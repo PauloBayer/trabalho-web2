@@ -19,29 +19,6 @@
             </p>
 
             <form [formGroup]="orcamentoForm">
-                <!-- Descrição do Orçamento -->
-                <div class="block">
-                    <label for="descricao" class="block" style="margin-top: 20px">
-                        Descrição do Orçamento:
-                    </label>
-                    <textarea id="descricao" formControlName="descricao"
-                        class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300 resize-none"
-                        placeholder="Descreva detalhadamente o orçamento..." rows="4"></textarea>
-                    <!-- Mensagem de Erro para Descrição do Orçamento -->
-                    <div *ngIf="orcamentoForm.get('descricao')?.touched && orcamentoForm.get('descricao')?.invalid"
-                        class="text-red-500 text-sm mt-1">
-                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['required']">
-                            A descrição do orçamento é obrigatória.
-                        </span>
-                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['minlength']">
-                            A descrição deve ter no mínimo 10 caracteres.
-                        </span>
-                        <span *ngIf="orcamentoForm.get('descricao')?.errors?.['maxlength']">
-                            A descrição não pode exceder 500 caracteres.
-                        </span>
-                    </div>
-                </div>
-
                 <div class="block">
                     <label for="number" class="block" style="margin-top: 20px">
                         Valor do Orçamento:
