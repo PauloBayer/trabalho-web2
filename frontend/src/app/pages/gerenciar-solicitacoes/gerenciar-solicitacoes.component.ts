@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import {  ReactiveFormsModule} from '@angular/forms';
 @Component({
   selector: 'app-gerenciar-solicitacoes',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
   templateUrl: './gerenciar-solicitacoes.component.html',
   styleUrl: './gerenciar-solicitacoes.component.css'
 })

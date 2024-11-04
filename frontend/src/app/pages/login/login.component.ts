@@ -10,7 +10,11 @@ import {
 import { UserLogin } from '../../model/requests/user-login-request';
 import { LoginResponse } from '../../model/responses/login-response';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { clientesSeed, funcionariosSeed, solicitacoesSeed } from '../../seeds/seed';
+import {
+  clientesSeed,
+  funcionariosSeed,
+  solicitacoesSeed,
+} from '../../seeds/seed';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -36,11 +40,11 @@ export class LoginComponent implements OnInit {
     this.loginForm = new FormGroup({
       email: new FormControl<string>('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.email], 
+        validators: [Validators.required, Validators.email],
       }),
       senha: new FormControl<string>('', {
         nonNullable: true,
-        validators: [Validators.required], 
+        validators: [Validators.required],
       }),
     });
   }
@@ -49,6 +53,10 @@ export class LoginComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['']);
     }
+  }
+
+  voltar() {
+    this.router.navigate(['']);
   }
 
   onLogin() {
@@ -64,9 +72,9 @@ export class LoginComponent implements OnInit {
         this.authService.navigateToHomepageByRole();
       },
       error: (error) => {
-        this.loginError = 'Usuário ou senha inválidos'; 
+        this.loginError = 'Usuário ou senha inválidos';
         console.error(error);
-      }
+      },
     });
   }
 }

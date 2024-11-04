@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Solicitacao } from '../../model/entities/solicitacao';
 import { SolicitacaoService } from '../../services/solicitacao.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -29,10 +29,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
     this.orcamentoForm = new FormGroup({
       number: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^\d+(\.\d{1,2})?$/) // Aceita números com até duas casas decimais
-      ]),
-      descricao: new FormControl('', [
-        Validators.required
+        Validators.pattern(/^\d+(\.\d{1,2})?$/) 
       ])
     });
   }
@@ -63,7 +60,6 @@ export class EfetuarOrcamentoComponent implements OnInit {
     if (this.orcamentoForm.valid && this.solicitacaoId) {
       const valorOrcado = this.orcamentoForm.get('number')?.value;
       const descricaoOrcamento = this.orcamentoForm.get('descricao')?.value;
-
       this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado, descricaoOrcamento).subscribe({
         next: () => {
           alert('Sucesso ao efetuar o orçamento');
@@ -75,20 +71,17 @@ export class EfetuarOrcamentoComponent implements OnInit {
         }
       });
     } else {
-      // Marcar todos os controles como tocados para exibir mensagens de erro
       this.orcamentoForm.markAllAsTouched();
     }
   }
 
   formatDate(ISOFormatTimestamp: string): string {
     const date = new Date(ISOFormatTimestamp);
-
     const day = date.getUTCDate().toString().padStart(2, '0');
     const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
     const year = date.getUTCFullYear();
     const hours = date.getUTCHours().toString().padStart(2, '0');
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-
     return `${day}/${month}/${year} ${hours}h${minutes}`;
   }
 }

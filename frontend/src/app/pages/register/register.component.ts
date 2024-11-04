@@ -114,11 +114,11 @@ export class RegisterComponent implements OnInit {
       this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
       return;
     }
-  
+
     if (this.autoCadastroForm.valid) {
       this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
       const formData = this.autoCadastroForm.value;
-      formData.senha = this.senhaGerada;  
+      formData.senha = this.senhaGerada;
       this.authService.doRegister(formData).subscribe(
         () => {
           this.router.navigate(['login']);
@@ -155,5 +155,9 @@ export class RegisterComponent implements OnInit {
 
   goToLogin(): void {
     this.router.navigate(['login']);
+  }
+
+  voltar() {
+    this.router.navigate(['']);
   }
 }

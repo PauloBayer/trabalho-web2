@@ -1,0 +1,53 @@
+.modal {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(2px);
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  margin: 0;
+  width: 90%;
+  max-width: 600px;
+}
+
+.modal-content {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: 3px solid rgb(255, 196, 43);
+  padding: 5%;
+  color: white;
+}
+
+.modal-title {
+  font-size: 2.5rem;
+  color: orangered;
+  text-align: center;
+}
+.close {
+  font-size: 40px;
+}
+.card-validators {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.card-validators:not(:last-child) {
+  margin-right: 16px;
+}
+.card-validators label {
+  margin-bottom: 4px;
+}
+
+.card-validators small {
+  margin-top: 4px;
+}

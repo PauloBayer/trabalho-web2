@@ -9,12 +9,29 @@
                 Só na HealBoard você tem a garantia que seus equipamentos voltaram a vida!
             </span>
         </div>
-        <div class="col-12 col-md-6">
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="20">
+        <div class="col-12 col-md-6 mt-4">
+            <div class="carousel">
+                <div>
+                    <img [src]="slides[currentSlide].src" class="slide" [@carouselAnimation]="slideIndex" />
+                </div>
+
+                <button class="control prev" (click)="onPreviousClick()">
+                    <span class="arrow left"></span>
+                </button>
+                <button class="control next" (click)="onNextClick()">
+                    <span class="arrow right"></span>
+                </button>
+            </div>
+
+
+
+
+
+            <!-- <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="20">
                 <ol class="carousel-indicators">
                     <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
                     <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                    <!-- <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li> -->
+                    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -24,7 +41,7 @@
                         <img class="d-block w-100" src="Impressora.png" alt="Second slide">
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
