@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class SolicitacaoManutencaoService {
 
     private final HistoricoSolicitacaoService historicoSolicitacaoService;
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
+    private final FuncionarioService funcionarioService;
 
     public void registrarSolicitacao(
             SolicitacaoManutencao solicitacao,
@@ -115,26 +117,70 @@ public class SolicitacaoManutencaoService {
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void resgatarServico() {
-        // status deve ser REJEITADA
-        // solicitacao.setStatus(APROVADA)
+    public void resgatarServico(UUID idSolicitacao, Cliente cliente) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.REJEITADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser REJEITADA");
+
+        this.historicoSolicitacaoService.setStatusAprovada(solicitacaoManutencao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.APROVADA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void pagarServico() {
-        // status deve ser AGUARDANDO PAGAMENTO
+    public void efetuarManutencao(UUID idSolicitacao, Funcionario funcionario, String descricaoManutencao, String orientacoesManutencao) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA
+                && solicitacaoManutencao.getStatus() != StatusSolicitacao.REDIRECIONADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA ou REDIRECIONADA");
+
+        this.historicoSolicitacaoService.setStatusAguardandoPagamento(
+                solicitacaoManutencao, descricaoManutencao, orientacoesManutencao, funcionario
+        );
+        solicitacaoManutencao.setStatus(StatusSolicitacao.AGUARDANDO_PAGAMENTO);
+        solicitacaoManutencao.setDescricaoManutencao(descricaoManutencao);
+        solicitacaoManutencao.setOrientacoesManutencao(orientacoesManutencao);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void efetuarManutencao() {
-        // status deve ser APROVADA
+    public void redirecionarManutencao(UUID idSolicitacao, Funcionario funcionarioAtual, Long idFuncionarioDestino) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.APROVADA
+                && solicitacaoManutencao.getStatus() != StatusSolicitacao.REDIRECIONADA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser APROVADA ou REDIRECIONADA");
+
+        if (!solicitacaoManutencao.getFuncionario().equals(funcionarioAtual))
+            throw new AcaoNaoPermitidaException("não é possível redirecionar porque não está responsável por essa solicitação");
+
+        Funcionario funcionarioDestino = this.funcionarioService.findById(idFuncionarioDestino);
+
+        this.historicoSolicitacaoService.setStatusRedirecionada(solicitacaoManutencao, funcionarioAtual, funcionarioDestino);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.REDIRECIONADA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void redirecionarManutencao() {
-        // status deve ser APROVADA ou REDIRECIONADA
-        // dataHora, funcionario origem e destino
-        // mudar para REDIRECIONADA
+    public void pagarServico(UUID idSolicitacao, Cliente cliente) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorIdEUser(idSolicitacao, cliente);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.AGUARDANDO_PAGAMENTO)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser AGUARDANDO PAGAMENTO");
+
+        this.historicoSolicitacaoService.setStatusPaga(solicitacaoManutencao);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.PAGA);
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 
-    public void finalizarManutencao() {
-        // status deve ser FINALIZADA
+    public void finalizarManutencao(UUID idSolicitacao, Funcionario funcionario) {
+        SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
+
+        if (solicitacaoManutencao.getStatus() != StatusSolicitacao.PAGA)
+            throw new AcaoNaoPermitidaException("status da solicitacao deve ser PAGA");
+
+        this.historicoSolicitacaoService.setStatusFinalizada(solicitacaoManutencao, funcionario);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.FINALIZADA);
+        solicitacaoManutencao.setDataHoraPagamento(LocalDateTime.now());
+        this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 }

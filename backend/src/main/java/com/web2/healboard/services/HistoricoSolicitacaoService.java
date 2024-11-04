@@ -32,6 +32,18 @@ public class HistoricoSolicitacaoService {
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
 
+    public void setStatusOrcada(SolicitacaoManutencao solicitacao, Float valorOrcado, Funcionario funcionario) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setFuncionario(funcionario);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.ORCADA);
+        historicoSolicitacao.setValorOrcado(valorOrcado);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
+
     public void setStatusAprovada(SolicitacaoManutencao solicitacao) {
         HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
 
@@ -53,14 +65,54 @@ public class HistoricoSolicitacaoService {
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
 
-    public void setStatusOrcada(SolicitacaoManutencao solicitacao, Float valorOrcado, Funcionario funcionario) {
+    public void setStatusAguardandoPagamento(
+            SolicitacaoManutencao solicitacao,
+            String descricaoManutencao,
+            String orientacoesManutencao,
+            Funcionario funcionario
+    ) {
         HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
 
         historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
         historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
         historicoSolicitacao.setFuncionario(funcionario);
-        historicoSolicitacao.setStatusAtual(StatusSolicitacao.ORCADA);
-        historicoSolicitacao.setValorOrcado(valorOrcado);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.AGUARDANDO_PAGAMENTO);
+        historicoSolicitacao.setDescricaoManutencao(descricaoManutencao);
+        historicoSolicitacao.setOrientacoesManutencao(orientacoesManutencao);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
+
+    public void setStatusRedirecionada(SolicitacaoManutencao solicitacao, Funcionario funcionarioAtual, Funcionario funcionarioDestino) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setFuncionario(funcionarioAtual);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.REDIRECIONADA);
+        historicoSolicitacao.setFuncionarioDestino(funcionarioDestino);
+        historicoSolicitacao.setFuncionarioOrigem(funcionarioAtual);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
+
+    public void setStatusPaga(SolicitacaoManutencao solicitacao) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.PAGA);
+
+        this.historicoSolicitacaoRepository.save(historicoSolicitacao);
+    }
+
+    public void setStatusFinalizada(SolicitacaoManutencao solicitacao, Funcionario funcionario) {
+        HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
+
+        historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
+        historicoSolicitacao.setStatusAnterior(solicitacao.getStatus());
+        historicoSolicitacao.setFuncionario(funcionario);
+        historicoSolicitacao.setStatusAtual(StatusSolicitacao.FINALIZADA);
 
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }

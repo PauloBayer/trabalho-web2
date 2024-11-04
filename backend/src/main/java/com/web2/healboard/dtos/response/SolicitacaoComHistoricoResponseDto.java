@@ -5,11 +5,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class SolicitacaoComHistoricoResponseDto {
-    private SolicitacaoManutencaoResponseDto solicitacao;
+    private UUID id;
+    private String categoriaEquipamento;
+    private String nomeFuncionario;
+    private String status;
+    private String dataHoraCriacao;
+    private String dataHoraAtualizacao;
+    private String descricaoEquipamento;
+    private String descricaoDefeito;
+    private Float valorOrcado;
+    private String motivoRejeicao;
+    private String dataHoraPagamento;
+    private String orientacoesManutencao;
+    private String descricaoManutencao;
     private List<HistoricoResponseDto> historico;
 }
