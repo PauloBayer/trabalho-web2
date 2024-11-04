@@ -34,10 +34,6 @@ export const routes: Routes = [
   },
   {
     path: 'servico',
-    component: VisualizarServicoComponent
-  },
-  {
-    path: '**',
-    redirectTo: '',
+    component: VisualizarServicoComponent,
   },
 ];

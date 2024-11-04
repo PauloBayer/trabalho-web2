@@ -1,0 +1,132 @@
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        "
+      >
+        <div class="modal-title">Pagamento</div>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="pl-5 pb-5 flex flex-col">
+          <div class="mb-4">
+            <label class="block">ID</label>
+            <div class="bg-gray-800 text-white text-sm rounded-md px-3 py-2">
+              {{ modalData.id }}
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block">Valor</label>
+            <div class="bg-gray-800 text-white text-sm rounded-md px-3 py-2">
+              {{ modalData.valor }}
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block">Descrição</label>
+            <div class="bg-gray-800 text-white text-sm rounded-md px-3 py-2">
+              {{ modalData.descricao }}
+            </div>
+          </div>
+          <form [formGroup]="solicitacaoForm" (ngSubmit)="confirmPayment()">
+            <div class="relative flex flex-col px-3 py-2">
+              <label for="numero" class="block">Número do Cartão</label>
+              <input
+                id="numero"
+                formControlName="numero"
+                type="tel"
+                autocomplete="cc-number"
+                class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2"
+                placeholder="XXXX XXXX XXXX XXXX"
+                required
+              />
+              <small
+                class="text-red-500 font-bold px-3"
+                *ngIf="
+                  (submit && solicitacaoForm.get('numero')?.invalid) ||
+                  (solicitacaoForm.get('numero')?.touched &&
+                    solicitacaoForm.get('numero')?.invalid)
+                "
+              >
+                Digite o Número do Cartão!
+              </small>
+            </div>
+            <div class="flex space-x-4">
+              <div class="card-validators flex flex-col">
+                <label for="validade">Validade</label>
+                <input
+                  id="validade"
+                  formControlName="validade"
+                  type="text"
+                  autocomplete="cc-exp"
+                  class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2"
+                  required
+                />
+                <small
+                  class="text-red-500 font-bold px-3"
+                  *ngIf="
+                    (submit && solicitacaoForm.get('validade')?.invalid) ||
+                    (solicitacaoForm.get('validade')?.touched &&
+                      solicitacaoForm.get('validade')?.invalid)
+                  "
+                >
+                  Digite a validade!
+                </small>
+              </div>
+
+              <div class="card-validators flex flex-col">
+                <label for="cvv">CVV</label>
+                <input
+                  id="cvv"
+                  formControlName="cvv"
+                  type="text"
+                  autocomplete="cc-csc"
+                  class="mt-1 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2"
+                  required
+                />
+                <small
+                  class="text-red-500 font-bold px-3"
+                  *ngIf="
+                    (submit && solicitacaoForm.get('cvv')?.invalid) ||
+                    (solicitacaoForm.get('cvv')?.touched &&
+                      solicitacaoForm.get('cvv')?.invalid)
+                  "
+                >
+                  Digite o código de verificação!
+                </small>
+              </div>
+            </div>
+
+            <div class="flex mt-4 justify-center">
+              <button
+                type="button"
+                (click)="closeModal()"
+                class="bg-gray-800 rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                (click)="confirmPayment()"
+                class="bg-laranja rounded text-lg mr-5 py-1 px-2 w-40 hover:bg-[#D56848]"
+              >
+                Confirmar
+              </button>
+            </div>
+          </form>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

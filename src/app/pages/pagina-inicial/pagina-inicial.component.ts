@@ -4,25 +4,39 @@ import { Router } from '@angular/router';
 import { EstadoSolicitacaoType } from '../../model/types/estado-solicitacao.type';
 import { IHistorico } from '../../model/interfaces/historico.interface';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { CommonModule } from '@angular/common';
+import { GenericModalComponent } from '../../../../frontend/generic-modal/generic-modal.component';
 
 @Component({
   selector: 'app-pagina-inicial',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, GenericModalComponent],
   templateUrl: './pagina-inicial.component.html',
   styleUrl: './pagina-inicial.component.css',
 })
 export class PaginaInicialComponent implements OnInit {
+  isModalOpen: boolean = false;
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
   solicitacoes: ISolicitacao[] = [];
 
-  constructor(private router: Router, private solicitacaoService: SolicitacaoService) {}
-  
+  constructor(
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {}
+
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
-      next: (data: ISolicitacao []) => {
+      next: (data: ISolicitacao[]) => {
         this.solicitacoes = data;
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 
@@ -59,7 +73,7 @@ export class PaginaInicialComponent implements OnInit {
   checkOrcamento() {
     this.router.navigate(['orcamentos']);
   }
-  
+
   get orderSolicitacoes(): ISolicitacao[] {
     return this.solicitacoes.sort(
       (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
