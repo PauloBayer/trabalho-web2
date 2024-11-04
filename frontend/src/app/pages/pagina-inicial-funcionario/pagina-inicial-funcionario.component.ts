@@ -2,29 +2,83 @@ import { Component, OnInit } from '@angular/core';
 import { SolicitacaoService } from '../../services/solicitacao.service';
 import { Router } from '@angular/router';
 import { Solicitacao } from '../../model/entities/solicitacao';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pagina-inicial-funcionario',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
+  ],
   templateUrl: './pagina-inicial-funcionario.component.html',
-  styleUrl: './pagina-inicial-funcionario.component.css'
+  styleUrls: ['./pagina-inicial-funcionario.component.css'],
 })
 export class PaginaInicialFuncionarioComponent implements OnInit {
-  
-  solicitacoes: Solicitacao [] = [];
+  solicitacoes: Solicitacao[] = [];
+  filterValue: string = '';
 
-  constructor (private router: Router, private solicitacaoService: SolicitacaoService) {}
-  
+  constructor(
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {}
+
   ngOnInit(): void {
     this.solicitacaoService.findAllSolicitacoesWithStatusABERTA().subscribe({
-      next: (data: Solicitacao []) => {
+      next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
       error: (error) => {
         alert(`ERRO: ${error}`);
+      },
+    });
+  }
+
+  get filteredSolicitacoes(): Solicitacao[] {
+    if (!this.filterValue) {
+      return this.solicitacoes;
+    }
+    const filterValueLower = this.filterValue.toLowerCase();
+    return this.solicitacoes.filter((solicitacao) => {
+      const solicitacaoString = this.flattenObjectToString(solicitacao).toLowerCase();
+      return solicitacaoString.includes(filterValueLower);
+    });
+  }
+
+  flattenObjectToString(obj: any): string {
+    let result = '';
+    const visited = new Set();
+
+    const recurse = (value: any) => {
+      if (value === null || value === undefined) {
+        return;
       }
-    })
+      if (visited.has(value)) {
+        return; // Avoid circular references
+      }
+      if (typeof value === 'object') {
+        visited.add(value);
+        for (const key in value) {
+          if (value.hasOwnProperty(key)) {
+            recurse(value[key]);
+          }
+        }
+      } else if (
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        typeof value === 'boolean'
+      ) {
+        result += ' ' + value.toString();
+      }
+    };
+
+    recurse(obj);
+    return result;
   }
 
   formatDate(timestamp: string): string {
