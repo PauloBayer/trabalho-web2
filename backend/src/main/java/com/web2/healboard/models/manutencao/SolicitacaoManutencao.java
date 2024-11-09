@@ -1,5 +1,6 @@
 package com.web2.healboard.models.manutencao;
 
+import com.web2.healboard.models.categoria.CategoriaEquipamento;
 import com.web2.healboard.models.cliente.Cliente;
 import com.web2.healboard.models.funcionario.Funcionario;
 import lombok.Data;
@@ -38,8 +39,9 @@ public class SolicitacaoManutencao {
     @Column(name = "data_hora_atualizacao", nullable = true)
     private LocalDateTime dataHoraAtualizacao;
 
-    @Column(nullable = false)
-    private String categoriaEquipamento;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private CategoriaEquipamento categoriaEquipamento;
 
     @Column(nullable = false)
     private String descricaoEquipamento;
