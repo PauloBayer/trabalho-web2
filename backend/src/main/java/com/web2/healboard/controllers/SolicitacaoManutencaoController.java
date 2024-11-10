@@ -1,6 +1,5 @@
 package com.web2.healboard.controllers;
 
-import com.web2.healboard.dtos.mapper.FuncionarioMapper;
 import com.web2.healboard.dtos.mapper.SolicitacaoManutencaoMapper;
 import com.web2.healboard.dtos.request.EfetuarManutencaoRequestDto;
 import com.web2.healboard.dtos.request.EfetuarOrcamentoRequestDto;
@@ -46,8 +45,12 @@ public class SolicitacaoManutencaoController {
         if (!(user instanceof Cliente cliente))
             throw new NaoAutorizadoException("não autorizado");
 
-        SolicitacaoManutencao solicitacao = SolicitacaoManutencaoMapper.toSolicitacao(dto);
-        this.solicitacaoManutencaoService.registrarSolicitacao(solicitacao, cliente);
+        this.solicitacaoManutencaoService.registrarSolicitacao(
+                dto.getCategoriaEquipamento(),
+                dto.getDescricaoEquipamento(),
+                dto.getDescricaoDefeito(),
+                cliente
+        );
         return ResponseEntity.ok().build();
     }
 

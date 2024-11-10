@@ -1,6 +1,7 @@
 package com.web2.healboard.services;
 
 import com.web2.healboard.exceptions.AcaoNaoPermitidaException;
+import com.web2.healboard.models.categoria.CategoriaEquipamento;
 import com.web2.healboard.models.funcionario.Funcionario;
 import com.web2.healboard.models.historico.HistoricoSolicitacao;
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
@@ -25,15 +26,24 @@ public class SolicitacaoManutencaoService {
     private final HistoricoSolicitacaoService historicoSolicitacaoService;
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
     private final FuncionarioService funcionarioService;
+    private final CategoriaEquipamentoService categoriaEquipamentoService;
 
     public void registrarSolicitacao(
-            SolicitacaoManutencao solicitacao,
+            String nomeCategoria,
+            String descricaoEquipamento,
+            String descricaoDefeito,
             Cliente cliente
     ) {
-        solicitacao.setCliente(cliente);
-        solicitacao.setStatus(StatusSolicitacao.ABERTA);
+        CategoriaEquipamento categoriaEquipamento = this.categoriaEquipamentoService.findCategoriaByNome(nomeCategoria);
 
-        SolicitacaoManutencao newSolicitacao = this.solicitacaoManutencaoRepository.save(solicitacao);
+        SolicitacaoManutencao solicitacaoManutencao = new SolicitacaoManutencao();
+        solicitacaoManutencao.setDescricaoEquipamento(descricaoEquipamento);
+        solicitacaoManutencao.setDescricaoDefeito(descricaoDefeito);
+        solicitacaoManutencao.setCliente(cliente);
+        solicitacaoManutencao.setStatus(StatusSolicitacao.ABERTA);
+        solicitacaoManutencao.setCategoriaEquipamento(categoriaEquipamento);
+
+        SolicitacaoManutencao newSolicitacao = this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
         this.historicoSolicitacaoService.setStatusAberta(
                 newSolicitacao, newSolicitacao.getDescricaoEquipamento(), newSolicitacao.getDescricaoDefeito()
         );
