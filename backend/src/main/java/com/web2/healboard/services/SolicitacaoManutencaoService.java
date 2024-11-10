@@ -3,18 +3,16 @@ package com.web2.healboard.services;
 import com.web2.healboard.exceptions.AcaoNaoPermitidaException;
 import com.web2.healboard.models.categoria.CategoriaEquipamento;
 import com.web2.healboard.models.funcionario.Funcionario;
-import com.web2.healboard.models.historico.HistoricoSolicitacao;
 import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.manutencao.StatusSolicitacao;
 import com.web2.healboard.models.cliente.Cliente;
-import com.web2.healboard.repositories.HistoricoSolicitacaoRepository;
+import com.web2.healboard.models.pagamento.Pagamento;
 import com.web2.healboard.repositories.SolicitacaoManutencaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -27,6 +25,7 @@ public class SolicitacaoManutencaoService {
     private final SolicitacaoManutencaoRepository solicitacaoManutencaoRepository;
     private final FuncionarioService funcionarioService;
     private final CategoriaEquipamentoService categoriaEquipamentoService;
+    private final PagamentoService pagamentoService;
 
     public void registrarSolicitacao(
             String nomeCategoria,
@@ -50,15 +49,24 @@ public class SolicitacaoManutencaoService {
     }
 
     public SolicitacaoManutencao obterSolicitacaoPorId(UUID id) {
-        return solicitacaoManutencaoRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Solicitação não encontrada")
-        );
+        SolicitacaoManutencao solicitacao = solicitacaoManutencaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação não encontrada"));
+
+        Pagamento pagamento = this.pagamentoService.getPagamentoBySolicitacaoId(id);
+        solicitacao.setPagamento(pagamento);
+
+        return solicitacao;
     }
 
     public SolicitacaoManutencao obterSolicitacaoPorIdEUser(UUID id, Cliente cliente) {
-        return solicitacaoManutencaoRepository.findByIdAndClienteId(id, cliente.getId()).orElseThrow(
+        SolicitacaoManutencao solicitacao = solicitacaoManutencaoRepository.findByIdAndClienteId(id, cliente.getId()).orElseThrow(
                 () -> new EntityNotFoundException("Solicitação não encontrada")
         );
+
+        Pagamento pagamento = this.pagamentoService.getPagamentoBySolicitacaoId(id);
+        solicitacao.setPagamento(pagamento);
+
+        return solicitacao;
     }
 
     public void atualizarSolicitacao(UUID id, SolicitacaoManutencao novaSolicitacao, Cliente cliente) {
@@ -177,6 +185,7 @@ public class SolicitacaoManutencaoService {
         if (solicitacaoManutencao.getStatus() != StatusSolicitacao.AGUARDANDO_PAGAMENTO)
             throw new AcaoNaoPermitidaException("status da solicitacao deve ser AGUARDANDO PAGAMENTO");
 
+        this.pagamentoService.realizarPagamento(solicitacaoManutencao, solicitacaoManutencao.getValorOrcado());
         this.historicoSolicitacaoService.setStatusPaga(solicitacaoManutencao);
         solicitacaoManutencao.setStatus(StatusSolicitacao.PAGA);
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
@@ -190,7 +199,6 @@ public class SolicitacaoManutencaoService {
 
         this.historicoSolicitacaoService.setStatusFinalizada(solicitacaoManutencao, funcionario);
         solicitacaoManutencao.setStatus(StatusSolicitacao.FINALIZADA);
-        solicitacaoManutencao.setDataHoraPagamento(LocalDateTime.now());
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
 }

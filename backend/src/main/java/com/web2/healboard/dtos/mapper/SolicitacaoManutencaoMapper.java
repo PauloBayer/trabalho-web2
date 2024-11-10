@@ -36,7 +36,10 @@ public class SolicitacaoManutencaoMapper {
         dto.setValorOrcado(model.getValorOrcado());
         dto.setMotivoRejeicao(model.getMotivoRejeicao());
         dto.setDataHoraPagamento(
-                model.getDataHoraPagamento() == null ? null : model.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
+                model.getPagamento() == null ? null : model.getPagamento().getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+        dto.setValorPago(
+                model.getPagamento() == null ? null : model.getPagamento().getValor()
         );
         dto.setOrientacoesManutencao(model.getOrientacoesManutencao());
         dto.setDescricaoManutencao(model.getDescricaoManutencao());
@@ -59,7 +62,12 @@ public class SolicitacaoManutencaoMapper {
         responseDto.setValorOrcado(solicitacaoManutencao.getValorOrcado());
         responseDto.setMotivoRejeicao(solicitacaoManutencao.getMotivoRejeicao());
         responseDto.setDataHoraPagamento(
-                solicitacaoManutencao.getDataHoraPagamento() == null ? null : solicitacaoManutencao.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
+                solicitacaoManutencao.getPagamento() == null
+                        ? null
+                        : solicitacaoManutencao.getPagamento().getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+        responseDto.setValorPago(
+                solicitacaoManutencao.getPagamento() == null ? null : solicitacaoManutencao.getPagamento().getValor()
         );
         responseDto.setOrientacoesManutencao(solicitacaoManutencao.getOrientacoesManutencao());
         responseDto.setDescricaoManutencao(solicitacaoManutencao.getDescricaoManutencao());
