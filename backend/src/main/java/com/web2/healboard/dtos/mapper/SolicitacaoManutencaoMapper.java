@@ -17,7 +17,6 @@ public class SolicitacaoManutencaoMapper {
     public static SolicitacaoManutencao toSolicitacao(SolicitacaoManutencaoRequestDto dto) {
         SolicitacaoManutencao solicitacao = new SolicitacaoManutencao();
         solicitacao.setDescricaoEquipamento(dto.getDescricaoEquipamento());
-        solicitacao.setCategoriaEquipamento(dto.getCategoriaEquipamento());
         solicitacao.setDescricaoDefeito(dto.getDescricaoDefeito());
         return solicitacao;
     }
@@ -25,7 +24,7 @@ public class SolicitacaoManutencaoMapper {
     public static SolicitacaoManutencaoResponseDto toDto(SolicitacaoManutencao model) {
         SolicitacaoManutencaoResponseDto dto = new SolicitacaoManutencaoResponseDto();
         dto.setId(model.getId());
-        dto.setCategoriaEquipamento(model.getCategoriaEquipamento());
+        dto.setCategoriaEquipamento(model.getCategoriaEquipamento().getNome());
         dto.setNomeFuncionario(
                 model.getFuncionario() == null ? null : model.getFuncionario().getNome()
         );
@@ -37,7 +36,10 @@ public class SolicitacaoManutencaoMapper {
         dto.setValorOrcado(model.getValorOrcado());
         dto.setMotivoRejeicao(model.getMotivoRejeicao());
         dto.setDataHoraPagamento(
-                model.getDataHoraPagamento() == null ? null : model.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
+                model.getPagamento() == null ? null : model.getPagamento().getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+        dto.setValorPago(
+                model.getPagamento() == null ? null : model.getPagamento().getValor()
         );
         dto.setOrientacoesManutencao(model.getOrientacoesManutencao());
         dto.setDescricaoManutencao(model.getDescricaoManutencao());
@@ -48,7 +50,7 @@ public class SolicitacaoManutencaoMapper {
     public static SolicitacaoComHistoricoResponseDto toDto(SolicitacaoManutencao solicitacaoManutencao, List<HistoricoSolicitacao> historicos) {
         SolicitacaoComHistoricoResponseDto responseDto = new SolicitacaoComHistoricoResponseDto();
         responseDto.setId(solicitacaoManutencao.getId());
-        responseDto.setCategoriaEquipamento(solicitacaoManutencao.getCategoriaEquipamento());
+        responseDto.setCategoriaEquipamento(solicitacaoManutencao.getCategoriaEquipamento().getNome());
         responseDto.setNomeFuncionario(
                 solicitacaoManutencao.getFuncionario() == null ? null : solicitacaoManutencao.getFuncionario().getNome()
         );
@@ -60,7 +62,12 @@ public class SolicitacaoManutencaoMapper {
         responseDto.setValorOrcado(solicitacaoManutencao.getValorOrcado());
         responseDto.setMotivoRejeicao(solicitacaoManutencao.getMotivoRejeicao());
         responseDto.setDataHoraPagamento(
-                solicitacaoManutencao.getDataHoraPagamento() == null ? null : solicitacaoManutencao.getDataHoraPagamento().format(DateTimeFormatter.ISO_DATE_TIME)
+                solicitacaoManutencao.getPagamento() == null
+                        ? null
+                        : solicitacaoManutencao.getPagamento().getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+        responseDto.setValorPago(
+                solicitacaoManutencao.getPagamento() == null ? null : solicitacaoManutencao.getPagamento().getValor()
         );
         responseDto.setOrientacoesManutencao(solicitacaoManutencao.getOrientacoesManutencao());
         responseDto.setDescricaoManutencao(solicitacaoManutencao.getDescricaoManutencao());

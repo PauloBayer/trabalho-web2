@@ -1,6 +1,5 @@
 package com.web2.healboard.controllers;
 
-import com.web2.healboard.dtos.mapper.FuncionarioMapper;
 import com.web2.healboard.dtos.mapper.SolicitacaoManutencaoMapper;
 import com.web2.healboard.dtos.request.EfetuarManutencaoRequestDto;
 import com.web2.healboard.dtos.request.EfetuarOrcamentoRequestDto;
@@ -15,7 +14,6 @@ import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.cliente.Cliente;
 import com.web2.healboard.services.HistoricoSolicitacaoService;
 import com.web2.healboard.services.SolicitacaoManutencaoService;
-import com.web2.healboard.services.ClienteService;
 import com.web2.healboard.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +44,12 @@ public class SolicitacaoManutencaoController {
         if (!(user instanceof Cliente cliente))
             throw new NaoAutorizadoException("não autorizado");
 
-        SolicitacaoManutencao solicitacao = SolicitacaoManutencaoMapper.toSolicitacao(dto);
-        this.solicitacaoManutencaoService.registrarSolicitacao(solicitacao, cliente);
+        this.solicitacaoManutencaoService.registrarSolicitacao(
+                dto.getCategoriaEquipamento(),
+                dto.getDescricaoEquipamento(),
+                dto.getDescricaoDefeito(),
+                cliente
+        );
         return ResponseEntity.ok().build();
     }
 
@@ -90,6 +92,28 @@ public class SolicitacaoManutencaoController {
         List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.obterSolicitacoesPorClienteId(cliente.getId());
         return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
     }
+
+
+    @GetMapping("/funcionario")
+    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByResponsavelId(Principal principal) {
+        Long responsavelId = ((Funcionario) principal).getId();
+        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByResponsavelId(responsavelId);
+        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
+    }
+    
+    @GetMapping("/abertas")
+    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByStatus() {
+        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByStatus("ABERTA");
+        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
+    }
+    
+    @GetMapping("/funcionario-abertas")
+    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByResponsavelIdAndStatus(Principal principal) {
+        Long responsavelId = ((Funcionario) principal).getId();
+        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByResponsavelIdAndStatus(responsavelId, "ABERTA");
+        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<SolicitacaoManutencaoResponseDto> obterSolicitacaoPorId(
@@ -254,4 +278,5 @@ public class SolicitacaoManutencaoController {
         this.solicitacaoManutencaoService.finalizarManutencao(idSolicitacao, funcionario);
         return ResponseEntity.ok().build();
     }
+    
 }

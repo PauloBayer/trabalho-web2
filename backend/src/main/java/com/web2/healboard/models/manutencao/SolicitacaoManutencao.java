@@ -1,7 +1,9 @@
 package com.web2.healboard.models.manutencao;
 
+import com.web2.healboard.models.categoria.CategoriaEquipamento;
 import com.web2.healboard.models.cliente.Cliente;
 import com.web2.healboard.models.funcionario.Funcionario;
+import com.web2.healboard.models.pagamento.Pagamento;
 import lombok.Data;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,8 +40,9 @@ public class SolicitacaoManutencao {
     @Column(name = "data_hora_atualizacao", nullable = true)
     private LocalDateTime dataHoraAtualizacao;
 
-    @Column(nullable = false)
-    private String categoriaEquipamento;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private CategoriaEquipamento categoriaEquipamento;
 
     @Column(nullable = false)
     private String descricaoEquipamento;
@@ -53,12 +56,12 @@ public class SolicitacaoManutencao {
     @Column(nullable = true)
     private String motivoRejeicao;
 
-    @Column(name = "data_hora_pagamento")
-    private LocalDateTime dataHoraPagamento;
-
     @Column(nullable = true)
     private String orientacoesManutencao;
 
     @Column(nullable = true)
     private String descricaoManutencao;
+
+    @Transient
+    private Pagamento pagamento;
 }
