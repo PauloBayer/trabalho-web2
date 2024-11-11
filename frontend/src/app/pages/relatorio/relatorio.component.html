@@ -1,27 +1,46 @@
 <body>
-  <h1>Relatório de Receita</h1>
-  <form (ngSubmit)="onSubmit(dataInicial.value, dataFinal.value)" class="nav-filter">
-    <div style="display: flex; align-items: center; gap: 10px">
-      <select>
-        <option>Todas as categorias</option>
-        <option>Placas-mãe</option>
-        <option>Processadores</option>
-        <option>Memória RAM</option>
-        <option>Placas de vídeo</option>
-        <option>Armazenamento</option>
-      </select>
+  <div class="d-flex flex-wrap">
 
-      <label for="dataInicial" style="color: white">Data Inicial:</label>
-      <input type="date" id="dataInicial" #dataInicial />
-      <label for="dataFinal" style="color: white">Data Final:</label>
-      <input type="date" id="dataFinal" #dataFinal />
+    <form (ngSubmit)="onSubmit()" class="nav-filter" [formGroup]="form">
+      <h1 class="text-white text-center">Relatório de Receita</h1>
+      <div class="d-flex align-items-center flex-wrap p-3">
+        <div class="w-50 p-3">
+          <mat-form-field class="w-100">
+            <mat-label>Categorias</mat-label>
+            <mat-select formControlName="categoria">
+              @for (categoria of categorias; track categoria) {
+              <mat-option [value]="categoria.name">{{ categoria.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <button class="btn" type="submit">Gerar Relatório</button>
-      <button class="btn" [disabled]="receitas.length === 0" (click)="printReport()">
-        Imprimir Relatório
-      </button>
-    </div>
-  </form>
+        <div class="w-50 p-3">
+          <mat-form-field formGroupName="data" class="w-100">
+            <mat-label>Data para Relatório</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Data inicial">
+              <input matEndDate placeholder="Data final">
+            </mat-date-range-input>
+            <mat-hint class="text-white">DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+
+        <div class="w-100 d-flex justify-content-between">
+          <div class="pl-3">
+            <button class="btn" type="submit">Gerar Relatório</button>
+          </div>
+          <div class="pr-3">
+            <button class="btn" [disabled]="receitas.length === 0" (click)="printReport()">
+              Imprimir Relatório
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 
   <div class="relatorios">
     <table *ngIf="receitas.length > 0" class="black-box">
