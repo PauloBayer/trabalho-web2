@@ -201,4 +201,16 @@ public class SolicitacaoManutencaoService {
         solicitacaoManutencao.setStatus(StatusSolicitacao.FINALIZADA);
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }
+
+    public List<SolicitacaoManutencao> findByResponsavelId(Long responsavelId) {
+        return solicitacaoManutencaoRepository.findByResponsavelId(responsavelId);
+    }
+    
+    public List<SolicitacaoManutencao> findByStatus(String status) {
+        return solicitacaoManutencaoRepository.findByStatus(status);
+    }
+    
+    public List<SolicitacaoManutencao> findByResponsavelIdAndStatus(Long responsavelId, String status) {
+        return solicitacaoManutencaoRepository.findByResponsavelIdAndStatus(responsavelId, status);
+    }
 }
