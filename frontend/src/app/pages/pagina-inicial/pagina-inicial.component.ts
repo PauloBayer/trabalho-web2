@@ -12,16 +12,12 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-pagina-inicial',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule
-  ],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule],
   templateUrl: './pagina-inicial.component.html',
   styleUrl: './pagina-inicial.component.css',
 })
 export class PaginaInicialComponent implements OnInit {
+  solicitacao: any;
   solicitacoes: Solicitacao[] = [];
   filterValue: string = '';
 
@@ -38,6 +34,31 @@ export class PaginaInicialComponent implements OnInit {
       error: (error) => console.error(error),
     });
   }
+  getStatusClass(status: string | undefined): string {
+    if (!status) {
+      return 'red';
+    }
+    switch (status) {
+      case 'ORCADA':
+        return 'bg-[#8B4513]';
+      case 'REJEITADA':
+        return 'bg-[#DC3545]';
+      case 'APROVADA':
+        return 'bg-[#FFD700]';
+      case 'REDIRECIONADA':
+        return 'bg-[#800080]';
+      case 'ARRUMADA':
+        return 'bg-[#007BFF]';
+      case 'PAGA':
+        return 'bg-[#FF5E2B]';
+      case 'FINALIZADA':
+        return 'bg-[#28A745]';
+      case 'ABERTA':
+        return 'bg-[#6C757D]';
+      default:
+        return 'bg-[#423B3A]';
+    }
+  }
 
   get filteredSolicitacoes(): Solicitacao[] {
     if (!this.filterValue) {
@@ -48,7 +69,8 @@ export class PaginaInicialComponent implements OnInit {
       const id = solicitacao.id.toLowerCase();
       const clienteNome = solicitacao.cliente?.nome?.toLowerCase() || '';
       const status = solicitacao.status?.toLowerCase() || '';
-      const descricaoDefeito = solicitacao.descricaoDefeito?.toLowerCase() || '';
+      const descricaoDefeito =
+        solicitacao.descricaoDefeito?.toLowerCase() || '';
 
       return (
         id.includes(filterValueLower) ||
@@ -56,8 +78,8 @@ export class PaginaInicialComponent implements OnInit {
         status.includes(filterValueLower) ||
         descricaoDefeito.includes(filterValueLower)
       );
-    }
-  )};
+    });
+  }
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
@@ -107,14 +129,14 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   pagarServico(idSolicitacao: string) {
-    this.router.navigate([`client/pagar-servico/${idSolicitacao}`])
+    this.router.navigate([`client/pagar-servico/${idSolicitacao}`]);
   }
 
   visualizarServico(idSolicitacao: string) {
-    this.router.navigate([`client/servico/${idSolicitacao}`])
+    this.router.navigate([`client/servico/${idSolicitacao}`]);
   }
 
   checkOrcamento(idSolicitacao: string) {
-    this.router.navigate([`client/orcamentos/${idSolicitacao}`])
+    this.router.navigate([`client/orcamentos/${idSolicitacao}`]);
   }
 }
