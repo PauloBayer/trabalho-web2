@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-r from-[#FFC42B] via-[#FFC42B] to-[#FF5E2B] flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center">
   <div class="p-4">
     <h2 class="text-2xl font-bold text-center text-black">Detalhes da Solicitação</h2>
     <div class="mt-4 bg-gray-800 text-white p-4 rounded-lg shadow-lg">
@@ -7,18 +7,26 @@
       <p><strong>Status:</strong> {{ solicitacao?.status }}</p>
       <p><strong>Descrição:</strong> {{ solicitacao?.descricaoEquipamento }}</p>
     </div>
-  
+
     <h3 class="mt-6 text-2xl font-bold text-center text-black">Histórico</h3>
     <ul class="mt-2 bg-gray-100 p-4 rounded-lg shadow-md">
-      <li *ngFor="let passo of solicitacao?.historico" class="py-2 border-b last:border-b-0">
-        <p><strong>{{ passo.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</strong> - {{ passo.statusAtual }} - Funcionário: {{ passo.funcionario || 'José Eduardo' }}  </p>
+      @for (passo of solicitacao?.historico; track $index) {
+      <li class="py-2 border-b last:border-b-0">
+        <p><strong>{{ passo.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</strong> - {{ passo.statusAtual }}
+          @if (passo.funcionario) {
+          <span>- Funcionário : {{getFuncionarioNome(passo.funcionario)}}</span>
+          }
+        </p>
       </li>
+      }
+
     </ul>
-  
+
     <div class="mt-4 flex space-x-2">
     </div>
     <div class="flex justify-center mt-4">
-      <button (click)="voltar()" class="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-lg shadow">Voltar</button>
+      <button (click)="voltar()"
+        class="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-lg shadow">Voltar</button>
     </div>
   </div>
 </div>
