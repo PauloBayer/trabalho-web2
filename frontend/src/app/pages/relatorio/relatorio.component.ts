@@ -1,45 +1,64 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { categoriasSeed } from '../../seeds/seed';
 import { PrintService } from '../../services/print.service';
 import { Router } from '@angular/router';
 import { Receita } from '../../model/entities/receita';
 import { CategoriaEquipamento } from '../../model/entities/categoria-equipamento';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { RelatorioService } from '../../services/relatorio.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-relatorio',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Adicionando os módulos aqui
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatInputModule, 
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ],
   templateUrl: './relatorio.component.html',
-  styleUrls: ['./relatorio.component.css'], // Corrigido para styleUrls
+  styleUrls: ['./relatorio.component.css'],
 })
-export class RelatorioComponent {
+export class RelatorioComponent implements OnInit {
   categorias: CategoriaEquipamento[] = [];
   categoriaSelecionada: string = 'Todas as categorias';
+  receitas: Receita[] = [];
+  form: FormGroup = new FormGroup({
+    categoria: new FormControl(''),
+    data: new FormControl(new Date())
+  })
 
   ngOnInit(): void {
-    this.categorias = categoriasSeed;
+    this.categorias = this.relatorioService.getAllCategories();
   }
-  receitas: Receita[] = [];
 
   constructor(
     private printService: PrintService,
-    private router: Router
+    private router: Router,
+    private relatorioService: RelatorioService
   ) {
-  // Gerando 50 registros de exemplo
+  // Gerando 10 registros de exemplo
   for (let i = 0; i < 10; i++) {
     const randomDate = new Date(2024, 9, Math.floor(Math.random() * 31) + 1); // Outubro de 2024
     const randomValue = Math.floor(Math.random() * 5000) + 500; // Valor entre 500 e 5500
-    const categorias = JSON.parse(localStorage.getItem('categorias') || '[]');
-    const categoria = categorias[Math.floor(Math.random() * categorias.length)] || 'Categoria Exemplo';
+    const categoria = this.categorias[Math.floor(Math.random() * this.categorias.length)] || 'Categoria Exemplo';
     this.receitas.push({ categoria: categoria.name, data: randomDate, valor: randomValue });
     }
   }
 
-  onSubmit(dataInicial: string, dataFinal: string) {
-    const inicio = dataInicial ? new Date(dataInicial) : new Date(0);
-    const fim = dataFinal ? new Date(dataFinal) : new Date();
+  onSubmit() {
+    const inicio = this.form.value.dataInicial;
+    const fim = this.form.value.dataInicial;
 
     this.receitas = this.receitas.filter((receita) => {
       return receita.data >= inicio && receita.data <= fim;
