@@ -32,7 +32,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
     this.solicitacaoForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      //categorie: ['', Validators.required],
+      categorie: ['', Validators.required],
       problem: ['', Validators.required],
     });
   }
@@ -41,7 +41,6 @@ export class SolicitacaoManutencaoComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (data: CategoriaEquipamento[]) => {
         this.categories = data;
-        console.log(this.categories);
       },
       error: (error) => console.error(error),
     });
