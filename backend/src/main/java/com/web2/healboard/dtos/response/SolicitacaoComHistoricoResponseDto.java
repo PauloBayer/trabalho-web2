@@ -20,6 +20,7 @@ public class SolicitacaoComHistoricoResponseDto {
     private String descricaoEquipamento;
     private String descricaoDefeito;
     private Float valorOrcado;
+    private String orientacoesExtrasOrcamento;
     private String motivoRejeicao;
     private String dataHoraPagamento;
     private Float valorPago;
