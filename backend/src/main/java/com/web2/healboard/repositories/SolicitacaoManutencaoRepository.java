@@ -13,7 +13,4 @@ public interface SolicitacaoManutencaoRepository extends JpaRepository<Solicitac
     Optional<SolicitacaoManutencao> findByDescricaoEquipamento(String descricaoEquipamento);
     List<SolicitacaoManutencao> findByClienteId(Long clienteId);
     Optional<SolicitacaoManutencao> findByIdAndClienteId(UUID id, Long clienteId);
-    List<SolicitacaoManutencao> findByResponsavelId(Long responsavelId);
-    List<SolicitacaoManutencao> findByStatus(String status);
-    List<SolicitacaoManutencao> findByResponsavelIdAndStatus(Long responsavelId, String status);
 }
