@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "tb_solicitacao_manutencao")
 public class SolicitacaoManutencao {
 
     @Id
@@ -52,6 +53,9 @@ public class SolicitacaoManutencao {
 
     @Column(nullable = true)
     private Float valorOrcado;
+
+    @Column(nullable = true)
+    private String orientacoesExtrasOrcamento;
 
     @Column(nullable = true)
     private String motivoRejeicao;
