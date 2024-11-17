@@ -23,59 +23,62 @@
     <hr />
 
     @if (filteredSolicitacoes.length > 0) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
-      @for (solicitacao of filteredSolicitacoes; track $index) {
-      <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
-        <div [ngClass]="getStatusClass(solicitacao.status)" id="status"></div>
-        <p class="font-nuckle font-light text-white mb-3">
-          {{ formatDate(solicitacao.dataHoraCriacao) }}
-        </p>
-        <p class="font-nuckle font-light text-white mb-3">
-          Defeito: {{ solicitacao.descricaoDefeito }}
-        </p>
-        <p class="font-nuckle font-light text-white mb-4">
-          Estado: {{ solicitacao.status }}
-        </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
+        @for (solicitacao of filteredSolicitacoes; track $index) {
+        <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
+          <p class="font-nuckle font-light text-white mb-3">
+            {{ formatDate(solicitacao.dataHoraCriacao) }}
+          </p>
+          <p class="font-nuckle font-light text-white mb-3">
+            Defeito: {{ solicitacao.descricaoDefeito }}
+          </p>
+          <p class="font-nuckle font-light text-white mb-4">
+            Estado:
 
-        @if (solicitacao.status === 'ORCADA') {
-        <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-          (click)="checkOrcamento(solicitacao.id)"
-        >
-          Aprovar/Rejeitar serviço
-        </button>
-        } @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
+            <span class="rounded-2xl {{ getStatusClass(solicitacao.status) }} px-3 py-1">
+              {{ solicitacao.status }}
+            </span>
+          </p>
 
-        <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-          (click)="pagarServico(solicitacao.id)"
-        >
-          Pagar serviço
-        </button>
-        } @else if (solicitacao.status === 'REJEITADA') {
-        <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-          (click)="resgatarSolicitacao(solicitacao)"
-        >
-          Resgatar serviço
-        </button>
+          @if (solicitacao.status === 'ORCADA') {
+          <button
+            class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+            (click)="checkOrcamento(solicitacao.id)"
+          >
+            Aprovar/Rejeitar serviço
+          </button>
+          } @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
+
+          <button
+            class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+            (click)="pagarServico(solicitacao.id)"
+          >
+            Pagar serviço
+          </button>
+          } @else if (solicitacao.status === 'REJEITADA') {
+          <button
+            class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+            (click)="resgatarSolicitacao(solicitacao)"
+          >
+            Resgatar serviço
+          </button>
+          }
+
+          <button
+            class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
+            (click)="visualizarServico(solicitacao.id)"
+          >
+            Visualizar a situação
+          </button>
+        </div>
         }
-
-        <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
-          (click)="visualizarServico(solicitacao.id)"
-        >
-          Visualizar a situação
-        </button>
       </div>
-      }
-    </div>
     } @else {
-    <div class="text-center pb-3">
-      <p class="font-nuckle font-light text-white h-9">
-        <strong>Você ainda não fez nenhuma solicitação!</strong>
-      </p>
-    </div>
+      <div class="text-center pb-3">
+        <p class="font-nuckle font-light text-white h-9">
+          <strong>Você ainda não fez nenhuma solicitação!</strong>
+        </p>
+      </div>
     }
   </div>
 </div>
