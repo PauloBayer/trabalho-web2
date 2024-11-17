@@ -42,7 +42,7 @@ INSERT INTO public.solicitacao_manutencao (
 ) VALUES
 ('2024-11-01 10:15:00', '2024-11-01 10:15:00', 'Tela quebrada', 'Laptop Dell XPS 13', NULL, NULL, NULL, NULL, 'ABERTA', NULL, 1, 1, NULL),
 ('2025-11-01 10:15:00', '2025-11-01 10:15:00', 'Tela quebrada', 'Samsung J5', NULL, NULL, 'Trocar tela trincada por uma original', NULL, 'ORCADA', 100.0, 1, 1, 1),
-('2024-11-01 10:15:00', '2024-11-01 10:15:00', 'Tela quebrada', 'Laptop Dell XPS 13', NULL, NULL, NULL, NULL, 'ABERTA', NULL, 1, 1, NULL),
+
 
 
 

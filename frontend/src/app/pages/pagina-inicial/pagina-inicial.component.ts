@@ -27,13 +27,14 @@ export class PaginaInicialComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.solicitacaoService.findAllSolicitacoes().subscribe({
+    this.solicitacaoService.findAllSolicitacoesByUser().subscribe({
       next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
       error: (error) => console.error(error),
     });
   }
+
   getStatusClass(status: string | undefined): string {
     if (!status) {
       return 'red';
@@ -123,9 +124,6 @@ export class PaginaInicialComponent implements OnInit {
 
   get orderSolicitacoes(): Solicitacao[] {
     return this.solicitacoes;
-    // return this.solicitacoes.sort(
-    //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()
-    // );
   }
 
   pagarServico(idSolicitacao: string) {
