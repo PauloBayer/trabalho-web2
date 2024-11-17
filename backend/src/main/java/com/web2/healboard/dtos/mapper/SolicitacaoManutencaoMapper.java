@@ -34,6 +34,7 @@ public class SolicitacaoManutencaoMapper {
         dto.setDescricaoEquipamento(model.getDescricaoEquipamento());
         dto.setDescricaoDefeito(model.getDescricaoDefeito());
         dto.setValorOrcado(model.getValorOrcado());
+        dto.setOrientacoesExtrasOrcamento(model.getOrientacoesExtrasOrcamento());
         dto.setMotivoRejeicao(model.getMotivoRejeicao());
         dto.setDataHoraPagamento(
                 model.getPagamento() == null ? null : model.getPagamento().getDataHoraCriacao().format(DateTimeFormatter.ISO_DATE_TIME)
@@ -60,6 +61,7 @@ public class SolicitacaoManutencaoMapper {
         responseDto.setDescricaoEquipamento(solicitacaoManutencao.getDescricaoEquipamento());
         responseDto.setDescricaoDefeito(solicitacaoManutencao.getDescricaoDefeito());
         responseDto.setValorOrcado(solicitacaoManutencao.getValorOrcado());
+        responseDto.setOrientacoesExtrasOrcamento(solicitacaoManutencao.getOrientacoesExtrasOrcamento());
         responseDto.setMotivoRejeicao(solicitacaoManutencao.getMotivoRejeicao());
         responseDto.setDataHoraPagamento(
                 solicitacaoManutencao.getPagamento() == null
@@ -80,6 +82,7 @@ public class SolicitacaoManutencaoMapper {
                         historico.getDescricaoEquipamento(),
                         historico.getDescricaoDefeito(),
                         historico.getValorOrcado(),
+                        historico.getOrientacoesExtrasOrcamento(),
                         historico.getMotivoRejeicao(),
                         historico.getFuncionario() != null ? historico.getFuncionario().getNome() : null,
                         historico.getFuncionarioDestino() != null ? historico.getFuncionarioDestino().getNome() : null,

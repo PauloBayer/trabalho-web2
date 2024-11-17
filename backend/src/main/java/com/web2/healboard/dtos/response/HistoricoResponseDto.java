@@ -14,6 +14,7 @@ public class HistoricoResponseDto {
     private String descricaoEquipamento;
     private String descricaoDefeito;
     private Float valorOrcado;
+    private String orientacoesExtrasOrcamento;
     private String motivoRejeicao;
     private String nomeFuncionario;
     private String nomeFuncionarioDestino;

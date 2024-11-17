@@ -93,28 +93,6 @@ public class SolicitacaoManutencaoController {
         return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
     }
 
-
-    @GetMapping("/funcionario")
-    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByResponsavelId(Principal principal) {
-        Long responsavelId = ((Funcionario) principal).getId();
-        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByResponsavelId(responsavelId);
-        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
-    }
-    
-    @GetMapping("/abertas")
-    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByStatus() {
-        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByStatus("ABERTA");
-        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
-    }
-    
-    @GetMapping("/funcionario-abertas")
-    public ResponseEntity<List<SolicitacaoManutencaoResponseDto>> findByResponsavelIdAndStatus(Principal principal) {
-        Long responsavelId = ((Funcionario) principal).getId();
-        List<SolicitacaoManutencao> solicitacoes = this.solicitacaoManutencaoService.findByResponsavelIdAndStatus(responsavelId, "ABERTA");
-        return ResponseEntity.ok(solicitacoes.stream().map(SolicitacaoManutencaoMapper::toDto).collect(Collectors.toList()));
-    }
-
-
     @GetMapping("/{id}")
     public ResponseEntity<SolicitacaoManutencaoResponseDto> obterSolicitacaoPorId(
             @PathVariable UUID id,
@@ -179,7 +157,7 @@ public class SolicitacaoManutencaoController {
         if (!(user instanceof Funcionario funcionario))
             throw new NaoAutorizadoException("não autorizado");
 
-        this.solicitacaoManutencaoService.efetuarOrcamento(id, funcionario, dto.getValorOrcado());
+        this.solicitacaoManutencaoService.efetuarOrcamento(id, funcionario, dto.getValorOrcado(), dto.getOrientacoesExtras());
         return ResponseEntity.ok().build();
     }
 
@@ -278,5 +256,4 @@ public class SolicitacaoManutencaoController {
         this.solicitacaoManutencaoService.finalizarManutencao(idSolicitacao, funcionario);
         return ResponseEntity.ok().build();
     }
-    
 }

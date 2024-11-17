@@ -53,6 +53,9 @@ public class HistoricoSolicitacao {
     private Float valorOrcado;
 
     @Column(nullable = true)
+    private String orientacoesExtrasOrcamento;
+
+    @Column(nullable = true)
     private String motivoRejeicao;
 
     @ManyToOne
