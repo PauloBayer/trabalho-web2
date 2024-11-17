@@ -1,4 +1,5 @@
 import { Component, computed, OnInit } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { EstadoSolicitacaoType } from '../../model/entities/estado-solicitacao.enum';
 import { Historico } from '../../model/entities/historico';
@@ -27,34 +28,35 @@ export class PaginaInicialComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.solicitacaoService.findAllSolicitacoes().subscribe({
+    this.solicitacaoService.findAllSolicitacoesByUser().subscribe({
       next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
       error: (error) => console.error(error),
     });
   }
+
   getStatusClass(status: string | undefined): string {
     if (!status) {
       return 'red';
     }
     switch (status) {
       case 'ORCADA':
-        return 'bg-[#8B4513]';
+        return 'bg-gradient-to-r from-[#572501] to-[#FF9F5A] ';
       case 'REJEITADA':
-        return 'bg-[#DC3545]';
+        return 'bg-gradient-to-r from-[#E01D31] to-[#FC6373]';
       case 'APROVADA':
-        return 'bg-[#FFD700]';
+        return 'bg-gradient-to-r from-[#FFD900] to-[#FDEB82]';
       case 'REDIRECIONADA':
-        return 'bg-[#800080]';
+        return 'bg-gradient-to-r from-[#320032] to-[#D537D5] ';
       case 'ARRUMADA':
-        return 'bg-[#007BFF]';
+        return 'bg-gradient-to-r from-[#007BFF] to-[#6488AF] ';
       case 'PAGA':
-        return 'bg-[#FF5E2B]';
+        return 'bg-gradient-to-r from-[#FF5E2B] to-[#F83232] ';
       case 'FINALIZADA':
-        return 'bg-[#28A745]';
+        return 'bg-gradient-to-r from-[#28A745] to-[#51FA79]  ';
       case 'ABERTA':
-        return 'bg-[#6C757D]';
+        return 'bg-gradient-to-r from-[#6C757D] to-[#555555] bg-[#6C757D]';
       default:
         return 'bg-[#423B3A]';
     }
@@ -123,9 +125,6 @@ export class PaginaInicialComponent implements OnInit {
 
   get orderSolicitacoes(): Solicitacao[] {
     return this.solicitacoes;
-    // return this.solicitacoes.sort(
-    //   (a, b) => new Date(a.dataHoraCriacao).getTime() - new Date(b.data).getTime()
-    // );
   }
 
   pagarServico(idSolicitacao: string) {

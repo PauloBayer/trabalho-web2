@@ -29,7 +29,7 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.solicitacaoService.findAllSolicitacoesWithStatusABERTA().subscribe({
+    this.solicitacaoService.findAllSolicitacoes().subscribe({
       next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
       },
@@ -81,5 +81,31 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
 
   goToGerenciarSolicitacoes() {
     this.router.navigate(['funcionario/gerenciar-solicitacoes']);
+  }
+
+  getStatusClass(status: string | undefined): string {
+    if (!status)
+      return 'red';
+
+    switch (status) {
+      case 'ORCADA':
+        return 'bg-[#8B4513]';
+      case 'REJEITADA':
+        return 'bg-[#DC3545]';
+      case 'APROVADA':
+        return 'bg-[#FFD700]';
+      case 'REDIRECIONADA':
+        return 'bg-[#800080]';
+      case 'ARRUMADA':
+        return 'bg-[#007BFF]';
+      case 'PAGA':
+        return 'bg-[#FF5E2B]';
+      case 'FINALIZADA':
+        return 'bg-[#28A745]';
+      case 'ABERTA':
+        return 'bg-[#6C757D]';
+      default:
+        return 'bg-[#423B3A]';
+    }
   }
 }

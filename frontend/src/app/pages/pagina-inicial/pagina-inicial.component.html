@@ -1,10 +1,15 @@
 <div id="background" class="flex items-center justify-center">
   <div class="bg-black w-10/12 rounded-2xl black-box">
     <div class="flex justify-between items-center mx-8 my-4">
-      <h1 class="mx-8 my-4 font-nuckle text-4xl font-extrabold text-white">
+      <h1 class="mx-8 my-2 font-nuckle text-4xl font-extrabold text-white">
         Solicitações
       </h1>
-      <mat-form-field id="page-filter" appearance="fill" class="w-1/3">
+      <mat-form-field
+        id="page-filter"
+        appearance="fill"
+        class="w-1/3"
+        [@fadeInOut]
+      >
         <mat-label>Filtrar solicitações</mat-label>
         <input
           matInput
@@ -23,9 +28,13 @@
     <hr />
 
     @if (filteredSolicitacoes.length > 0) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10"
+      [@fadeInOut]
+    >
       @for (solicitacao of filteredSolicitacoes; track $index) {
       <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
+        <div id="shine"></div>
         <div [ngClass]="getStatusClass(solicitacao.status)" id="status"></div>
         <p class="font-nuckle font-light text-white mb-3">
           {{ formatDate(solicitacao.dataHoraCriacao) }}
@@ -33,13 +42,13 @@
         <p class="font-nuckle font-light text-white mb-3">
           Defeito: {{ solicitacao.descricaoDefeito }}
         </p>
-        <p class="font-nuckle font-light text-white mb-4">
+        <p class="font-nuckle font-extrabold text-white mb-4">
           Estado: {{ solicitacao.status }}
         </p>
 
         @if (solicitacao.status === 'ORCADA') {
         <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
           (click)="checkOrcamento(solicitacao.id)"
         >
           Aprovar/Rejeitar serviço
@@ -47,14 +56,14 @@
         } @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
 
         <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
           (click)="pagarServico(solicitacao.id)"
         >
           Pagar serviço
         </button>
         } @else if (solicitacao.status === 'REJEITADA') {
         <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
           (click)="resgatarSolicitacao(solicitacao)"
         >
           Resgatar serviço
@@ -62,20 +71,19 @@
         }
 
         <button
-          class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
+          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12"
           (click)="visualizarServico(solicitacao.id)"
         >
           Visualizar a situação
         </button>
+
       </div>
-      }
-    </div>
     } @else {
-    <div class="text-center pb-3">
-      <p class="font-nuckle font-light text-white h-9">
-        <strong>Você ainda não fez nenhuma solicitação!</strong>
-      </p>
-    </div>
+      <div class="text-center pb-3">
+        <p class="font-nuckle font-light text-white h-9">
+          <strong>Você ainda não fez nenhuma solicitação!</strong>
+        </p>
+      </div>
     }
   </div>
 </div>
