@@ -27,20 +27,9 @@ export class SolicitacaoService {
   }
 
   findAllSolicitacoes(): Observable<Solicitacao []> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-
-    let usuarioLogadoString = localStorage.getItem('userLogado');
-    let usuarioLogado: Cliente | Funcionario | null = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
-
-    if (usuarioLogado && (usuarioLogado as Cliente).cpf) {
-      let solicitacoesDoClienteLogado: Solicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) =>
-        solicitacao?.cliente?.cpf === (usuarioLogado as Cliente).cpf
-    );
-    return of(solicitacoesDoClienteLogado);
-    } else {
-      return of(allSolicitacoes);
-    }
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao []>(`${this.apiUrl}/api/v1/solicitacoes`, { headers: headers });
   }
 
   findAllSolicitacoesWithStatusABERTA(): Observable<Solicitacao []> {
