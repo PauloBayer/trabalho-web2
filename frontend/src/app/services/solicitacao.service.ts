@@ -41,11 +41,9 @@ export class SolicitacaoService {
   }
 
   getSolicitacaoById(id: string): Observable<Solicitacao> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes: Solicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    const foundedSolicitacao = allSolicitacoes.find((solicitacao: Solicitacao) => solicitacao.id === id);
-
-    return foundedSolicitacao ? of(foundedSolicitacao) : throwError(() => new Error(`solicitacao com o id ${id} nao encontrada`));
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao>(`${this.apiUrl}/api/v1/solicitacoes/${id}`, { headers: headers });
   }
 
   criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: CategoriaEquipamento): Observable<null> {
@@ -85,56 +83,11 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  efetuarOrcamento(id: string, valorOrcado: number, descricao: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
-
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
-
-    if (!userLogado)
-      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
-
-    if ((userLogado as Cliente).cep)
-      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
-
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.ORCADA,
-          valorOrcado: valorOrcado,
-          funcionario: userLogado as Funcionario
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.ORCADA,
-          historico: historicoAtualizado,
-          valorOrcado: valorOrcado,
-          descricaoOrcamento: descricao,
-          funcionario: userLogado as Funcionario
-        };
-
-        return updatedSolicitacao;
-      }
-
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
+  efetuarOrcamento(id: string, valorOrcado: number, orientacoesExtras: string): Observable<null> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    const body = { valorOrcado: valorOrcado, orientacoesExtras: orientacoesExtras };
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/orcamento`, body, { headers: headers });
   }
 
   aprovarServico(id: string): Observable<null> {

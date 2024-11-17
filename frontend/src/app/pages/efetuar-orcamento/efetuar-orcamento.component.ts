@@ -29,8 +29,9 @@ export class EfetuarOrcamentoComponent implements OnInit {
     this.orcamentoForm = new FormGroup({
       number: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^\d+(\.\d{1,2})?$/) 
-      ])
+        Validators.pattern(/^\d+(\.\d{1,2})?$/)
+      ]),
+      orientacoesExtras: new FormControl('', Validators.required)
     });
   }
 
@@ -59,8 +60,9 @@ export class EfetuarOrcamentoComponent implements OnInit {
   onEfetuarOrcamento() {
     if (this.orcamentoForm.valid && this.solicitacaoId) {
       const valorOrcado = this.orcamentoForm.get('number')?.value;
-      const descricaoOrcamento = this.orcamentoForm.get('descricao')?.value;
-      this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado, descricaoOrcamento).subscribe({
+      const orientacoesExtras = this.orcamentoForm.get('orientacoesExtras')?.value;
+
+      this.solicitacaoService.efetuarOrcamento(this.solicitacaoId, valorOrcado, orientacoesExtras).subscribe({
         next: () => {
           alert('Sucesso ao efetuar o orçamento');
           this.router.navigate(['funcionario']);
