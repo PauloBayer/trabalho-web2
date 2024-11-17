@@ -99,15 +99,16 @@ public class SolicitacaoManutencaoService {
         return this.solicitacaoManutencaoRepository.findAll();
     }
 
-    public void efetuarOrcamento(UUID idSolicitacao, Funcionario funcionario, Float valorOrcado) {
+    public void efetuarOrcamento(UUID idSolicitacao, Funcionario funcionario, Float valorOrcado, String orientacoesExtras) {
         SolicitacaoManutencao solicitacaoManutencao = this.obterSolicitacaoPorId(idSolicitacao);
 
         if (solicitacaoManutencao.getStatus() != StatusSolicitacao.ABERTA)
             throw new AcaoNaoPermitidaException("status da solicitacao deve ser ABERTA");
 
-        this.historicoSolicitacaoService.setStatusOrcada(solicitacaoManutencao, valorOrcado, funcionario);
+        this.historicoSolicitacaoService.setStatusOrcada(solicitacaoManutencao, valorOrcado, funcionario, orientacoesExtras);
         solicitacaoManutencao.setStatus(StatusSolicitacao.ORCADA);
         solicitacaoManutencao.setValorOrcado(valorOrcado);
+        solicitacaoManutencao.setOrientacoesExtrasOrcamento(orientacoesExtras);
         solicitacaoManutencao.setFuncionario(funcionario);
         this.solicitacaoManutencaoRepository.save(solicitacaoManutencao);
     }

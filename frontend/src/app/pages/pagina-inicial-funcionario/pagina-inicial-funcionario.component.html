@@ -1,62 +1,61 @@
 <div id="background" class="flex items-center justify-center">
-    <div class="bg-black w-10/12 rounded-2xl black-box">
-        <div class="flex justify-between items-center mx-8 my-4">
-            <h1 class="font-nuckle text-4xl font-extrabold text-white">
-                Solicitações abertas
-            </h1>
-            <mat-form-field id="page-filter" appearance="fill" class="w-1/3">
-                <mat-label>Filtrar solicitações</mat-label>
-                <input matInput [(ngModel)]="filterValue" placeholder="Digite para filtrar por qualquer campo..." />
-            </mat-form-field>
-            <button (click)="goToGerenciarSolicitacoes()"
-                class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12">
-                Gerenciar solicitações
-            </button>
-        </div>
+  <div class="bg-black w-10/12 rounded-2xl black-box">
+    <div class="flex justify-between items-center mx-8 my-4">
+      <h1 class="font-nuckle text-4xl font-extrabold text-white">
+        Solicitações
+      </h1>
 
-        <hr />
-
-        <div *ngIf="filteredSolicitacoes.length > 0; else noSolicitations">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
-                <div *ngFor="let solicitacao of filteredSolicitacoes; let i = index"
-                    class="bg-[#423B3A] rounded-2xl p-5">
-                    <p class="font-nuckle font-light text-white mb-3">
-                        {{ formatDate(solicitacao.dataHoraCriacao) }}
-                    </p>
-
-                    <p class="font-nuckle font-light text-white mb-3">
-                        Nome do cliente: {{ solicitacao.cliente?.nome }}
-                    </p>
-
-                    <p class="font-nuckle font-light text-white mb-3">
-                        Defeito: {{ solicitacao.descricaoDefeito }}
-                    </p>
-
-                    <p class="font-nuckle font-light text-white mb-4">
-                        Estado: {{ solicitacao.status }}
-                    </p>
-
-                    <div *ngIf="solicitacao.status === 'ABERTA'">
-                        <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
-                            (click)="efetuarOrcamento(solicitacao.id)">
-                            Efetuar orçamento
-                        </button>
-                    </div>
-
-                    <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
-                        (click)="visualizarServico(solicitacao.id)">
-                        Visualizar a situação
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <ng-template #noSolicitations>
-            <div class="text-center pb-3">
-                <p class="font-nuckle font-light text-white h-9">
-                    <strong>Parece que não tem nenhuma solicitação aberta</strong>
-                </p>
-            </div>
-        </ng-template>
+      <mat-form-field id="page-filter" appearance="fill" class="w-1/3">
+        <mat-label>Filtrar solicitações</mat-label>
+        <input matInput [(ngModel)]="filterValue" placeholder="Digite para filtrar por qualquer campo..." />
+      </mat-form-field>
     </div>
+
+    <hr />
+
+    <div *ngIf="filteredSolicitacoes.length > 0; else noSolicitations">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
+        <div *ngFor="let solicitacao of filteredSolicitacoes; let i = index" class="bg-[#423B3A] rounded-2xl p-5">
+          <p class="font-nuckle font-light text-white mb-3">
+            {{ formatDate(solicitacao.dataHoraCriacao) }}
+          </p>
+
+          <p class="font-nuckle font-light text-white mb-3">
+            Nome do cliente: {{ solicitacao.cliente?.nome }}
+          </p>
+
+          <p class="font-nuckle font-light text-white mb-3">
+            Defeito: {{ solicitacao.descricaoDefeito }}
+          </p>
+
+          <p class="font-nuckle font-light text-white mb-4">
+            Estado:
+
+            <span class="rounded-2xl {{ getStatusClass(solicitacao.status) }} px-3 py-1">
+              {{ solicitacao.status }}
+            </span>
+          </p>
+          <div *ngIf="solicitacao.status === 'ABERTA'">
+            <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9 mb-3"
+              (click)="efetuarOrcamento(solicitacao.id)">
+              Efetuar orçamento
+            </button>
+          </div>
+
+          <button class="w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-9"
+            (click)="visualizarServico(solicitacao.id)">
+            Visualizar a situação
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noSolicitations>
+      <div class="text-center pb-3">
+        <p class="font-nuckle font-light text-white h-9">
+          <strong>Parece que não tem nenhuma solicitação aberta</strong>
+        </p>
+      </div>
+    </ng-template>
+  </div>
 </div>

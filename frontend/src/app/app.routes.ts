@@ -20,7 +20,6 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PrintComponent } from './pages/print/print.component';
 import { PagarServicoComponent } from './pages/pagar-servico/pagar-servico.component';
 import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
-import { GerenciarSolicitacoesComponent } from './pages/gerenciar-solicitacoes/gerenciar-solicitacoes.component';
 import { FinalizarSolicitacaoComponent } from './pages/finalizar-solicitacao/finalizar-solicitacao.component';
 
 export const routes: Routes = [
@@ -87,10 +86,6 @@ export const routes: Routes = [
       {
         path: 'efetuar-orcamento/:id',
         component: EfetuarOrcamentoComponent,
-      },
-      {
-        path: 'gerenciar-solicitacoes',
-        component: GerenciarSolicitacoesComponent,
       },
       {
         path: 'solicitacao/:id',

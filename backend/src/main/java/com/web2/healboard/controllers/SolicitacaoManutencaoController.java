@@ -14,7 +14,6 @@ import com.web2.healboard.models.manutencao.SolicitacaoManutencao;
 import com.web2.healboard.models.cliente.Cliente;
 import com.web2.healboard.services.HistoricoSolicitacaoService;
 import com.web2.healboard.services.SolicitacaoManutencaoService;
-import com.web2.healboard.services.ClienteService;
 import com.web2.healboard.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -158,7 +157,7 @@ public class SolicitacaoManutencaoController {
         if (!(user instanceof Funcionario funcionario))
             throw new NaoAutorizadoException("não autorizado");
 
-        this.solicitacaoManutencaoService.efetuarOrcamento(id, funcionario, dto.getValorOrcado());
+        this.solicitacaoManutencaoService.efetuarOrcamento(id, funcionario, dto.getValorOrcado(), dto.getOrientacoesExtras());
         return ResponseEntity.ok().build();
     }
 

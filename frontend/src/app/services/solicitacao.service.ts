@@ -5,45 +5,45 @@ import { Cliente } from '../model/entities/cliente';
 import { Funcionario } from '../model/entities/funcionario';
 import { EstadoSolicitacaoType } from '../model/entities/estado-solicitacao.enum';
 import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../env/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitacaoService {
+  private apiUrl: string = environment.httpApiUrl
 
-  constructor() {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
+
+  findAllSolicitacoesByUser(): Observable<Solicitacao []> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao []>(`${this.apiUrl}/api/v1/solicitacoes/user`, { headers: headers });
+  }
 
   findAllSolicitacoes(): Observable<Solicitacao []> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-
-    let usuarioLogadoString = localStorage.getItem('userLogado');
-    let usuarioLogado: Cliente | Funcionario | null = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
-
-    if (usuarioLogado && (usuarioLogado as Cliente).cpf) {
-      let solicitacoesDoClienteLogado: Solicitacao[] = allSolicitacoes.filter((solicitacao: { cliente: { cpf: string; }; }) => 
-        solicitacao?.cliente?.cpf === (usuarioLogado as Cliente).cpf
-    );
-    return of(solicitacoesDoClienteLogado);
-    } else {
-      return of(allSolicitacoes);
-    }
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao []>(`${this.apiUrl}/api/v1/solicitacoes`, { headers: headers });
   }
 
   findAllSolicitacoesWithStatusABERTA(): Observable<Solicitacao []> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacoesAbertas: Solicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === EstadoSolicitacaoType.ABERTA);
-    
+
     return of(solicitacoesAbertas);
   }
 
   getSolicitacaoById(id: string): Observable<Solicitacao> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes: Solicitacao [] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    const foundedSolicitacao = allSolicitacoes.find((solicitacao: Solicitacao) => solicitacao.id === id);
-
-    return foundedSolicitacao ? of(foundedSolicitacao) : throwError(() => new Error(`solicitacao com o id ${id} nao encontrada`));
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao>(`${this.apiUrl}/api/v1/solicitacoes/${id}`, { headers: headers });
   }
 
   criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: CategoriaEquipamento): Observable<null> {
@@ -83,92 +83,47 @@ export class SolicitacaoService {
     return of(null);
   }
 
-  efetuarOrcamento(id: string, valorOrcado: number, descricao: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
-
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
-
-    if (!userLogado)
-      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
-
-    if ((userLogado as Cliente).cep)
-      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-  
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
-  
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.ORCADA,
-          valorOrcado: valorOrcado,
-          funcionario: userLogado as Funcionario
-        });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
-          status: EstadoSolicitacaoType.ORCADA,
-          historico: historicoAtualizado,
-          valorOrcado: valorOrcado,
-          descricaoOrcamento: descricao,
-          funcionario: userLogado as Funcionario
-        };
-  
-        return updatedSolicitacao;
-      }
-
-      return solicitacao;
-    });
-  
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
-    return of(null);
+  efetuarOrcamento(id: string, valorOrcado: number, orientacoesExtras: string): Observable<null> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    const body = { valorOrcado: valorOrcado, orientacoesExtras: orientacoesExtras };
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/orcamento`, body, { headers: headers });
   }
 
   aprovarServico(id: string): Observable<null> {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: EstadoSolicitacaoType.APROVADA,
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.APROVADA,
           historico: historicoAtualizado
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -176,13 +131,13 @@ export class SolicitacaoService {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
@@ -190,24 +145,24 @@ export class SolicitacaoService {
           statusAtual: EstadoSolicitacaoType.REJEITADA,
           motivoRejeicao: motivoRejeicao
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.APROVADA,
           motivoRejeicao: motivoRejeicao,
           historico: historicoAtualizado
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -224,13 +179,13 @@ export class SolicitacaoService {
 
     if ((userLogado as Cliente).cep)
       return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
@@ -240,24 +195,24 @@ export class SolicitacaoService {
           funcionarioDestino: funcionarioDestino,
           funcionario: userLogado as Funcionario
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
           funcionario: funcionarioDestino,
           historico: historicoAtualizado
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -265,13 +220,13 @@ export class SolicitacaoService {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
@@ -281,26 +236,26 @@ export class SolicitacaoService {
           descricaoManutencao: descricaoManutencao,
           funcionario: funcionario
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
           historico: historicoAtualizado,
           orientacoesManutencao: orientacoesManutencao,
           descricaoManutencao: descricaoManutencao
         };
-  
+
         return updatedSolicitacao;
       }
 
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -308,36 +263,36 @@ export class SolicitacaoService {
     let solicitacoesString = localStorage.getItem('solicitacoes');
     let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
     let solicitacaoEncontrada = false;
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
           statusAnterior: solicitacao.status,
           statusAtual: EstadoSolicitacaoType.PAGA
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.PAGA,
           historico: historicoAtualizado
         };
-  
+
         return updatedSolicitacao;
       }
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -354,13 +309,13 @@ export class SolicitacaoService {
 
     if ((userLogado as Cliente).cep)
       return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-  
+
     solicitacoes = solicitacoes.map(solicitacao => {
       if (solicitacao.id === id) {
         solicitacaoEncontrada = true;
-  
+
         const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-  
+
         historicoAtualizado.push({
           id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
           dataHora: new Date().toISOString(),
@@ -368,24 +323,24 @@ export class SolicitacaoService {
           statusAtual: EstadoSolicitacaoType.FINALIZADA,
           funcionario: userLogado as Funcionario
         });
-  
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.FINALIZADA,
           historico: historicoAtualizado,
         };
-  
+
         return updatedSolicitacao;
       }
 
       return solicitacao;
     });
-  
+
     if (!solicitacaoEncontrada)
       return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-  
+
     localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-  
+
     return of(null);
   }
 
@@ -411,8 +366,8 @@ export class SolicitacaoService {
           statusAtual: EstadoSolicitacaoType.APROVADA
         });
 
-        const updatedSolicitacao: Solicitacao = { 
-          ...solicitacao, 
+        const updatedSolicitacao: Solicitacao = {
+          ...solicitacao,
           status: EstadoSolicitacaoType.APROVADA,
           historico: historicoAtualizado
         };
@@ -432,7 +387,7 @@ export class SolicitacaoService {
   }
 
   private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2, 15) + 
+    return Math.random().toString(36).substring(2, 15) +
            Math.random().toString(36).substring(2, 15);
   }
 }

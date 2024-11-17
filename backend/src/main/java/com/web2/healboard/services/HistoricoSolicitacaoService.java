@@ -32,7 +32,7 @@ public class HistoricoSolicitacaoService {
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
 
-    public void setStatusOrcada(SolicitacaoManutencao solicitacao, Float valorOrcado, Funcionario funcionario) {
+    public void setStatusOrcada(SolicitacaoManutencao solicitacao, Float valorOrcado, Funcionario funcionario, String orientacoesExtras) {
         HistoricoSolicitacao historicoSolicitacao = new HistoricoSolicitacao();
 
         historicoSolicitacao.setSolicitacaoManutencao(solicitacao);
@@ -40,6 +40,7 @@ public class HistoricoSolicitacaoService {
         historicoSolicitacao.setFuncionario(funcionario);
         historicoSolicitacao.setStatusAtual(StatusSolicitacao.ORCADA);
         historicoSolicitacao.setValorOrcado(valorOrcado);
+        historicoSolicitacao.setOrientacoesExtrasOrcamento(orientacoesExtras);
 
         this.historicoSolicitacaoRepository.save(historicoSolicitacao);
     }
