@@ -19,8 +19,8 @@
           <mat-form-field formGroupName="data" class="w-100">
             <mat-label>Data para Relatório</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="Data inicial">
-              <input matEndDate placeholder="Data final">
+              <input matStartDate placeholder="Data inicial" formControlName="start">
+              <input matEndDate placeholder="Data final" formControlName="end">
             </mat-date-range-input>
             <mat-hint class="text-white">DD/MM/YYYY - DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -33,6 +33,9 @@
             <button class="btn" type="submit">Gerar Relatório</button>
           </div>
           <div class="pr-3">
+            <button class="btn" type="button" (click)="clearFilters()">Limpar Filtros</button>
+          </div>
+          <div class="pr-3">
             <button class="btn" [disabled]="receitas.length === 0" (click)="printReport()">
               Imprimir Relatório
             </button>
@@ -42,22 +45,36 @@
     </form>
   </div>
 
-  <div class="relatorios">
-    <table *ngIf="receitas.length > 0" class="black-box">
-      <thead>
-        <tr>
-          <th class="data-header">Data</th>
-          <th class="valor-header">Receita</th>
-        </tr>
-      </thead>
-      <tbody class="table-body">
-        <tr *ngFor="let receita of receitas">
-          <td class="data-col">{{ receita.data | date }}</td>
-          <td class="categoria-col">{{ receita.categoria }}</td>
-          <td class="valor-col">{{ receita.valor | currency }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="relatorios mt-3 black-box p-4">
+    <section tabindex="0" class="w-100">
+      <table mat-table [dataSource]="filteredReceitas">
+        <!-- Categoria Column -->
+        <ng-container matColumnDef="categoria">
+          <th mat-header-cell *matHeaderCellDef> Categoria </th>
+          <td mat-cell *matCellDef="let transaction"> {{ transaction.categoria }} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Data Column -->
+        <ng-container matColumnDef="data">
+          <th mat-header-cell *matHeaderCellDef> Data </th>
+          <td mat-cell *matCellDef="let transaction"> {{ transaction.data | date:'dd/MM/yyyy' }} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <!-- Valor Column -->
+        <ng-container matColumnDef="valor">
+          <th mat-header-cell *matHeaderCellDef> Valor </th>
+          <td mat-cell *matCellDef="let transaction"> {{ transaction.valor | currency:'BRL' }} </td>
+          <td mat-footer-cell *matFooterCellDef> <strong>Total: </strong> {{ getTotalCost() | currency:'BRL' }} </td>
+        </ng-container>
+
+        <!-- Header, Row, and Footer Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+      </table>
+    </section>
   </div>
 
   <div *ngIf="receitas.length === 0">
