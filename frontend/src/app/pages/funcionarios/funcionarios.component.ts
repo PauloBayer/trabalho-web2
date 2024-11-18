@@ -55,10 +55,13 @@ export class FuncionariosComponent implements AfterViewInit {
   }
 
   ngOnInit() {
-    this.funcionarioService.findAll().subscribe((funcionarios) => {
-      this.funcionarios = funcionarios;
-      this.dataSource.data = this.funcionarios;
+    this.funcionarioService.findAll().subscribe({
+      next: (data: Funcionario[]) => {
+        this.funcionarios = data;
+      },
+      error: (error) => console.error(error),
     });
+    console.log(this.dataSource.data, this.funcionarios);
   }
 
   applyFilter(event: Event) {
@@ -81,6 +84,17 @@ export class FuncionariosComponent implements AfterViewInit {
           ...this.dataSource.data,
           { id: this.dataSource.data.length + 1, ...result },
         ];
+        this.funcionarioService
+          .create(
+            result.email,
+            result.nome,
+            result.dataNascimento,
+            result.senha
+          )
+          .subscribe({
+            next: (data) => {},
+            error: (error) => console.error(error),
+          });
       }
     });
   }
