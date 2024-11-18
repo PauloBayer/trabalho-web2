@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private solicitacaoService: SolicitacaoService,
     private route: ActivatedRoute
   ) {
     this.loginForm = new FormGroup({
@@ -69,6 +68,8 @@ export class LoginComponent implements OnInit {
     this.authService.doLogin(user).subscribe({
       next: (data: LoginResponse) => {
         this.authService.setToken(data.token);
+        if (data.role == 'ROLE_CLIENTE' || data.role == 'ROLE_FUNCIONARIO')
+          this.authService.setUserRole(data.role);
         this.authService.navigateToHomepageByRole();
       },
       error: (error) => {

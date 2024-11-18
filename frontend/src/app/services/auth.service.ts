@@ -22,7 +22,7 @@ export class AuthService {
   doLogin(data: UserLogin): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
   }
-  
+
   doRegister(formData: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, formData);
   }
