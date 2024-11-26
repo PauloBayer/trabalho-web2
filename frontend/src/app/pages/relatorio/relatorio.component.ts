@@ -65,6 +65,20 @@ export class RelatorioComponent implements OnInit {
     this.filteredReceitas = [...this.receitas];
   }
 
+  formatDate(date: Date): string {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) 
+      month = '0' + month;
+    if (day.length < 2) 
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   onSubmit() {
     const filters = this.form.value;
     this.applyFilters(filters);
@@ -89,8 +103,29 @@ export class RelatorioComponent implements OnInit {
   }
 
   printReport() {
-    this.printService.setPrintData(this.filteredReceitas);
-    this.router.navigate(['/print']);
+    const filters = this.form.value;
+
+    let categoriaIds: string[] = [];
+    if (filters.categoria) {
+      categoriaIds.push(filters.categoria); // filters.categoria is the selected category ID
+    }
+
+    const startDate = filters.data?.start ? this.formatDate(filters.data.start) : null;
+    const endDate = filters.data?.end ? this.formatDate(filters.data.end) : null;
+
+    this.relatorioService.downloadFaturamentoReport(categoriaIds, startDate, endDate).subscribe(response => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Faturamento_Report.pdf';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Error downloading report', error);
+    });
   }
 
   getTotalCost() {

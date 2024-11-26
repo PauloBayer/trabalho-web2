@@ -8,9 +8,8 @@
           <mat-form-field class="w-100">
             <mat-label>Categorias</mat-label>
             <mat-select formControlName="categoria">
-              @for (categoria of categorias; track categoria) {
-              <mat-option [value]="categoria.name">{{ categoria.name }}</mat-option>
-              }
+              <mat-option [value]="null">Todas as categorias</mat-option>
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.name }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -36,7 +35,7 @@
             <button class="btn" type="button" (click)="clearFilters()">Limpar Filtros</button>
           </div>
           <div class="pr-3">
-            <button class="btn" [disabled]="receitas.length === 0" (click)="printReport()">
+            <button class="btn" type="button" (click)="printReport()" [disabled]="receitas.length === 0">
               Imprimir Relatório
             </button>
           </div>

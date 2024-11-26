@@ -86,6 +86,7 @@ export class CategoriasComponent implements AfterViewInit {
       .subscribe((data) => {
         if (data) {
           const newCategory: CategoriaEquipamento = {
+            id: data.id,
             name: data.name,
             description: data.description,
           };
@@ -113,6 +114,7 @@ export class CategoriasComponent implements AfterViewInit {
       .subscribe((data) => {
         if (data) {
           const updatedCategory: CategoriaEquipamento = {
+            id: data.id,
             name: data.name,
             description: data.description,
           };

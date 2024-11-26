@@ -19,16 +19,16 @@ const cliente5: Cliente = { id: Math.random(), cpf: '321.654.987-00', nome: 'Joa
 
 export const clientesSeed: Cliente[] = [cliente1, cliente2, cliente3, cliente4, cliente5];
 
-export const categoria1: CategoriaEquipamento = { name: 'Computadores', description: 'Manutenção e configuração de computadores desktop e notebooks' };
-export const categoria2: CategoriaEquipamento = { name: 'Impressoras', description: 'Reparos e manutenção de impressoras multifuncionais e laser' };
-export const categoria3: CategoriaEquipamento = { name: 'Monitores', description: 'Serviços de reparo e calibração de monitores LED, LCD e OLED' };
-export const categoria4: CategoriaEquipamento = { name: 'Smartphones', description: 'Reparo de telas, baterias e componentes internos de smartphones' };
-export const categoria5: CategoriaEquipamento = { name: 'Redes', description: 'Configuração e manutenção de redes cabeadas e Wi-Fi' };
-export const categoria6: CategoriaEquipamento = { name: 'Servidores', description: 'Manutenção preventiva e corretiva de servidores e storages' };
-export const categoria7: CategoriaEquipamento = { name: 'Periféricos', description: 'Reparo de teclados, mouses, e outros periféricos de computador' };
-export const categoria8: CategoriaEquipamento = { name: 'Audio e Vídeo', description: 'Instalação e reparo de equipamentos de áudio e vídeo' };
-export const categoria9: CategoriaEquipamento = { name: 'Software', description: 'Suporte e instalação de software de sistema e aplicativos' };
-export const categoria10: CategoriaEquipamento = { name: 'Eletrodomésticos', description: 'Reparos e manutenção de eletrodomésticos de pequeno porte' };
+export const categoria1: CategoriaEquipamento = { id: 1, name: 'Computadores', description: 'Manutenção e configuração de computadores desktop e notebooks' };
+export const categoria2: CategoriaEquipamento = { id: 2, name: 'Impressoras', description: 'Reparos e manutenção de impressoras multifuncionais e laser' };
+export const categoria3: CategoriaEquipamento = { id: 3, name: 'Monitores', description: 'Serviços de reparo e calibração de monitores LED, LCD e OLED' };
+export const categoria4: CategoriaEquipamento = { id: 4, name: 'Smartphones', description: 'Reparo de telas, baterias e componentes internos de smartphones' };
+export const categoria5: CategoriaEquipamento = { id: 5, name: 'Redes', description: 'Configuração e manutenção de redes cabeadas e Wi-Fi' };
+export const categoria6: CategoriaEquipamento = { id: 6, name: 'Servidores', description: 'Manutenção preventiva e corretiva de servidores e storages' };
+export const categoria7: CategoriaEquipamento = { id: 7, name: 'Periféricos', description: 'Reparo de teclados, mouses, e outros periféricos de computador' };
+export const categoria8: CategoriaEquipamento = { id: 8, name: 'Audio e Vídeo', description: 'Instalação e reparo de equipamentos de áudio e vídeo' };
+export const categoria9: CategoriaEquipamento = { id: 9, name: 'Software', description: 'Suporte e instalação de software de sistema e aplicativos' };
+export const categoria10: CategoriaEquipamento = { id: 10, name: 'Eletrodomésticos', description: 'Reparos e manutenção de eletrodomésticos de pequeno porte' };
 
 export const categoriasSeed: CategoriaEquipamento[] = [
   categoria1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7, categoria8, categoria9, categoria10
