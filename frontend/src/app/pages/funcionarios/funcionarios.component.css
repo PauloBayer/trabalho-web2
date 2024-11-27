@@ -21,6 +21,7 @@ hr {
     color: white;
     width: 85%;
     padding: 40px;
+    overflow-x: scroll;
 }
 
 .title {
