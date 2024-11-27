@@ -9,7 +9,7 @@
             <mat-label>Categorias</mat-label>
             <mat-select formControlName="categoria">
               @for (categoria of categorias; track categoria) {
-              <mat-option [value]="categoria.name">{{ categoria.name }}</mat-option>
+              <mat-option [value]="categoria.nome">{{ categoria.nome }}</mat-option>
               }
             </mat-select>
           </mat-form-field>

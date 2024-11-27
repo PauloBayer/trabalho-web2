@@ -14,15 +14,15 @@
                 <ng-container matColumnDef="number">
                     <th mat-header-cell *matHeaderCellDef>#</th>
                     <td mat-cell *matCellDef="let element; let i = renderIndex">
-                        {{ findIndexOfElement(element.name) }}
+                        {{ findIndexOfElement(element.nome) }}
                     </td>
                 </ng-container>
 
                 <!-- Name Column -->
-                <ng-container matColumnDef="name">
+                <ng-container matColumnDef="nome">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.name }}
+                        {{ element.nome }}
                     </td>
                 </ng-container>
 
@@ -40,13 +40,13 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Ações</th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button (click)="openEditDialog(element)">
+                        <button mat-icon-button (click)="openEditDialog(element)" class="abutton blue-button">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="deleteCategory(element.name)">
+                        <button mat-icon-button (click)="deleteCategory(element)" class="abutton red-button">
                             <mat-icon>delete</mat-icon>
                         </button>
-                        <button mat-icon-button aria-label="expand row"
+                        <button mat-icon-button aria-label="expand row" class="abutton"
                             (click)="(expandedCategory = expandedCategory === element ? null : element); $event.stopPropagation()">
                             @if (expandedCategory === element) {
                             <mat-icon>keyboard_arrow_up</mat-icon>

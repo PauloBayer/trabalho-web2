@@ -2,6 +2,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { environment } from '../env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,54 +12,55 @@ import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
 export class CategoryService {
   private localStorageKey = 'categorias';
 
-  constructor() {}
+  private apiUrl: string = environment.httpApiUrl;
+
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   /** Get all categories from localStorage */
   getCategories(): Observable<CategoriaEquipamento[]> {
-    const categories = localStorage.getItem(this.localStorageKey);
-
-    return of(categories ? JSON.parse(categories) : []);
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
+    return this.httpClient.get<CategoriaEquipamento[]>(
+      `${this.apiUrl}/api/v1/categorias-equipamento`,
+      { headers: headers }
+    );
   }
 
   /** Add a new category to localStorage */
   addCategory(category: CategoriaEquipamento): Observable<null> {
-    const categoriesString = localStorage.getItem(this.localStorageKey);
-    const categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
-    
-    // Check if the category name already exists to prevent duplicates
-    const exists = categories.some((cat) => cat.name === category.name);
-
-    if (!exists) {
-      categories.push(category);
-      localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
-      return of(null);
-    } else {
-      return throwError(() => new Error('A category with this name already exists.'));
-    }
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
+    return this.httpClient.post<null>(
+      `${this.apiUrl}/api/v1/categorias-equipamento`,
+      category,
+      { headers: headers }
+    );
   }
 
   /** Update an existing category in localStorage */
-  updateCategory(updatedCategory: CategoriaEquipamento): Observable<null> {
-    const categoriesString = localStorage.getItem(this.localStorageKey);
-    let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
-    
-    categories = categories.map((category) =>
-      category.name === updatedCategory.name ? updatedCategory : category
+  updateCategory(
+    id: number,
+    updatedCategory: CategoriaEquipamento
+  ): Observable<null> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(
+      `${this.apiUrl}/api/v1/categorias-equipamento/${id}`,
+      updatedCategory,
+      { headers: headers }
     );
-    localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
-    
-    return of(null);
   }
 
   /** Delete a category from localStorage */
-  deleteCategory(categoryName: string): Observable<null> {
-    const categoriesString = localStorage.getItem(this.localStorageKey);
-    let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
-    categories = categories.filter(
-      (category) => category.name !== categoryName
+  deleteCategory(id: number): Observable<null> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
+    return this.httpClient.delete<null>(
+      `${this.apiUrl}/api/v1/categorias-equipamento/${id}`,
+      { headers: headers }
     );
-    localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
-
-    return of(null);
   }
 }

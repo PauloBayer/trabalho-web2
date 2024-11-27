@@ -1,6 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { categoriasSeed } from '../../seeds/seed';
 import { PrintService } from '../../services/print.service';
 import { Router } from '@angular/router';
@@ -18,16 +23,16 @@ import { MatTableModule } from '@angular/material/table';
   selector: 'app-relatorio',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    CurrencyPipe
+    CurrencyPipe,
   ],
   templateUrl: './relatorio.component.html',
   styleUrls: ['./relatorio.component.css'],
@@ -41,9 +46,9 @@ export class RelatorioComponent implements OnInit {
     categoria: new FormControl(''),
     data: new FormGroup({
       start: new FormControl(),
-      end: new FormControl()
-    })
-  });  
+      end: new FormControl(),
+    }),
+  });
   displayedColumns: string[] = ['categoria', 'data', 'valor'];
 
   constructor(
@@ -56,8 +61,15 @@ export class RelatorioComponent implements OnInit {
     for (let i = 0; i < 10; i++) {
       const randomDate = new Date(2024, 9, Math.floor(Math.random() * 31) + 1); // Outubro de 2024
       const randomValue = Math.floor(Math.random() * 5000) + 500; // Valor entre 500 e 5500
-      const randomCategory = this.categorias.length ? this.categorias[Math.floor(Math.random() * this.categorias.length)].name : '';
-      this.receitas.push({ categoria: randomCategory, data: randomDate, valor: randomValue });
+      const randomCategory = this.categorias.length
+        ? this.categorias[Math.floor(Math.random() * this.categorias.length)]
+            .nome
+        : '';
+      this.receitas.push({
+        categoria: randomCategory,
+        data: randomDate,
+        valor: randomValue,
+      });
     }
   }
 
@@ -74,14 +86,16 @@ export class RelatorioComponent implements OnInit {
     this.filteredReceitas = [...this.receitas];
 
     if (filters.categoria) {
-      this.filteredReceitas = this.filteredReceitas.filter(receita => receita.categoria === filters.categoria);
+      this.filteredReceitas = this.filteredReceitas.filter(
+        (receita) => receita.categoria === filters.categoria
+      );
     }
 
     if (filters.data?.start && filters.data?.end) {
       const startDate = new Date(filters.data.start);
       const endDate = new Date(filters.data.end);
 
-      this.filteredReceitas = this.filteredReceitas.filter(receita => {
+      this.filteredReceitas = this.filteredReceitas.filter((receita) => {
         const receitaDate = new Date(receita.data);
         return receitaDate >= startDate && receitaDate <= endDate;
       });
@@ -94,7 +108,9 @@ export class RelatorioComponent implements OnInit {
   }
 
   getTotalCost() {
-    return this.filteredReceitas.map(t => t.valor).reduce((acc, value) => acc + value, 0);
+    return this.filteredReceitas
+      .map((t) => t.valor)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   clearFilters() {

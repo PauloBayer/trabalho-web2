@@ -7,6 +7,7 @@ import com.web2.healboard.models.categoria.CategoriaEquipamento;
 public class CategoriaEquipamentoMapper {
     public static CategoriaEquipamentoResponseDto toDto(CategoriaEquipamento categoriaEquipamento) {
         CategoriaEquipamentoResponseDto dto = new CategoriaEquipamentoResponseDto();
+        dto.setId(categoriaEquipamento.getId());
         dto.setNome(categoriaEquipamento.getNome());
         dto.setAtivo(categoriaEquipamento.getAtivo());
         dto.setDataCriacao(categoriaEquipamento.getDataCriacao());

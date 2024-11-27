@@ -1,4 +1,6 @@
 export class CategoriaEquipamento {
-    name: string = "";
-    description: string = "";
+  id?: number = 0;
+  nome: string = '';
+  description: string = '';
+  ativo?: boolean = true;
 }
