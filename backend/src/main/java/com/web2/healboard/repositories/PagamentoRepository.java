@@ -13,10 +13,9 @@ import java.util.UUID;
 public interface PagamentoRepository extends JpaRepository<Pagamento, UUID> {
     Optional<Pagamento> findBySolicitacaoManutencaoId(UUID solicitacaoId);
 
-    // Updated methods for filtering
-    List<Pagamento> findByCategoriaIdInAndDataHoraCriacaoBetween(List<UUID> categoriaIds, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<Pagamento> findByCategoriaIdInAndDataHoraCriacaoBetween(List<Long> categoriaIds, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
-    List<Pagamento> findByCategoriaIdIn(List<UUID> categoriaIds);
+    List<Pagamento> findByCategoriaIdIn(List<Long> categoriaIds);
 
     List<Pagamento> findByDataHoraCriacaoBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

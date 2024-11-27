@@ -1,5 +1,6 @@
 package com.web2.healboard.controllers;
 
+import com.web2.healboard.models.pagamento.Pagamento;
 import com.web2.healboard.services.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +23,17 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    @GetMapping("/pagamentos")
+    public ResponseEntity<List<Pagamento>> getAllPagamentos() {
+        try {
+            List<Pagamento> pagamentos = reportService.getAllReports();
+            return ResponseEntity.ok(pagamentos);
+        } catch (Exception e) {
+            // Return 500 Internal Server Error
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     /**
      * Endpoint to download the Faturamento report as a PDF.
      *
@@ -32,25 +44,12 @@ public class ReportController {
      */
     @GetMapping("/faturamento")
     public ResponseEntity<byte[]> downloadFaturamentoReport(
-            @RequestParam(value = "categoriaIds", required = false) String categoriaIds,
+            @RequestParam(value = "categoria", required = false) String categoria,
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-        List<UUID> categoriaUUIDs = null;
-
-        if (categoriaIds != null && !categoriaIds.isEmpty()) {
-            try {
-                categoriaUUIDs = Arrays.stream(categoriaIds.split(","))
-                        .map(String::trim)
-                        .map(UUID::fromString)
-                        .collect(Collectors.toList());
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(null);
-            }
-        }
-
         try {
-            byte[] pdfBytes = reportService.generateFaturamentoReport(categoriaUUIDs, startDate, endDate);
+            byte[] pdfBytes = reportService.generateFaturamentoReport(categoria, startDate, endDate);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
@@ -63,12 +62,10 @@ public class ReportController {
                     .headers(headers)
                     .body(pdfBytes);
         } catch (IllegalArgumentException e) {
-            // Return 400 Bad Request with error message
             return ResponseEntity
                     .badRequest()
                     .body(null);
         } catch (IOException e) {
-            // Return 500 Internal Server Error
             return ResponseEntity
                     .status(500)
                     .body(null);

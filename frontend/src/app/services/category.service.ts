@@ -24,7 +24,7 @@ export class CategoryService {
     const categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     
     // Check if the category name already exists to prevent duplicates
-    const exists = categories.some((cat) => cat.name === category.name);
+    const exists = categories.some((cat) => cat.nome === category.nome);
 
     if (!exists) {
       categories.push(category);
@@ -41,7 +41,7 @@ export class CategoryService {
     let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     
     categories = categories.map((category) =>
-      category.name === updatedCategory.name ? updatedCategory : category
+      category.nome === updatedCategory.nome ? updatedCategory : category
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
     
@@ -53,7 +53,7 @@ export class CategoryService {
     const categoriesString = localStorage.getItem(this.localStorageKey);
     let categories: CategoriaEquipamento [] = categoriesString ? JSON.parse(categoriesString) : [];
     categories = categories.filter(
-      (category) => category.name !== categoryName
+      (category) => category.nome !== categoryName
     );
     localStorage.setItem(this.localStorageKey, JSON.stringify(categories));
 

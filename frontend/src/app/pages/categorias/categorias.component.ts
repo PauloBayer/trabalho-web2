@@ -73,7 +73,7 @@ export class CategoriasComponent implements AfterViewInit {
   }
   
   findIndexOfElement(element: string) {
-    return this.dataSource.data.findIndex((item) => item.name === element) + 1;
+    return this.dataSource.data.findIndex((item) => item.nome === element) + 1;
   }
 
   openDialog() {
@@ -87,7 +87,7 @@ export class CategoriasComponent implements AfterViewInit {
         if (data) {
           const newCategory: CategoriaEquipamento = {
             id: data.id,
-            name: data.name,
+            nome: data.nome,
             description: data.description,
           };
           this.categoryService.addCategory(newCategory).subscribe(() => {
@@ -115,7 +115,7 @@ export class CategoriasComponent implements AfterViewInit {
         if (data) {
           const updatedCategory: CategoriaEquipamento = {
             id: data.id,
-            name: data.name,
+            nome: data.nome,
             description: data.description,
           };
           this.categoryService.updateCategory(updatedCategory).subscribe(() => {
@@ -193,7 +193,7 @@ export class CategoriaDialog implements OnInit {
     if (this.data && this.data.category) {
       // Editing existing category
       this.categoriaForm.patchValue({
-        name: this.data.category.name,
+        nome: this.data.category.nome,
         description: this.data.category.description,
       });
       this.isEditing = true;

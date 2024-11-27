@@ -32,6 +32,4 @@ public class Pagamento {
     @CreationTimestamp
     @Column(name = "data_hora_criacao", nullable = false)
     private LocalDateTime dataHoraCriacao;
-
-    // Remove any manual getters or setters for 'categoria' and 'dataHoraCriacao'
 }

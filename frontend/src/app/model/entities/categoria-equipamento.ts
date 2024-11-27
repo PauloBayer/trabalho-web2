@@ -1,5 +1,5 @@
 export class CategoriaEquipamento {
     id: number = 0;
-    name: string = "";
+    nome: string = "";
     description: string = "";
 }
