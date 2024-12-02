@@ -2,7 +2,7 @@
   <div class="p-4">
     <h2 class="text-2xl font-bold text-center text-black">Detalhes da Solicitação</h2>
     <div class="mt-4 bg-gray-800 text-white p-4 rounded-lg shadow-lg">
-      <p><strong>Categoria:</strong> {{ solicitacao?.categoriaEquipamento?.name }}</p>
+      <p><strong>Categoria:</strong> {{ solicitacao?.categoriaEquipamento?.nome }}</p>
       <p><strong>Data:</strong> {{ solicitacao?.dataHoraCriacao | date:'dd/MM/yyyy HH:mm:ss' }}</p>
       <p><strong>Status:</strong> {{ solicitacao?.status }}</p>
       <p><strong>Descrição:</strong> {{ solicitacao?.descricaoEquipamento }}</p>

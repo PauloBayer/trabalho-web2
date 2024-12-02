@@ -51,6 +51,7 @@ export class CategoryService {
       `${this.apiUrl}/api/v1/categorias-equipamento/${id}`,
       updatedCategory,
       { headers: headers }
+
     );
   }
 

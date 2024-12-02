@@ -1,5 +1,7 @@
+import { CategoriaEquipamento } from "./categoria-equipamento";
+
 export class Receita {
-    categoria: string = '';
-    data: Date = new Date();
+    categoria: CategoriaEquipamento = new CategoriaEquipamento();
+    dataHoraCriacao: number[] = [];
     valor: number = 0;
   }
