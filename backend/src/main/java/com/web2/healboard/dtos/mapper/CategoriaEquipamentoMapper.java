@@ -12,6 +12,7 @@ public class CategoriaEquipamentoMapper {
         dto.setAtivo(categoriaEquipamento.getAtivo());
         dto.setDataCriacao(categoriaEquipamento.getDataCriacao());
         dto.setDataAtualizacao(categoriaEquipamento.getDataAtualizacao());
+        dto.setDescription(categoriaEquipamento.getDescription());
 
         return dto;
     }
@@ -20,6 +21,7 @@ public class CategoriaEquipamentoMapper {
         CategoriaEquipamento categoria = new CategoriaEquipamento();
         categoria.setNome(dto.getNome());
         categoria.setAtivo(dto.getAtivo());
+        categoria.setDescription(dto.getDescription());
 
         return categoria;
     }

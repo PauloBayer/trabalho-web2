@@ -22,6 +22,9 @@ public class CategoriaEquipamento {
     private String nome;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
     private Boolean ativo = true;
 
     @CreationTimestamp

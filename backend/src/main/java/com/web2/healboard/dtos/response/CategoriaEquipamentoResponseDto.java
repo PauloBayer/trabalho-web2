@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class CategoriaEquipamentoResponseDto {
     private Long id;
     private String nome;
+    private String description;
     private Boolean ativo;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;

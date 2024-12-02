@@ -14,6 +14,9 @@ public class CategoriaEquipamentoRequestDto {
     @NotBlank(message = "Nome da categoria must not be blank")
     private String nome;
 
+    @NotBlank(message = "Description da categoria must not be blank")
+    private String description;
+
     @NotNull(message = "Ativo é obrigatório")
     private Boolean ativo;
 }
