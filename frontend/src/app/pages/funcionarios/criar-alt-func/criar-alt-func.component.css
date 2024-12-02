@@ -2,6 +2,34 @@
     color: white;
 }
 
+::ng-deep .mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-text-field__input {
+    color: rgb(255, 255, 255);
+}
+
+::ng-deep mat-form-field {
+    background-color: black;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: white;
+}
+
+input:-internal-autofill-selected {
+    background-color: black !important;
+    color: white !important;
+}
+
+
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: black;
+
+}
+
+
+
+
+
 .dialog-box {
     padding: 30px;
 }

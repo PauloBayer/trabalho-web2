@@ -55,9 +55,22 @@ export class FuncionariosComponent implements AfterViewInit {
   }
 
   ngOnInit() {
-    this.funcionarioService.findAll().subscribe((funcionarios) => {
-      this.funcionarios = funcionarios;
-      this.dataSource.data = this.funcionarios;
+    this.funcionarioService.findAll().subscribe({
+      next: (data: Funcionario[]) => {
+        this.funcionarios = data;
+        this.dataSource.data = this.funcionarios;
+      },
+      error: (error) => console.error(error),
+    });
+  }
+
+  refresh() {
+    this.funcionarioService.findAll().subscribe({
+      next: (data: Funcionario[]) => {
+        this.funcionarios = data;
+        this.dataSource.data = this.funcionarios;
+      },
+      error: (error) => console.error(error),
     });
   }
 
@@ -77,10 +90,18 @@ export class FuncionariosComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Adicionar novo funcionário
-        this.dataSource.data = [
-          ...this.dataSource.data,
-          { id: this.dataSource.data.length + 1, ...result },
-        ];
+        this.funcionarioService
+          .create(
+            result.email,
+            result.nome,
+            result.dataNascimento,
+            result.senha
+          )
+          .subscribe({
+            next: (data) => {},
+            error: (error) => console.error(error),
+          });
+        this.refresh();
       }
     });
   }
@@ -93,12 +114,20 @@ export class FuncionariosComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Atualizar funcionário
-        const index = this.dataSource.data.findIndex(
-          (f) => f.id === funcionario.id
-        );
-        this.dataSource.data[index] = { ...funcionario, ...result };
-        this.dataSource._updateChangeSubscription(); // Atualizar tabela
+        this.funcionarioService
+          .updateById(
+            funcionario.id,
+            result.email,
+            result.nome,
+            result.dataNascimento,
+            result.senha
+          )
+          .subscribe({
+            next: (data) => {
+              this.refresh();
+            },
+            error: (error) => console.error(error),
+          });
       }
     });
   }
@@ -112,9 +141,12 @@ export class FuncionariosComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Excluir funcionário
-        this.dataSource.data = this.dataSource.data.filter(
-          (f) => f.id !== funcionario.id
-        );
+        this.funcionarioService.deleteById(funcionario.id).subscribe({
+          next: (data) => {
+            this.refresh();
+          },
+          error: (error) => console.error(error),
+        });
       }
     });
   }

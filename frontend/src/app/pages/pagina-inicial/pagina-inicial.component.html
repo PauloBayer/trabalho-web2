@@ -4,23 +4,12 @@
       <h1 class="mx-8 my-2 font-nuckle text-4xl font-extrabold text-white">
         Solicitações
       </h1>
-      <mat-form-field
-        id="page-filter"
-        appearance="fill"
-        class="w-1/3"
-        [@fadeInOut]
-      >
+      <mat-form-field id="page-filter" appearance="fill" class="w-1/3" [@fadeInOut]>
         <mat-label>Filtrar solicitações</mat-label>
-        <input
-          matInput
-          [(ngModel)]="filterValue"
-          placeholder="Digite para filtrar por qualquer campo..."
-        />
+        <input matInput [(ngModel)]="filterValue" placeholder="Digite para filtrar por qualquer campo..." />
       </mat-form-field>
-      <button
-        (click)="onFazerSolicitacao()"
-        class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4"
-      >
+      <button (click)="onFazerSolicitacao()"
+        class="w-40 bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mx-8 my-4">
         Fazer solicitação
       </button>
     </div>
@@ -28,10 +17,7 @@
     <hr />
 
     @if (filteredSolicitacoes.length > 0) {
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10"
-      [@fadeInOut]
-    >
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10" [@fadeInOut]>
       @for (solicitacao of filteredSolicitacoes; track $index) {
       <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
         <div id="shine"></div>
@@ -47,45 +33,39 @@
         </p>
 
         @if (solicitacao.status === 'ORCADA') {
-        <button
-          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
-          (click)="checkOrcamento(solicitacao.id)"
-        >
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
+          (click)="checkOrcamento(solicitacao.id)">
           Aprovar/Rejeitar serviço
         </button>
         } @else if (solicitacao.status === 'AGUARDANDO_PAGAMENTO') {
 
-        <button
-          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
-          (click)="pagarServico(solicitacao.id)"
-        >
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
+          (click)="pagarServico(solicitacao.id)">
           Pagar serviço
         </button>
         } @else if (solicitacao.status === 'REJEITADA') {
-        <button
-          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
-          (click)="resgatarSolicitacao(solicitacao)"
-        >
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-3"
+          (click)="resgatarSolicitacao(solicitacao)">
           Resgatar serviço
         </button>
         }
 
-        <button
-          class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12"
-          (click)="visualizarServico(solicitacao.id)"
-        >
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12"
+          (click)="visualizarServico(solicitacao.id)">
           Visualizar a situação
         </button>
 
         </div>
       }
       </div>
+      }
+    </div>
     } @else {
-      <div class="text-center pb-3">
-        <p class="font-nuckle font-light text-white h-9">
-          <strong>Você ainda não fez nenhuma solicitação!</strong>
-        </p>
-      </div>
+    <div class="text-center pb-3">
+      <p class="font-nuckle font-light text-white h-9">
+        <strong>Você ainda não fez nenhuma solicitação!</strong>
+      </p>
+    </div>
     }
   </div>
 </div>

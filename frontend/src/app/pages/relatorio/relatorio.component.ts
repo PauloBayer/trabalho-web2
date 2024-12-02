@@ -1,6 +1,12 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { categoriasSeed } from '../../seeds/seed';
 import { PrintService } from '../../services/print.service';
 import { Router } from '@angular/router';
 import { Receita } from '../../model/entities/receita';
@@ -29,7 +35,7 @@ export const MY_DATE_FORMATS = {
   selector: 'app-relatorio',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule, 
     MatSelectModule, 
@@ -39,7 +45,7 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    CurrencyPipe
+    CurrencyPipe,
   ],
   templateUrl: './relatorio.component.html',
   styleUrls: ['./relatorio.component.css'],
@@ -99,6 +105,7 @@ export class RelatorioComponent implements OnInit {
   
     if (filters.categoria) {
       this.filteredReceitas = this.filteredReceitas.filter(
+
         (receita) => receita.categoria && receita.categoria.nome === filters.categoria
       );
     }
@@ -170,6 +177,7 @@ export class RelatorioComponent implements OnInit {
       day = '0' + day;
 
     return [year, month, day].join('-');
+>>>>>>> main
   }
 
   getDateFromReceita(receita: Receita): string {

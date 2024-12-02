@@ -3,36 +3,47 @@
         {{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário'}}
     </span>
     <div mat-dialog-content>
-        <form [formGroup]=" form">
+        <form [formGroup]="form" class="d-flex flex-column gap-3">
             <mat-form-field>
-                <label class="font-semibold">Nome</label>
-                <mat-label style="color: white;">Nome</mat-label>
-                <input type="text" id="nome" formControlName="nome"
-                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300 mr-3" />
+                <mat-label>Nome</mat-label>
+                <input matInput type="text" id="nome" formControlName="nome" />
+                @if (form.get('nome')?.hasError('required')) {
+                <mat-error>Nome é obrigatório</mat-error>
+                }
+
             </mat-form-field>
             <mat-form-field>
-                <label class="font-semibold">Email</label>
                 <mat-label>Email</mat-label>
-                <input type="text" id="email" formControlName="email"
-                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+                <input matInput type="text" id="email" formControlName="email" />
+                @if (form.get('email')?.hasError('required')) {
+                <mat-error>Email é obrigatório</mat-error>
+                }
+                @if (form.get('email')?.hasError('email')) {
+                <mat-error>Email Invalido</mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
-                <label class="font-semibold">Data de Nascimento</label>
                 <mat-label>Data de Nascimento</mat-label>
-                <input type="text" id="dataNascimento" formControlName="dataNascimento"
-                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+                <input matInput type="text" id="dataNascimento" formControlName="dataNascimento" mask="d0/M0/0000" />
+                @if (form.get('dataNascimento')?.hasError('required')) {
+                <mat-error>Data de Nascimento é obrigatória</mat-error>
+                }
+                @if (form.get('dataNascimento')?.hasError('invalidDateLength')) {
+                <mat-error>Data de Nascimento deve ter 8 caracteres</mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
-                <label class="font-semibold">Senha</label>
                 <mat-label>Senha</mat-label>
-                <input type="text" id="senha" formControlName="senha"
-                    class="mt-1 h-10 resize-none bg-transparent text-white text-sm border border-slate-500 rounded-md px-2 py-2 focus:border-white hover:border-slate-300" />
+                <input matInput type="text" id="senha" formControlName="senha" />
+                @if (form.get('senha')?.hasError('required')) {
+                <mat-error>Senha é obrigatória</mat-error>
+                }
             </mat-form-field>
         </form>
     </div>
     <div mat-dialog-actions class="d-flex flex-row gap-3 justify-content-end">
         <button mat-button (click)="onCancel()" class="cancelar font-bold">Cancelar</button>
-        <button mat-button (click)="onSubmit()" class="salvar font-bold" cdkFocusInitial [disabled]="!form.valid"
+        <button mat-button (click)="onSubmit()" class="salvar font-bold" cdkFocusInitial
             [ngClass]="{'cursor-not-allowed': !form.valid}">
             {{ data?.funcionario ? 'Salvar' : 'Criar' }}
         </button>
