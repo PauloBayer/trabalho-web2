@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { seedLocalStorage } from '../../seeds/seed';
 import {
   FormBuilder,
@@ -12,13 +12,20 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NgxMaskDirective } from 'ngx-mask';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    HttpClientModule,
+    CommonModule,
+    NgxMaskDirective,
+  ],
 })
 export class RegisterComponent implements OnInit {
   autoCadastroForm!: FormGroup;
@@ -42,11 +49,11 @@ export class RegisterComponent implements OnInit {
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cep: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-      logradouro: [''],
+      logradouro: ['', Validators.required],
       numero: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      bairro: [''],
-      cidade: [''],
-      estado: [''],
+      bairro: ['', Validators.required],
+      cidade: ['', Validators.required],
+      estado: ['', Validators.required],
       telefone: [
         '',
         [
@@ -119,12 +126,19 @@ export class RegisterComponent implements OnInit {
       this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
       const formData = this.autoCadastroForm.value;
       formData.senha = this.senhaGerada;
+      formData.telefone = this.formatarTelefone(
+        formData.telefone.replace(/\D/g, '')
+      );
+      formData.cpf = this.formatarCPF(formData.cpf.replace(/\D/g, ''));
+      formData.cep = this.formatarCEP(formData.cep.replace(/\D/g, ''));
+      formData.role = 'CLIENTE';
       this.authService.doRegister(formData).subscribe(
         () => {
           this.router.navigate(['login']);
         },
         (error) => {
           console.error('Erro ao cadastrar:', error);
+          this.openSnackBar(error.error.message, 'Fechar');
         }
       );
     }
@@ -159,5 +173,34 @@ export class RegisterComponent implements OnInit {
 
   voltar() {
     this.router.navigate(['']);
+  }
+
+  formatarTelefone(telefone: string): string {
+    if (telefone.length === 11) {
+      return `(${telefone.substring(0, 2)}) ${telefone.substring(
+        2,
+        3
+      )}${telefone.substring(3, 7)}-${telefone.substring(7, 11)}`;
+    } else if (telefone.length === 10) {
+      return `(${telefone.substring(0, 2)}) ${telefone.substring(
+        2,
+        6
+      )}-${telefone.substring(6, 10)}`;
+    }
+    return telefone;
+  }
+
+  formatarCPF(cpf: string): string {
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  }
+
+  formatarCEP(cep: string): string {
+    return cep.replace(/(\d{5})(\d{3})/, '$1-$2');
+  }
+
+  private _snackBar = inject(MatSnackBar);
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }

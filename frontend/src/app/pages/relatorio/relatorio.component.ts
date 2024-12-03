@@ -16,7 +16,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { RelatorioService } from '../../services/relatorio.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import {
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+  MatOptionModule,
+} from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 
 export const MY_DATE_FORMATS = {
@@ -28,7 +33,7 @@ export const MY_DATE_FORMATS = {
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'DD/MM/YYYY',
     monthYearA11yLabel: 'MMMM YYYY',
-  }
+  },
 };
 
 @Component({
@@ -37,9 +42,9 @@ export const MY_DATE_FORMATS = {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     MatOptionModule,
     FormsModule,
     MatDatepickerModule,
@@ -54,7 +59,6 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }, // Set locale to Portuguese (Brazil)
   ],
 })
-
 export class RelatorioComponent implements OnInit {
   receitas: Receita[] = [];
   filteredReceitas: Receita[] = [];
@@ -64,8 +68,8 @@ export class RelatorioComponent implements OnInit {
     categoria: new FormControl(''),
     data: new FormGroup({
       start: new FormControl(),
-      end: new FormControl()
-    })
+      end: new FormControl(),
+    }),
   });
 
   displayedColumns: string[] = ['categoria', 'data', 'valor'];
@@ -102,14 +106,14 @@ export class RelatorioComponent implements OnInit {
 
   applyFilters(filters: any) {
     this.filteredReceitas = [...this.receitas];
-  
+
     if (filters.categoria) {
       this.filteredReceitas = this.filteredReceitas.filter(
-
-        (receita) => receita.categoria && receita.categoria.nome === filters.categoria
+        (receita) =>
+          receita.categoria && receita.categoria.nome === filters.categoria
       );
     }
-  
+
     if (filters.data?.start && filters.data?.end) {
       const startDate = new Date(filters.data.start);
       const endDate = new Date(filters.data.end);
@@ -120,16 +124,16 @@ export class RelatorioComponent implements OnInit {
         return receitaDate >= startDate && receitaDate <= endDate;
       });
     }
-  }  
+  }
 
   receiveDateArray(dateArray: number[]): Date {
     // Subtract 1 from the month because JavaScript months are zero-based
     const date = new Date(
-      dateArray[0],          // Year
-      dateArray[1] - 1,      // Month (0-based)
-      dateArray[2],          // Day
-      dateArray[3],          // Hours
-      dateArray[4]           // Minutes
+      dateArray[0], // Year
+      dateArray[1] - 1, // Month (0-based)
+      dateArray[2], // Day
+      dateArray[3], // Hours
+      dateArray[4] // Minutes
     );
     return date;
   }
@@ -147,22 +151,31 @@ export class RelatorioComponent implements OnInit {
       categoria = filters.categoria; // filters.categoria is the selected category ID
     }
 
-    const startDate = filters.data?.start ? this.formatDate(filters.data.start) : null;
-    const endDate = filters.data?.end ? this.formatDate(filters.data.end) : null;
+    const startDate = filters.data?.start
+      ? this.formatDate(filters.data.start)
+      : null;
+    const endDate = filters.data?.end
+      ? this.formatDate(filters.data.end)
+      : null;
 
-    this.relatorioService.downloadFaturamentoReport(categoria, startDate, endDate).subscribe(response => {
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
+    this.relatorioService
+      .downloadFaturamentoReport(categoria, startDate, endDate)
+      .subscribe(
+        (response) => {
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Faturamento_Report.pdf';
-      a.click();
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Faturamento_Report.pdf';
+          a.click();
 
-      window.URL.revokeObjectURL(url);
-    }, error => {
-      console.error('Error downloading report', error);
-    });
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error downloading report', error);
+        }
+      );
   }
 
   formatDate(date: Date): string {
@@ -171,13 +184,10 @@ export class RelatorioComponent implements OnInit {
     let day = '' + d.getDate();
     const year = d.getFullYear();
 
-    if (month.length < 2) 
-      month = '0' + month;
-    if (day.length < 2) 
-      day = '0' + day;
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
->>>>>>> main
   }
 
   getDateFromReceita(receita: Receita): string {
