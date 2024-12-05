@@ -28,8 +28,10 @@ export class VisualizarServicoComponent implements OnInit {
   ngOnInit(): void {
     this.solicitacaoId = this.route.snapshot.paramMap.get('id') || '';
 
-    if (this.solicitacaoId) {
-      this.solicitacaoService.getSolicitacaoById(this.solicitacaoId).subscribe({
+    if (this.solicitacaoId == '')
+      this.router.navigate(['']);
+
+      this.solicitacaoService.getSolicitacaoByIdComHistorico(this.solicitacaoId).subscribe({
         next: (solicitacao) => {
           this.solicitacao = solicitacao;
           console.log(solicitacao);
@@ -41,7 +43,6 @@ export class VisualizarServicoComponent implements OnInit {
           console.error('Erro ao carregar solicitação:', err);
         },
       });
-    }
   }
 
   getFuncionarioNome(funcionario: Funcionario | string | undefined): string {

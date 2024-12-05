@@ -7,5 +7,4 @@ export enum EstadoSolicitacaoType {
   AGUARDANDO_PAGAMENTO = 'AGUARDANDO_PAGAMENTO',
   PAGA = 'PAGA',
   FINALIZADA = 'FINALIZADA',
-  ARRUMADA = 'ARRUMADA'
 }
