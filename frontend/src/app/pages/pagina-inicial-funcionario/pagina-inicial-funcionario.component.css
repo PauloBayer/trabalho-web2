@@ -7,3 +7,88 @@
 ::ng-deep #page-filter > .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
     display: none;
 }
+
+.btn {
+  -webkit-transition: ease-out 0.3s;
+  -moz-transition: ease-out 0.3s;
+  transition: ease-out 0.3s;
+}
+.btn:hover {
+  box-shadow: inset 400px 0 0 0 rgb(15, 15, 15);
+}
+#card {
+  position: relative;
+}
+#card:hover {
+  z-index: 1000;
+  box-shadow: 0px 0px 10px 10px #dba632;
+  transition: 0.2s linear;
+  animation: shake 0.5s;
+}
+#card:hover #shine {
+  animation: shining 0.2s ease-in-out;
+}
+
+@keyframes shining {
+  0% {
+    background: linear-gradient(
+      90deg,
+      rgb(255, 255, 255, 0.3) 0%,
+      transparent 100%
+    );
+  }
+
+  50% {
+    background: linear-gradient(
+      90deg,
+      transparent 50%,
+      rgb(255, 255, 255, 0.3),
+      transparent 100%
+    );
+  }
+
+  100% {
+    background: linear-gradient(
+      90deg,
+      transparent 50%,
+      rgb(221, 220, 245, 0.3) 100%
+    );
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(3px, 3px) rotate(1deg);
+  }
+  50% {
+    transform: translate(3px, 3px) rotate(-1deg);
+  }
+
+  100% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+}
+#status {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1.25rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+}
+#shine {
+  z-index: 1000;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1.25rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+}
