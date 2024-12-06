@@ -55,7 +55,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let receita of receitas">
-                    <td>{{ receita.data | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ receita.dataHoraCriacao }}</td>
                     <td>{{ receita.categoria }}</td>
                     <td>{{ receita.valor | currency:'BRL' }}</td>
                 </tr>

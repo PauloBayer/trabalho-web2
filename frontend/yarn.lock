@@ -194,7 +194,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^18.0.0 || ^19.0.0", "@angular/common@^18.2.0", "@angular/common@18.2.2":
+"@angular/common@^18.0.0 || ^19.0.0", "@angular/common@^18.2.0", "@angular/common@>=14.0.0", "@angular/common@18.2.2":
   version "18.2.2"
   resolved "https://registry.npmjs.org/@angular/common/-/common-18.2.2.tgz"
   integrity sha512-AQe4xnnNNch/sXRnV82C8FmhijxPATKfPGojC2qbAG2o6VkWKgt5Lbj0O8WxvSIOS5Syedv+O2kLY/JMGWHNtw==
@@ -222,14 +222,14 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^18.0.0 || ^19.0.0", "@angular/core@^18.2.0", "@angular/core@18.2.2":
+"@angular/core@^18.0.0 || ^19.0.0", "@angular/core@^18.2.0", "@angular/core@>=14.0.0", "@angular/core@18.2.2":
   version "18.2.2"
   resolved "https://registry.npmjs.org/@angular/core/-/core-18.2.2.tgz"
   integrity sha512-Rx6XajL0Ydj9hXUSPDvL2Q/kMzWtbiE3VxZFJnkE+fLQiWvr0GncB+NTb/nQ6QlPQ0ly60DvuI3KLcGDuFtGVA==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/forms@^18.0.0 || ^19.0.0", "@angular/forms@^18.2.0":
+"@angular/forms@^18.0.0 || ^19.0.0", "@angular/forms@^18.2.0", "@angular/forms@>=14.0.0":
   version "18.2.2"
   resolved "https://registry.npmjs.org/@angular/forms/-/forms-18.2.2.tgz"
   integrity sha512-K8cv0w6o7+ocQfUrdSA3XaKrYfa1+2TlmtyxPHjEd2mCu2R+Yqo5RqJ3P8keFewJ1+bSLhz6xnn6mumwl0RnUQ==
@@ -4683,6 +4683,13 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+ngx-mask@^18.0.4:
+  version "18.0.4"
+  resolved "https://registry.npmjs.org/ngx-mask/-/ngx-mask-18.0.4.tgz"
+  integrity sha512-ji6bpXCNMjEISMdvvZ2T+iMZUqiVluVJ8aywWi59//TR6G6VWs3bmlr1f+OKunjFPgvUGf7/kIdKoMbrF1++aA==
+  dependencies:
+    tslib "^2.3.0"
 
 node-addon-api@^6.1.0:
   version "6.1.0"

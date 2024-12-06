@@ -371,7 +371,8 @@ const historico8_FINALIZADA: Historico = {
 const solicitacao1: Solicitacao = {
   id: '7e0bfbf7-4ec2-4f21-9b90-bd9094ebd5d7',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-01T12:45:30Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.ABERTA,
@@ -382,7 +383,8 @@ const solicitacao1: Solicitacao = {
 const solicitacao2: Solicitacao = {
   id: 'e5d178e0-9203-4b8f-bf9a-c2fa5f5a3b85',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-04T14:22:18Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.ORCADA,
@@ -395,7 +397,8 @@ const solicitacao2: Solicitacao = {
 const solicitacao3: Solicitacao = {
   id: '3f3cb91b-b282-47ff-a1cb-50f4f8ff92d9',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-04T14:22:18Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.APROVADA,
@@ -408,7 +411,8 @@ const solicitacao3: Solicitacao = {
 const solicitacao4: Solicitacao = {
   id: '0987b004-53bc-4ef5-96f6-efb32a389071',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-09T07:25:15Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.REJEITADA,
@@ -422,7 +426,8 @@ const solicitacao4: Solicitacao = {
 const solicitacao5: Solicitacao = {
   id: '5a17769b-280f-40bb-9b64-9e95b73925b4',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-08T13:40:30Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.REDIRECIONADA,
@@ -436,7 +441,8 @@ const solicitacao5: Solicitacao = {
 const solicitacao6: Solicitacao = {
   id: 'a65d6506-9925-4d6e-a479-bc3d5c647229',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-05T16:50:12Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
@@ -457,7 +463,8 @@ const solicitacao6: Solicitacao = {
 const solicitacao7: Solicitacao = {
   id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-20T08:35:50Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.PAGA,
@@ -479,7 +486,8 @@ const solicitacao7: Solicitacao = {
 const solicitacao8: Solicitacao = {
   id: 'bd73a5b9-590f-4a77-9dc3-4d1cc7f8573e',
   descricaoOrcamento: '',
-  categoriaEquipamento: categoria2,
+  categoriaEquipamento: categoria2.nome,
+  orientacoesExtrasOrcamento: null,
   dataHoraCriacao: '2023-09-20T08:35:50Z',
   cliente: cliente5,
   status: EstadoSolicitacaoType.FINALIZADA,

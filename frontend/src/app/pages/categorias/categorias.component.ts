@@ -117,10 +117,7 @@ export class CategoriasComponent implements AfterViewInit {
       .subscribe((data) => {
         if (data) {
           const newCategory: CategoriaEquipamento = {
-<<<<<<< Conectar-Front-CRUD-Funcionario
-=======
             id: data.id,
->>>>>>> main
             nome: data.nome,
             description: data.description,
             ativo: true,
@@ -148,7 +145,7 @@ export class CategoriasComponent implements AfterViewInit {
       .subscribe((data) => {
         if (data && category.id) {
           const updatedCategory: CategoriaEquipamento = {
-            nome: data.nome,
+            nome: data.nome.toUpperCase(),
             description: data.description,
             ativo: true,
           };

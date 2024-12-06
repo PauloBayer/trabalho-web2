@@ -6,13 +6,13 @@
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
-                        <mat-panel-title> Solicitação 07/12/24 </mat-panel-title>
+                        <mat-panel-title> Sua solicitação aguarda uma ação </mat-panel-title>
                         <mat-panel-description>
                             Informações do pedido
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="text-left">
-                        <p><strong>Categoria do equipamento:</strong> {{ solicitacao.categoriaEquipamento?.nome }}</p>
+                        <p><strong>Categoria do equipamento:</strong> {{ solicitacao.categoriaEquipamento }}</p>
                         <p><strong>Descrição do Equipamento:</strong> {{ solicitacao.descricaoEquipamento}}</p>
                         <p><strong>Descrição do Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
                     </div>
@@ -21,11 +21,13 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title> {{ formatDate(solicitacao.dataHoraAtualizacao ?? solicitacao.dataHoraCriacao)
                             }} </mat-panel-title>
-                        <mat-panel-description>Status: ORÇADA</mat-panel-description>
+                        <mat-panel-description>Status: {{ solicitacao.status }}</mat-panel-description>
                     </mat-expansion-panel-header>
 
                     <div class="text-left">
-                        <p><strong>Valor Estimado:</strong> {{ solicitacao.valorOrcado }} reais</p>
+                        <p><strong>Valor Estimado:</strong> R$ {{ solicitacao.valorOrcado }} </p>
+                        <p><strong>Descrição do orçamento:</strong> {{ solicitacao.orientacoesExtrasOrcamento }}
+                        </p>
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>

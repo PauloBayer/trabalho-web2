@@ -6,10 +6,11 @@ import { CategoriaEquipamento } from './categoria-equipamento';
 
 export class Solicitacao {
     id: string = '';
-    categoriaEquipamento?: CategoriaEquipamento = undefined;
+    categoriaEquipamento?: string = undefined;
     cliente?: Cliente = undefined;
     funcionario?: Funcionario = undefined;
     status?: EstadoSolicitacaoType = undefined;
+    orientacoesExtrasOrcamento: string | null = null;
     dataHoraCriacao: string = '';
     descricaoOrcamento: string = '';
     dataHoraAtualizacao?: string = undefined;

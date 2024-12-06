@@ -177,7 +177,6 @@ export class RelatorioComponent implements OnInit {
       day = '0' + day;
 
     return [year, month, day].join('-');
->>>>>>> main
   }
 
   getDateFromReceita(receita: Receita): string {
