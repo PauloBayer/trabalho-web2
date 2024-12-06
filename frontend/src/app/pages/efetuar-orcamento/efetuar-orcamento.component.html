@@ -38,18 +38,19 @@
                     </div>
 
                     <label for="orientacoesExtras" class="block" style="margin-top: 20px">
-                      Orientações extras do orçamento:
+                        Orientações extras do orçamento:
                     </label>
-                    <input id="orientacoesExtras" formControlName="orientacoesExtras"
+                    <textarea id="orientacoesExtras" formControlName="orientacoesExtras"
                         class="mt-2 bg-transparent text-white text-sm border border-slate-500 rounded-md px-3 py-2 focus:border-white hover:border-slate-300"
-                        type="text" />
+                        type="text">
 
                         <div *ngIf="orcamentoForm.get('number')?.touched && orcamentoForm.get('number')?.invalid"
                         class="text-red-500 text-sm mt-1">
-                        <span *ngIf="orcamentoForm.get('number')?.errors?.['required']">
-                          As orientações extras do orçamento é obrigatório.
-                        </span>
-                    </div>
+                            <span *ngIf="orcamentoForm.get('number')?.errors?.['required']">
+                            As orientações extras do orçamento é obrigatório.
+                            </span>
+                        </div>
+                    </textarea>
                 </div>
                 <button class="w-64 rounded-md font-nuckle font-light text-white h-11 my-4"
                     (click)="onEfetuarOrcamento()" [disabled]="!orcamentoForm.valid" [ngClass]="{

@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 export class PaginaInicialComponent implements OnInit {
   solicitacao: any;
   solicitacoes: Solicitacao[] = [];
+  filteredSolicitacoes: Solicitacao[] = [];
   filterValue: string = '';
 
   constructor(
@@ -28,11 +29,16 @@ export class PaginaInicialComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadSolicitacoes();
+  }
+
+  loadSolicitacoes(): void {
     this.solicitacaoService.findAllSolicitacoesByUser().subscribe({
       next: (data: Solicitacao[]) => {
-        this.solicitacoes = data;
+        this.solicitacoes = [...data];
+        this.updateFilteredSolicitacoes();
       },
-      error: (error) => console.error(error),
+      error: (error) => console.error('Error fetching solicitacoes:', error),
     });
   }
 
@@ -62,12 +68,12 @@ export class PaginaInicialComponent implements OnInit {
     }
   }
 
-  get filteredSolicitacoes(): Solicitacao[] {
+  updateFilteredSolicitacoes(): void {
     if (!this.filterValue) {
-      return this.solicitacoes;
+      this.filteredSolicitacoes = [...this.solicitacoes];
     }
     const filterValueLower = this.filterValue.toLowerCase();
-    return this.solicitacoes.filter((solicitacao) => {
+    let filteredData = this.solicitacoes.filter((solicitacao) => {
       const id = solicitacao.id.toLowerCase();
       const clienteNome = solicitacao.cliente?.nome?.toLowerCase() || '';
       const status = solicitacao.status?.toLowerCase() || '';
@@ -81,6 +87,8 @@ export class PaginaInicialComponent implements OnInit {
         descricaoDefeito.includes(filterValueLower)
       );
     });
+
+    this.filteredSolicitacoes = filteredData;
   }
 
   formatDate(timestamp: string): string {
@@ -110,9 +118,10 @@ export class PaginaInicialComponent implements OnInit {
     this.solicitacaoService.resgatarServico(s.id).subscribe({
       next: () => {
         alert('Solicitação resgatada com sucesso');
-        this.solicitacaoService.findAllSolicitacoes().subscribe({
+        this.solicitacaoService.findAllSolicitacoesByUser().subscribe({
           next: (data: Solicitacao[]) => {
-            this.solicitacoes = data;
+            this.solicitacoes = [...data];
+            this.updateFilteredSolicitacoes();
           },
           error: (error) => console.error(error),
         });

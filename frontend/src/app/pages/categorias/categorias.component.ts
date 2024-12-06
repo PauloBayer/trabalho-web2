@@ -145,7 +145,7 @@ export class CategoriasComponent implements AfterViewInit {
       .subscribe((data) => {
         if (data && category.id) {
           const updatedCategory: CategoriaEquipamento = {
-            nome: data.nome,
+            nome: data.nome.toUpperCase(),
             description: data.description,
             ativo: true,
           };

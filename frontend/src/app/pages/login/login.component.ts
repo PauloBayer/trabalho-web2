@@ -69,7 +69,8 @@ export class LoginComponent implements OnInit {
       next: (data: LoginResponse) => {
         this.authService.setToken(data.token);
         if (data.role == 'ROLE_CLIENTE' || data.role == 'ROLE_FUNCIONARIO')
-          this.authService.setUserRole(data.role);
+          localStorage.setItem('userLogado', JSON.stringify(data.user));
+          this.authService.setUserRole(data.role as 'ROLE_CLIENTE' | 'ROLE_FUNCIONARIO');
         this.authService.navigateToHomepageByRole();
       },
       error: (error) => {

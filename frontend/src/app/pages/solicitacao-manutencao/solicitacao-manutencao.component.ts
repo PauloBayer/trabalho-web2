@@ -51,8 +51,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
 
     if (!this.solicitacaoForm.valid) return;
 
-    const { categorie, problem, name, description } =
-      this.solicitacaoForm.value;
+    const { categorie, problem, name, description } = this.solicitacaoForm.value;
 
     this.solicitacaoService
       .criarSolicitacao(description, problem, categorie)
@@ -65,6 +64,7 @@ export class SolicitacaoManutencaoComponent implements OnInit {
           alert('something went wrong');
           console.error(error);
         },
-      });
+      }
+    );
   }
 }

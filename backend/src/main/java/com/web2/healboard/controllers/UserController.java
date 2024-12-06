@@ -40,12 +40,12 @@ public class UserController {
 
             if (user instanceof Cliente) {
                 Cliente cliente = this.clienteService.findByEmailAndSenha(dto.getEmail(), dto.getSenha());
-                return ResponseEntity.ok(new LoginResponseDto(this.jwtService.createToken(cliente), "ROLE_CLIENTE"));
+                return ResponseEntity.ok(new LoginResponseDto(this.jwtService.createToken(cliente), "ROLE_CLIENTE", user));
             }
 
             if (user instanceof Funcionario) {
                 Funcionario funcionario = this.funcionarioService.findByEmailAndSenha(dto.getEmail(), dto.getSenha());
-                return ResponseEntity.ok(new LoginResponseDto(this.jwtService.createToken(funcionario), "ROLE_FUNCIONARIO"));
+                return ResponseEntity.ok(new LoginResponseDto(this.jwtService.createToken(funcionario), "ROLE_FUNCIONARIO", user));
             }
 
             throw new CredenciaisInvalidasException("credenciais invalidas");

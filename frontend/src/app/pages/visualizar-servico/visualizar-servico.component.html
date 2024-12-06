@@ -14,19 +14,16 @@
 
     <ul class="mt-3 bg-gray-800 p-4 rounded-lg shadow-md">
       @for (passo of solicitacao?.historico; track $index) {
-        <li class="py-2">
-          <p class="text-white">
-            <strong>{{ passo.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</strong> - {{ passo.statusAtual }}
-          </p>
-        </li>
+      <li class="py-2">
+        <p class="text-white">
+          <strong>{{ passo.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</strong> - {{ passo.statusAtual }}
+        </p>
+      </li>
       }
     </ul>
 
     <div class="flex justify-center mt-5">
-      <button
-        (click)="voltar()"
-        class="bg-[#FF5E2B] hover:bg-gray-800 text-white py-2 px-4 rounded-lg shadow"
-      >
+      <button (click)="voltar()" class="bg-[#FF5E2B] hover:bg-gray-800 text-white py-2 px-4 rounded-lg shadow">
         Voltar
       </button>
     </div>

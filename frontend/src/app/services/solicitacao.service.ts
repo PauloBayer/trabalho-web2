@@ -23,13 +23,13 @@ export class SolicitacaoService {
   findAllSolicitacoesByUser(): Observable<Solicitacao []> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
-    return this.httpClient.get<Solicitacao []>(`${this.apiUrl}/api/v1/solicitacoes/user`, { headers: headers });
+    return this.httpClient.get<Solicitacao[]>(`${this.apiUrl}/api/v1/solicitacoes/user`, { headers: headers });
   }
 
   findAllSolicitacoes(): Observable<Solicitacao []> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
-    return this.httpClient.get<Solicitacao []>(`${this.apiUrl}/api/v1/solicitacoes`, { headers: headers });
+    return this.httpClient.get<Solicitacao[]>(`${this.apiUrl}/api/v1/solicitacoes`, { headers: headers });
   }
 
   getSolicitacaoById(id: string): Observable<Solicitacao> {
@@ -39,27 +39,28 @@ export class SolicitacaoService {
   }
 
   criarSolicitacao(descricaoEquipamento: string, descricaoDefeito: string, categoriaEquipamento: CategoriaEquipamento): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
+    
     const dataHora = new Date().toISOString();
 
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let isLogged = localStorage.getItem('token');
+    let userRole = localStorage.getItem('userRole');
+    let user = localStorage.getItem('userLogado');
 
-    if (!userLogado)
+    if (!isLogged)
       return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
 
-    if ((userLogado as Funcionario).dataNascimento)
+    if (userRole != 'ROLE_CLIENTE')
       return throwError(() => new Error(`Não autorizado: funcionários não podem criar solicitações`));
 
-    solicitacoes.push({
+    let solicitacao: Solicitacao = {
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-      categoriaEquipamento: categoriaEquipamento,
+      categoriaEquipamento: categoriaEquipamento.nome,
       descricaoDefeito: descricaoDefeito,
+      orientacoesExtrasOrcamento: '',
       descricaoEquipamento: descricaoEquipamento,
       descricaoOrcamento: '',
       dataHoraCriacao: dataHora,
-      cliente: userLogado as Cliente,
+      cliente: JSON.parse(user!) as Cliente,
       status: EstadoSolicitacaoType.ABERTA,
       historico: [{
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -68,11 +69,13 @@ export class SolicitacaoService {
         descricaoDefeito: descricaoDefeito,
         descricaoEquipamento: descricaoEquipamento,
       }]
-    });
+    };
 
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
 
-    return of(null);
+    return this.httpClient.post<null>(`${this.apiUrl}/api/v1/solicitacoes/manutencao`, solicitacao, { headers: headers });
+
   }
 
   efetuarOrcamento(id: string, valorOrcado: number, orientacoesExtras: string): Observable<null> {
@@ -83,79 +86,21 @@ export class SolicitacaoService {
   }
 
   aprovarServico(id: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
 
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/aprovar`, "", { headers: headers });
 
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.APROVADA,
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.APROVADA,
-          historico: historicoAtualizado
-        };
-
-        return updatedSolicitacao;
-      }
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
   rejeitarServico(id: string, motivoRejeicao: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
 
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
+    var body = { motivoRejeicao: motivoRejeicao };
 
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/rejeitar`, body, { headers: headers });
 
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.REJEITADA,
-          motivoRejeicao: motivoRejeicao
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.APROVADA,
-          motivoRejeicao: motivoRejeicao,
-          historico: historicoAtualizado
-        };
-
-        return updatedSolicitacao;
-      }
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
   redirecionarManutencao(id: string, funcionarioDestino: Funcionario): Observable<null> {
@@ -252,40 +197,11 @@ export class SolicitacaoService {
   }
 
   pagarServico(id: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
 
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/pagar`, "", { headers: headers });
 
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.PAGA
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.PAGA,
-          historico: historicoAtualizado
-        };
-
-        return updatedSolicitacao;
-      }
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
   finalizarSolicitacao(id: string): Observable<null> {
@@ -337,50 +253,11 @@ export class SolicitacaoService {
   }
 
   resgatarServico(id: string): Observable<null> {
-    const solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
 
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        if (solicitacao.status !== EstadoSolicitacaoType.REJEITADA) {
-          throw new Error(`Solicitação com ID ${id} não está no status 'REJEITADA'.`);
-        }
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/resgatar`, "", { headers: headers });
 
-        solicitacaoEncontrada = true;
-
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: this.generateUniqueId(),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.APROVADA
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.APROVADA,
-          historico: historicoAtualizado
-        };
-
-        return updatedSolicitacao;
-      }
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada) {
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada.`));
-    }
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
-  }
-
-  private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2, 15) +
-           Math.random().toString(36).substring(2, 15);
   }
 
   getSolicitacaoByIdComHistorico(id: string): Observable<Solicitacao> {
