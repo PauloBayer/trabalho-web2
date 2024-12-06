@@ -18,6 +18,7 @@ public class PagamentoService {
         Pagamento pagamento = new Pagamento();
         pagamento.setValor(valor);
         pagamento.setSolicitacaoManutencao(solicitacaoManutencao);
+        pagamento.setCategoria(solicitacaoManutencao.getCategoriaEquipamento());
         this.pagamentoRepository.save(pagamento);
     }
 

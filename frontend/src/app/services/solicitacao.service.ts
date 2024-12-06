@@ -32,14 +32,6 @@ export class SolicitacaoService {
     return this.httpClient.get<Solicitacao[]>(`${this.apiUrl}/api/v1/solicitacoes`, { headers: headers });
   }
 
-  findAllSolicitacoesWithStatusABERTA(): Observable<Solicitacao []> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let allSolicitacoes = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacoesAbertas: Solicitacao[] = allSolicitacoes.filter((solicitacao: { status: string; }) => solicitacao.status === EstadoSolicitacaoType.ABERTA);
-
-    return of(solicitacoesAbertas);
-  }
-
   getSolicitacaoById(id: string): Observable<Solicitacao> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
@@ -266,5 +258,11 @@ export class SolicitacaoService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
     return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/resgatar`, "", { headers: headers });
 
+  }
+
+  getSolicitacaoByIdComHistorico(id: string): Observable<Solicitacao> {
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.get<Solicitacao>(`${this.apiUrl}/api/v1/solicitacoes/${id}/historico`, { headers: headers });
   }
 }

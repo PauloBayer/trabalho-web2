@@ -79,6 +79,14 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
     this.router.navigate([`funcionario/solicitacao/${idSolicitacao}`]);
   }
 
+  finalizarSolicitacao(idSolicitacao: string) {
+    this.router.navigate([`funcionario/finalizar/${idSolicitacao}`]);
+  }
+
+  efetuarManutencao(idSolicitacao: string) {
+    this.router.navigate([`funcionario/manutencao/${idSolicitacao}`]);
+  }
+
   goToGerenciarSolicitacoes() {
     this.router.navigate(['funcionario/gerenciar-solicitacoes']);
   }

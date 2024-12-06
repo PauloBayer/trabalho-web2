@@ -37,9 +37,9 @@ export const MY_DATE_FORMATS = {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     MatOptionModule,
     FormsModule,
     MatDatepickerModule,
@@ -102,14 +102,14 @@ export class RelatorioComponent implements OnInit {
 
   applyFilters(filters: any) {
     this.filteredReceitas = [...this.receitas];
-  
+
     if (filters.categoria) {
       this.filteredReceitas = this.filteredReceitas.filter(
 
         (receita) => receita.categoria && receita.categoria.nome === filters.categoria
       );
     }
-  
+
     if (filters.data?.start && filters.data?.end) {
       const startDate = new Date(filters.data.start);
       const endDate = new Date(filters.data.end);
@@ -120,7 +120,7 @@ export class RelatorioComponent implements OnInit {
         return receitaDate >= startDate && receitaDate <= endDate;
       });
     }
-  }  
+  }
 
   receiveDateArray(dateArray: number[]): Date {
     // Subtract 1 from the month because JavaScript months are zero-based
@@ -171,9 +171,9 @@ export class RelatorioComponent implements OnInit {
     let day = '' + d.getDate();
     const year = d.getFullYear();
 
-    if (month.length < 2) 
+    if (month.length < 2)
       month = '0' + month;
-    if (day.length < 2) 
+    if (day.length < 2)
       day = '0' + day;
 
     return [year, month, day].join('-');

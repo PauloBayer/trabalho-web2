@@ -27,7 +27,7 @@ public class SolicitacaoManutencaoService {
     private final CategoriaEquipamentoService categoriaEquipamentoService;
     private final PagamentoService pagamentoService;
 
-    public void registrarSolicitacao(
+    public SolicitacaoManutencao registrarSolicitacao(
             String nomeCategoria,
             String descricaoEquipamento,
             String descricaoDefeito,
@@ -46,6 +46,8 @@ public class SolicitacaoManutencaoService {
         this.historicoSolicitacaoService.setStatusAberta(
                 newSolicitacao, newSolicitacao.getDescricaoEquipamento(), newSolicitacao.getDescricaoDefeito()
         );
+
+        return newSolicitacao;
     }
 
     public SolicitacaoManutencao obterSolicitacaoPorId(UUID id) {
