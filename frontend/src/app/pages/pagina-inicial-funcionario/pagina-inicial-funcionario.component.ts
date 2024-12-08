@@ -24,6 +24,7 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   solicitacoes: Solicitacao[] = [];
   filteredSolicitacoes: Solicitacao[] = [];
   filterValue: string = '';
+  firstTime: boolean = true;
 
   constructor(
     private router: Router,
@@ -39,6 +40,11 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
       next: (data: Solicitacao[]) => {
         this.solicitacoes = [...data];
         this.updateFilteredSolicitacoes();
+
+        if (this.firstTime) {
+          this.firstTime = false;
+          this.loadSolicitacoes();
+        }
       },
       error: (error) => {
         alert(`ERRO: ${error}`);
