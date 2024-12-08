@@ -25,6 +25,7 @@ public class SolicitacaoManutencaoMapper {
         SolicitacaoManutencaoResponseDto dto = new SolicitacaoManutencaoResponseDto();
         dto.setId(model.getId());
         dto.setCategoriaEquipamento(model.getCategoriaEquipamento().getNome());
+        dto.setNomeCliente(model.getCliente().getNome());
         dto.setNomeFuncionario(
                 model.getFuncionario() == null ? null : model.getFuncionario().getNome()
         );
@@ -51,6 +52,7 @@ public class SolicitacaoManutencaoMapper {
     public static SolicitacaoComHistoricoResponseDto toDto(SolicitacaoManutencao solicitacaoManutencao, List<HistoricoSolicitacao> historicos) {
         SolicitacaoComHistoricoResponseDto responseDto = new SolicitacaoComHistoricoResponseDto();
         responseDto.setId(solicitacaoManutencao.getId());
+        responseDto.setNomeCliente(solicitacaoManutencao.getCliente().getNome());
         responseDto.setCategoriaEquipamento(solicitacaoManutencao.getCategoriaEquipamento().getNome());
         responseDto.setNomeFuncionario(
                 solicitacaoManutencao.getFuncionario() == null ? null : solicitacaoManutencao.getFuncionario().getNome()
