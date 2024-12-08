@@ -107,8 +107,7 @@ export class ManutencaoComponent implements OnInit {
       .efetuarManutencao(
         this.solicitacao.id,
         descricaoManutencao,
-        orientacoesCliente,
-        this.funcionarioLogado
+        orientacoesCliente
       )
       .subscribe({
         next: (response) => {

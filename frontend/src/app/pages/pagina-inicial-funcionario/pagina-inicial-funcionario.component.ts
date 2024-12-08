@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PaginaInicialFuncionarioComponent implements OnInit {
   solicitacoes: Solicitacao[] = [];
+  filteredSolicitacoes: Solicitacao[] = [];
   filterValue: string = '';
 
   constructor(
@@ -29,10 +30,14 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadSolicitacoes();
+  }
+
+  loadSolicitacoes(): void {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
       next: (data: Solicitacao[]) => {
-        this.solicitacoes = data;
-        console.log(data);
+        this.solicitacoes = [...data];
+        this.updateFilteredSolicitacoes();
       },
       error: (error) => {
         alert(`ERRO: ${error}`);
@@ -40,12 +45,12 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
     });
   }
 
-  get filteredSolicitacoes(): Solicitacao[] {
+  updateFilteredSolicitacoes(): void {
     if (!this.filterValue) {
-      return this.solicitacoes;
+      this.filteredSolicitacoes = [...this.solicitacoes];
     }
     const filterValueLower = this.filterValue.toLowerCase();
-    return this.solicitacoes.filter((solicitacao) => {
+    let filteredData = this.solicitacoes.filter((solicitacao) => {
       const id = solicitacao.id.toLowerCase();
       const clienteNome = solicitacao.cliente?.nome?.toLowerCase() || '';
       const status = solicitacao.status?.toLowerCase() || '';
@@ -57,8 +62,10 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
         status.includes(filterValueLower) ||
         descricaoDefeito.includes(filterValueLower)
       );
-    }
-  )};
+    });
+
+    this.filteredSolicitacoes = [...filteredData];
+  };
 
   formatDate(timestamp: string): string {
     const date = new Date(timestamp);
