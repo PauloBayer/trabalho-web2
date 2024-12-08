@@ -33,6 +33,7 @@ public class CategoriaEquipamentoService {
             .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         categoriaExistente.setNome(categoriaAtualizada.getNome());
+        categoriaExistente.setDescription(categoriaAtualizada.getDescription());
         return repository.save(categoriaExistente);
     }
 
