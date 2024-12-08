@@ -46,7 +46,7 @@ export class CriarAltFuncComponent {
       ],
       dataNascimento: [
         data?.funcionario?.dataNascimento || '',
-        [Validators.required, this.dateLengthValidator],
+        [Validators.required, dateFormatValidator],
       ],
       senha: [data?.funcionario?.senha || '', Validators.required],
     });
@@ -66,15 +66,18 @@ export class CriarAltFuncComponent {
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.form.value.dataNascimento = `${this.form.value.dataNascimento.substring(
-        0,
-        2
-      )}/${this.form.value.dataNascimento.substring(
-        2,
-        4
-      )}/${this.form.value.dataNascimento.substring(4, 8)}`;
-
       this.dialogRef.close(this.form.value);
     }
   }
+}
+
+export function dateFormatValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length !== 8) {
+      return { invalidDateLength: true };
+    }
+  }
+  return null;
 }

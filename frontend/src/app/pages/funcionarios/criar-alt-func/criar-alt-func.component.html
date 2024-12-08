@@ -3,6 +3,9 @@
         {{ data?.funcionario ? 'Editar Funcionário' : 'Criar Funcionário'}}
     </span>
     <div mat-dialog-content>
+        <pre>
+            {{ form.value | json }}
+        </pre>
         <form [formGroup]="form" class="d-flex flex-column gap-3">
             <mat-form-field>
                 <mat-label>Nome</mat-label>
@@ -28,8 +31,8 @@
                 @if (form.get('dataNascimento')?.hasError('required')) {
                 <mat-error>Data de Nascimento é obrigatória</mat-error>
                 }
-                @if (form.get('dataNascimento')?.hasError('invalidDateLength')) {
-                <mat-error>Data de Nascimento deve ter 8 caracteres</mat-error>
+                @if (form.get('dataNascimento')?.hasError('invalidDateFormat')) {
+                <mat-error>Data de Nascimento deve estar no formato dd/MM/yyyy</mat-error>
                 }
             </mat-form-field>
             <mat-form-field>

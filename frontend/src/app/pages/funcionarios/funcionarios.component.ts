@@ -98,7 +98,9 @@ export class FuncionariosComponent implements AfterViewInit {
             result.senha
           )
           .subscribe({
-            next: (data) => {},
+            next: _ => {
+              this.refresh();
+            },
             error: (error) => console.error(error),
           });
         this.refresh();
