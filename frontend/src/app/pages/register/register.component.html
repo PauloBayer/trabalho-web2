@@ -10,11 +10,10 @@
       <!-- CPF Field -->
       <div class="w-full">
         <label for="cpf" class="block text-sm font-medium">CPF:</label>
-        <input type="text" id="cpf" formControlName="cpf"
-          class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
+        <input type="text" id="cpf" formControlName="cpf" class="border-2 border-yellow-400 rounded-full px-4 py-2 mt-1 w-full text-sm">
         <div class="text-red-400 text-xs mt-1 min-h-[20px]">
           <span *ngIf="formSubmitted && autoCadastroForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</span>
-          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['pattern']">CPF deve conter exatamente 11 números.</span>
+          <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['pattern']">CPF must be in the format XXX.XXX.XXX-XX</span>
           <span *ngIf="autoCadastroForm.get('cpf')?.errors?.['validarCPF']">CPF inválido. Por favor, insira um CPF
             válido.</span>
         </div>
@@ -89,10 +88,7 @@
         <div class="text-red-400 text-xs mt-1 min-h-[20px]">
           <span *ngIf="formSubmitted && autoCadastroForm.get('telefone')?.errors?.['required']">Telefone é
             obrigatório.</span>
-          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['minlength']">Telefone deve ter ao menos 10
-            dígitos.</span>
-          <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['maxlength']">Telefone não pode exceder 11
-            dígitos.</span>
+            <span *ngIf="autoCadastroForm.get('telefone')?.errors?.['pattern']">Telefone must be in the format (XX) 9XXXX-XXXX or (XX) XXXX-XXXX.</span>
         </div>
       </div>
 

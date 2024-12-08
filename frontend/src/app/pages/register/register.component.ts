@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { RegistrarClienteRequest } from '../../model/requests/registrar-cliente-request';
 
 @Component({
   selector: 'app-registration',
@@ -24,6 +25,7 @@ export class RegisterComponent implements OnInit {
   autoCadastroForm!: FormGroup;
   senhaGerada: string | null = null;
   formSubmitted = false;
+  cpfError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,11 +36,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.autoCadastroForm = this.fb.group({
-      cpf: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]{11}$')],
-        [this.cpfAsyncValidator()],
-      ],
+      cpf: ['', [Validators.required, Validators.pattern('\\d{3}\.\\d{3}\.\\d{3}-\\d{2}')]],
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cep: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
@@ -47,22 +45,8 @@ export class RegisterComponent implements OnInit {
       bairro: [''],
       cidade: [''],
       estado: [''],
-      telefone: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(11),
-        ],
+      telefone: ['', [Validators.required, Validators.pattern('^\\([1-9]{2}\\) (?:[2-8]|9[0-9])[0-9]{3}-[0-9]{4}$')]
       ],
-    });
-
-    // Formatar CPF e CEP
-    this.autoCadastroForm.get('cpf')?.valueChanges.subscribe((value) => {
-      const numericValue = value.replace(/\D/g, '').slice(0, 11);
-      this.autoCadastroForm
-        .get('cpf')
-        ?.setValue(numericValue, { emitEvent: false });
     });
 
     this.autoCadastroForm.get('cep')?.valueChanges.subscribe((value) => {
@@ -73,60 +57,67 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  cpfAsyncValidator(): AsyncValidatorFn {
-    return (control: any): Observable<any> => {
-      const cpf = control.value.replace(/\D/g, '');
-      if (cpf && this.validarCPF(cpf)) {
-        return of(null);
-      } else {
-        return of({ invalidCpf: true });
-      }
-    };
-  }
-
   validarCPF(cpf: string): boolean {
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
-    const cpfArray = cpf.split('').map(Number);
-
-    const calcularDigito = (soma: number, peso: number[]) => {
+    const cpfLimpo = cpf.replace(/\D/g, '');
+    if (cpfLimpo.length !== 11 || /^(\d)\1{10}$/.test(cpfLimpo)) return false;
+    const cpfArray = cpfLimpo.split('').map(Number);
+    const calcularDigito = (soma: number, peso: number[]): number => {
       const resto = (soma * 10) % 11;
       return resto === 10 ? 0 : resto;
     };
-
     const soma1 = cpfArray
       .slice(0, 9)
       .reduce((acc, val, idx) => acc + val * (10 - idx), 0);
     const primeiroDigito = calcularDigito(soma1, []);
-
     const soma2 = cpfArray
       .slice(0, 10)
       .reduce((acc, val, idx) => acc + val * (11 - idx), 0);
     const segundoDigito = calcularDigito(soma2, []);
-
     return cpfArray[9] === primeiroDigito && cpfArray[10] === segundoDigito;
   }
 
   onSubmit(): void {
+    if (!this.autoCadastroForm.valid)
+      return;
+
     this.formSubmitted = true;
-    const cpf = this.autoCadastroForm.get('cpf')?.value.replace(/\D/g, '');
+
+    const cpf = this.autoCadastroForm.get('cpf')?.value;
     if (!this.validarCPF(cpf)) {
-      this.autoCadastroForm.get('cpf')?.setErrors({ validarCPF: true });
+      this.cpfError = true;
       return;
     }
 
+    this.cpfError = false;
+
     if (this.autoCadastroForm.valid) {
-      this.senhaGerada = Math.floor(1000 + Math.random() * 9000).toString();
-      const formData = this.autoCadastroForm.value;
-      formData.senha = this.senhaGerada;
-      this.authService.doRegister(formData).subscribe(
-        () => {
-          this.router.navigate(['login']);
-        },
-        (error) => {
-          console.error('Erro ao cadastrar:', error);
-        }
-      );
+      const nome = this.autoCadastroForm.get('nome')?.value;
+      const email = this.autoCadastroForm.get('email')?.value;
+      const cep = this.autoCadastroForm.get('cep')?.value;
+      const telefone = this.autoCadastroForm.get('telefone')?.value;
+
+      const logradouro = this.autoCadastroForm.get('logradouro')?.value;
+      const numero = this.autoCadastroForm.get('numero')?.value;
+      const bairro = this.autoCadastroForm.get('bairro')?.value;
+      const cidade = this.autoCadastroForm.get('cidade')?.value;
+      const estado = this.autoCadastroForm.get('estado')?.value;
+      const endereco = `${logradouro} - ${numero} - ${bairro} - ${cidade} - ${estado}`;
+
+      const data: RegistrarClienteRequest = {
+        nome: nome,
+        cpf: cpf,
+        email: email,
+        cep: `${cep.slice(0, 5)}-${cep.slice(5)}`,
+        telefone: telefone,
+        endereco: endereco
+      }
+
+      console.log(data);
+
+      this.authService.doRegister(data).subscribe({
+        next: () => this.router.navigate(['login']),
+        error: () => console.error("Erro ao cadastrar")
+      });
     }
   }
 

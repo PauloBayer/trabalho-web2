@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1/users/registrar';
   endpoint: string = environment.httpApiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -23,8 +22,8 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.endpoint}/api/v1/users/login`, data);
   }
 
-  doRegister(formData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, formData);
+  doRegister(formData: RegistrarClienteRequest): Observable<null> {
+    return this.http.post<null>(`${this.endpoint}/api/v1/users/registrar`, formData);
   }
 
   setToken(token: string): void {

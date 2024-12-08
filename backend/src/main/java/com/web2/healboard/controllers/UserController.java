@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/registrar")
     public ResponseEntity<Void> registrar(@RequestBody @Valid RegistrarRequestDto dto) {
-        Cliente cliente = this.clienteService.createCliente(ClienteMapper.toCliente(dto));
+        this.clienteService.createCliente(ClienteMapper.toCliente(dto));
         return ResponseEntity.ok().build();
     }
 

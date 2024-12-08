@@ -30,8 +30,4 @@ public class RegistrarRequestDto {
             message = "Telefone must be in the format (XX) 9XXXX-XXXX or (XX) XXXX-XXXX"
     )
     private String telefone;
-
-    @NotNull(message = "Role must not be null")
-    @Pattern(regexp = "CLIENTE|FUNCIONARIO", message = "Role must be either CLIENTE or FUNCIONARIO")
-    private String role;
 }
