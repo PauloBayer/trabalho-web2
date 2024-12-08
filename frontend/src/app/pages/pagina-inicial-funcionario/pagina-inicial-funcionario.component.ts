@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-pagina-inicial-funcionario',
@@ -34,7 +35,7 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
   }
 
   loadSolicitacoes(): void {
-    this.solicitacaoService.findAllSolicitacoes().subscribe({
+    this.solicitacaoService.findAllSolicitacoes().pipe(delay(100)).subscribe({
       next: (data: Solicitacao[]) => {
         this.solicitacoes = [...data];
         this.updateFilteredSolicitacoes();
@@ -49,6 +50,7 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
     if (!this.filterValue) {
       this.filteredSolicitacoes = [...this.solicitacoes];
     }
+
     const filterValueLower = this.filterValue.toLowerCase();
     let filteredData = this.solicitacoes.filter((solicitacao) => {
       const id = solicitacao.id.toLowerCase();

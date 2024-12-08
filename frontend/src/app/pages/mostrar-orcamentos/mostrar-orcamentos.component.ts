@@ -1,7 +1,7 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, Inject, input, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion'; 
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -55,7 +55,9 @@ export class MostrarOrcamentosComponent implements OnInit {
   }
 
   openDialogAccept() {
-    const dialogRef = this.dialog.open(DialogContentAccept);
+    const dialogRef = this.dialog.open(DialogContentAccept, {
+      data: { solicitacao: this.solicitacao }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       this.solicitacaoService.aprovarServico(this.solicitacao.id).subscribe({
@@ -115,7 +117,16 @@ export class MostrarOrcamentosComponent implements OnInit {
     MatIconModule
   ],
 })
-export class DialogContentAccept {}
+export class DialogContentAccept {
+
+  price?: number;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { solicitacao: Solicitacao }) {
+      this.price = this.data.solicitacao.valorOrcado;
+    }
+
+}
 
 @Component({
   selector: 'dialog-decline-orcamento',
@@ -133,7 +144,8 @@ export class DialogContentAccept {}
 })
 export class DialogContentDecline {
 
-  constructor(public dialogRef: MatDialogRef<DialogContentDecline>) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogContentDecline>) {}
 
   formGroup = new FormGroup({
     reason: new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(1)])
