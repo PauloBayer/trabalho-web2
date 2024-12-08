@@ -13,6 +13,7 @@ import java.util.UUID;
 public class SolicitacaoComHistoricoResponseDto {
     private UUID id;
     private String categoriaEquipamento;
+    private String nomeCliente;
     private String nomeFuncionario;
     private String status;
     private String dataHoraCriacao;

@@ -8,6 +8,7 @@ export class Solicitacao {
     id: string = '';
     categoriaEquipamento?: string = undefined;
     cliente?: Cliente = undefined;
+    nomeCliente?: string = undefined;
     funcionario?: Funcionario = undefined;
     status?: EstadoSolicitacaoType = undefined;
     orientacoesExtrasOrcamento: string | null = null;

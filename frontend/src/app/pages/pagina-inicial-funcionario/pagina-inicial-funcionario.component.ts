@@ -32,6 +32,7 @@ export class PaginaInicialFuncionarioComponent implements OnInit {
     this.solicitacaoService.findAllSolicitacoes().subscribe({
       next: (data: Solicitacao[]) => {
         this.solicitacoes = data;
+        console.log(data);
       },
       error: (error) => {
         alert(`ERRO: ${error}`);

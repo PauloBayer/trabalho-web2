@@ -39,7 +39,7 @@ public class HealBoardApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// SEED CLIENTES
-		Cliente cliente1 = new Cliente(null, "1234",  "12345678901", "cliente@email.com", 	"21987654321", "01001000", this.passwordEncoder.encode("1234"), LocalDateTime.now(), LocalDateTime.now());
+		Cliente cliente1 = new Cliente(null, "cliente",  "12345678901", "cliente@email.com", 	"21987654321", "01001000", this.passwordEncoder.encode("1234"), LocalDateTime.now(), LocalDateTime.now());
 		if (!this.clienteRepository.existsByEmail(cliente1.getEmail()))
 			clienteRepository.save(cliente1);
 
