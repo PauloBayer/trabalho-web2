@@ -10,8 +10,6 @@ import { environment } from '../env/environment';
   providedIn: 'root',
 })
 export class CategoryService {
-  private localStorageKey = 'categorias';
-
   private apiUrl: string = environment.httpApiUrl;
 
   constructor(
@@ -19,7 +17,6 @@ export class CategoryService {
     private authService: AuthService
   ) {}
 
-  /** Get all categories from localStorage */
   getCategories(): Observable<CategoriaEquipamento[]> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
@@ -29,7 +26,6 @@ export class CategoryService {
     );
   }
 
-  /** Add a new category to localStorage */
   addCategory(category: CategoriaEquipamento): Observable<null> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });
@@ -40,7 +36,6 @@ export class CategoryService {
     );
   }
 
-  /** Update an existing category in localStorage */
   updateCategory(
     id: number,
     updatedCategory: CategoriaEquipamento
@@ -55,7 +50,6 @@ export class CategoryService {
     );
   }
 
-  /** Delete a category from localStorage */
   deleteCategory(id: number): Observable<null> {
     const bearerToken = this.authService.getToken();
     const headers = new HttpHeaders({ Authorization: `Bearer ${bearerToken}` });

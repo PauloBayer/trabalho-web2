@@ -4,10 +4,6 @@ import { LoginResponse } from '../model/responses/login-response';
 import { UserLogin } from '../model/requests/user-login-request';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../env/environment';
-import { Cliente } from '../model/entities/cliente';
-import { RegistrarClienteRequest } from '../model/requests/registrar-cliente-request';
-import { Funcionario } from '../model/entities/funcionario';
-import { seedLocalStorage } from '../seeds/seed';
 import { Router } from '@angular/router';
 
 @Injectable({

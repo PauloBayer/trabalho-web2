@@ -8,6 +8,7 @@ import { CategoriaEquipamento } from '../model/entities/categoria-equipamento';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../env/environment';
 import { AuthService } from './auth.service';
+import { EfetuarManutencaoRequestDto } from '../model/requests/efetuar-manutencao-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -103,97 +104,27 @@ export class SolicitacaoService {
 
   }
 
-  redirecionarManutencao(id: string, funcionarioDestino: Funcionario): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
+  redirecionarManutencao(idSolicitacao: string, funcionarioDestino: Funcionario): Observable<null> {
 
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    let idFuncionarioDestino = funcionarioDestino.id;
 
-    if (!userLogado)
-      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${idSolicitacao}/redirecionar/${idFuncionarioDestino}`, "", { headers: headers });
 
-    if ((userLogado as Cliente).cep)
-      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
-
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
-          funcionarioOrigem: userLogado as Funcionario,
-          funcionarioDestino: funcionarioDestino,
-          funcionario: userLogado as Funcionario
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
-          funcionario: funcionarioDestino,
-          historico: historicoAtualizado
-        };
-
-        return updatedSolicitacao;
-      }
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
-  efetuarManutencao(id: string, descricaoManutencao: string, orientacoesManutencao: string, funcionario: Funcionario): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
+  efetuarManutencao(id: string, descricaoManutencao: string, orientacoesManutencao: string): Observable<null> {
+    
+    let body: EfetuarManutencaoRequestDto = {
+      orientacoesManutencao: orientacoesManutencao,
+      descricaoManutencao: descricaoManutencao
+    };
 
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<any>(`${this.apiUrl}/api/v1/solicitacoes/${id}/manutencao`, body, { headers: headers });
 
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
-          orientacoesManutencao: orientacoesManutencao,
-          descricaoManutencao: descricaoManutencao,
-          funcionario: funcionario
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.AGUARDANDO_PAGAMENTO,
-          historico: historicoAtualizado,
-          orientacoesManutencao: orientacoesManutencao,
-          descricaoManutencao: descricaoManutencao
-        };
-
-        return updatedSolicitacao;
-      }
-
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
   pagarServico(id: string): Observable<null> {
@@ -205,51 +136,11 @@ export class SolicitacaoService {
   }
 
   finalizarSolicitacao(id: string): Observable<null> {
-    let solicitacoesString = localStorage.getItem('solicitacoes');
-    let solicitacoes: Solicitacao[] = solicitacoesString ? JSON.parse(solicitacoesString) : [];
-    let solicitacaoEncontrada = false;
 
-    let userLogadoString = localStorage.getItem('userLogado');
-    let userLogado: Funcionario | Cliente | null = userLogadoString ? JSON.parse(userLogadoString) : null;
+    const bearerToken = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${bearerToken}` });
+    return this.httpClient.put<null>(`${this.apiUrl}/api/v1/solicitacoes/${id}/finalizar`, "", { headers: headers });
 
-    if (!userLogado)
-      return throwError(() => new Error(`Não autorizado: nenhum usuário está logado`));
-
-    if ((userLogado as Cliente).cep)
-      return throwError(() => new Error(`Não autorizado: clientes não podem finalizar solicitações`));
-
-    solicitacoes = solicitacoes.map(solicitacao => {
-      if (solicitacao.id === id) {
-        solicitacaoEncontrada = true;
-
-        const historicoAtualizado = solicitacao.historico ? [...solicitacao.historico] : [];
-
-        historicoAtualizado.push({
-          id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          dataHora: new Date().toISOString(),
-          statusAnterior: solicitacao.status,
-          statusAtual: EstadoSolicitacaoType.FINALIZADA,
-          funcionario: userLogado as Funcionario
-        });
-
-        const updatedSolicitacao: Solicitacao = {
-          ...solicitacao,
-          status: EstadoSolicitacaoType.FINALIZADA,
-          historico: historicoAtualizado,
-        };
-
-        return updatedSolicitacao;
-      }
-
-      return solicitacao;
-    });
-
-    if (!solicitacaoEncontrada)
-      return throwError(() => new Error(`Solicitação com ID ${id} não encontrada`))
-
-    localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-
-    return of(null);
   }
 
   resgatarServico(id: string): Observable<null> {

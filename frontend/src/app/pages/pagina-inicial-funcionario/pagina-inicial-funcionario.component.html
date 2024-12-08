@@ -7,79 +7,72 @@
 
       <mat-form-field id="page-filter" appearance="fill" class="w-1/3">
         <mat-label>Filtrar solicitações</mat-label>
-        <input matInput [(ngModel)]="filterValue" placeholder="Digite para filtrar por qualquer campo..." />
+        <input matInput [(ngModel)]="filterValue" (ngModelChange)="updateFilteredSolicitacoes()"
+          placeholder="Digite para filtrar por qualquer campo..." />
       </mat-form-field>
     </div>
 
     <hr />
 
     @if (filteredSolicitacoes.length > 0) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10" [@fadeInOut]>
-        @for (solicitacao of filteredSolicitacoes; track $index) {
-          <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
-            <div id="shine"></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10" [@fadeInOut]>
+      @for (solicitacao of filteredSolicitacoes; track $index) {
+      <div class="bg-[#423B3A] rounded-2xl p-5" id="card">
+        <div id="shine"></div>
 
-            <div [ngClass]="getStatusClass(solicitacao.status)" id="status"></div>
+        <div [ngClass]="getStatusClass(solicitacao.status)" id="status"></div>
 
-            <p class="font-nuckle font-light text-white mb-3">
-              {{ formatDate(solicitacao.dataHoraCriacao) }}
-            </p>
-
-            <p class="font-nuckle font-light text-white mb-3">
-              Nome do cliente: {{ solicitacao.cliente?.nome }}
-            </p>
-
-            <p class="font-nuckle font-light text-white mb-3">
-              Defeito: {{ solicitacao.descricaoDefeito }}
-            </p>
-
-            <p class="font-nuckle font-extrabold text-white mb-4">
-              Estado: {{ solicitacao.status }}
-            </p>
-
-            @if (solicitacao.status === 'ABERTA') {
-              <button
-                class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
-                (click)="efetuarOrcamento(solicitacao.id)"
-              >
-                Efetuar orçamento
-              </button>
-            }
-
-            @if (solicitacao.status === 'APROVADA' || solicitacao.status === 'REDIRECIONADA') {
-              <button
-                class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
-                (click)="efetuarManutencao(solicitacao.id)"
-              >
-                Efetuar manutenção
-              </button>
-            }
-
-            @if (solicitacao.status === 'PAGA') {
-              <button
-                class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
-                (click)="finalizarSolicitacao(solicitacao.id)"
-              >
-                Finalizar solicitação
-              </button>
-            }
-
-            <button
-              class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12"
-              (click)="visualizarServico(solicitacao.id)"
-            >
-              Visualizar a situação
-            </button>
-
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="text-center pb-3">
-        <p class="font-nuckle font-light text-white h-9">
-          <strong>Parece que não tem nenhuma solicitação aberta</strong>
+        <p class="font-nuckle font-light text-white mb-3">
+          {{ formatDate(solicitacao.dataHoraCriacao) }}
         </p>
+
+        <p class="font-nuckle font-light text-white mb-3">
+          Nome do cliente: {{ solicitacao.cliente?.nome }}
+        </p>
+
+        <p class="font-nuckle font-light text-white mb-3">
+          Defeito: {{ solicitacao.descricaoDefeito }}
+        </p>
+
+        <p class="font-nuckle font-extrabold text-white mb-4">
+          Estado: {{ solicitacao.status }}
+        </p>
+
+        @if (solicitacao.status === 'ABERTA') {
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
+          (click)="efetuarOrcamento(solicitacao.id)">
+          Efetuar orçamento
+        </button>
+        }
+
+        @if (solicitacao.status === 'APROVADA' || solicitacao.status === 'REDIRECIONADA') {
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
+          (click)="efetuarManutencao(solicitacao.id)">
+          Efetuar manutenção
+        </button>
+        }
+
+        @if (solicitacao.status === 'PAGA') {
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12 mb-4"
+          (click)="finalizarSolicitacao(solicitacao.id)">
+          Finalizar solicitação
+        </button>
+        }
+
+        <button class="btn w-full bg-[#FF5E2B] rounded-md font-nuckle font-light text-white h-12"
+          (click)="visualizarServico(solicitacao.id)">
+          Visualizar a situação
+        </button>
+
       </div>
+      }
+    </div>
+    } @else {
+    <div class="text-center pb-3">
+      <p class="font-nuckle font-light text-white h-9">
+        <strong>Parece que não tem nenhuma solicitação aberta</strong>
+      </p>
+    </div>
     }
   </div>
 </div>

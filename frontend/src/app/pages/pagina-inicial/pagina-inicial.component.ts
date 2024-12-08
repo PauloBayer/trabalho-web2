@@ -88,7 +88,7 @@ export class PaginaInicialComponent implements OnInit {
       );
     });
 
-    this.filteredSolicitacoes = filteredData;
+    this.filteredSolicitacoes = [...filteredData];
   }
 
   formatDate(timestamp: string): string {
