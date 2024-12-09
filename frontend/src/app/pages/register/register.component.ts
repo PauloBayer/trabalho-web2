@@ -77,6 +77,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger;
     if (!this.autoCadastroForm.valid)
       return;
 

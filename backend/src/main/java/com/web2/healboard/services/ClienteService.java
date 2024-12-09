@@ -50,7 +50,7 @@ public class ClienteService {
         String senha = String.format("%04d", new Random().nextInt(10000));
         cliente.setSenha(this.passwordEncoder.encode(senha));
 
-        this.emailService.sendEmail(cliente.getEmail(), "Cadastro na plataforma HealBoard", senha);
+        this.emailService.sendEmail(cliente.getEmail(), "Cadastro na plataforma HealBoard", "Sua senha na plataforma é: " + senha);
 
         return clienteRepository.save(cliente);
     }
